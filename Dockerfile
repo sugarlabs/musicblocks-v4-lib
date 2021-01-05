@@ -14,6 +14,9 @@ RUN npm install -g npm
 # install typescript compiler
 RUN npm install -g typescript
 
+# install git
+RUN apt-get -y install git
+
 # install ts-node (to run/debug .ts files without manual transpiling)
 RUN npm install -g ts-node
 
