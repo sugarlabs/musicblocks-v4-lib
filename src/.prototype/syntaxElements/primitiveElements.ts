@@ -34,7 +34,10 @@ abstract class PrimitiveElement<T> implements IPrimitiveElement<T> {
 
 // ---- Primitive Type Classes ---------------------------------------------------------------------
 
-/** Integer primitive type. */
+/**
+ * Integer primitive type.
+ * @todo add remaining operators.
+ */
 export class TInt extends PrimitiveElement<number> {
     constructor(value: number) {
         super('TInt', value);
@@ -112,7 +115,10 @@ export class TInt extends PrimitiveElement<number> {
     }
 }
 
-/** Float primitive type. */
+/**
+ * Float primitive type.
+ * @todo add remaining operators.
+ */
 export class TFloat extends PrimitiveElement<number> {
     constructor(value: number) {
         super('TFloat', value);
@@ -181,7 +187,10 @@ export class TFloat extends PrimitiveElement<number> {
     }
 }
 
-/** Character primitive type. */
+/**
+ * Character primitive type.
+ * @todo add remaining operators.
+ */
 export class TChar extends PrimitiveElement<string> {
     constructor(value: string | number) {
         super('TChar', '');
@@ -237,7 +246,10 @@ export class TChar extends PrimitiveElement<string> {
     }
 }
 
-/** String primitive type. */
+/**
+ * String primitive type.
+ * @todo add remaining operators.
+ */
 export class TString extends PrimitiveElement<string> {
     constructor(value: string) {
         super('TString', value);
@@ -255,7 +267,10 @@ export class TString extends PrimitiveElement<string> {
     }
 }
 
-/** Boolean primitive type. */
+/**
+ * Boolean primitive type.
+ * @todo add remaining operators.
+ */
 export class TBoolean extends PrimitiveElement<boolean> {
     constructor(value: boolean) {
         super('TBoolean', value);
