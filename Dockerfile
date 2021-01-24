@@ -15,7 +15,12 @@ RUN npm install -g npm
 RUN npm install -g typescript
 
 # install git
-RUN apt-get -y install git
+RUN apt update --no-install-recommends -yq \
+    && apt-get install git -yq
+#install Emscripten
+FROM emscripten/emsdk:1.38.25
+# Install required tools that are useful for this project i.e. music-blocks
+ RUN apt update && apt install -y music-blocks
 
 # install ts-node (to run/debug .ts files without manual transpiling)
 RUN npm install -g ts-node
