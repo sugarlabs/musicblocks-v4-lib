@@ -194,8 +194,25 @@ describe('operations on type elements', () => {
         test('mod TInt(15) and TInt(4) and expect new element value to be 3', () => {
             expect(TInt.mod(operand_1, operand_2).value).toBe(3);
         });
+
         test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
             expect(TInt.equals(operand_1, operand_2).value).toBe(false);
+        });
+
+        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+            expect(TInt.greaterThan(operand_1, operand_2).value).toBe(true);
+        });
+
+        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+            expect(TInt.lessThan(operand_1, operand_2).value).toBe(false);
+        });
+
+        test('check if TInt(15) is incremented to be 16', () => {
+            expect(TInt.increment(operand_1).value).toBe(16);
+        });
+
+        test('check if TInt(15) is decremented to be 14', () => {
+            expect(TInt.decrement(operand_1).value).toBe(14);
         });
     });
 
