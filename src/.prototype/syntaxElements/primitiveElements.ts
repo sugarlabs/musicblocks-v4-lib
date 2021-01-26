@@ -127,6 +127,16 @@ export class TInt extends PrimitiveElement<number> {
     static lessThan(operand_1: TInt, operand_2: TInt) {
         return new TBoolean(operand_1.value < operand_2.value);
     }
+
+    /** Binary ++ operator. */
+    static increment(operand_1: TInt) {
+        return new TInt(operand_1.value + 1)
+    }
+
+    /** Binary ++ operator. */
+    static decrement(operand_1: TInt) {
+        return new TInt(operand_1.value - 1)
+    }
 }
 
 /**
