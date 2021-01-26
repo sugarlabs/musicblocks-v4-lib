@@ -194,6 +194,9 @@ describe('operations on type elements', () => {
         test('mod TInt(15) and TInt(4) and expect new element value to be 3', () => {
             expect(TInt.mod(operand_1, operand_2).value).toBe(3);
         });
+        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+            expect(TInt.equals(operand_1, operand_2).value).toBe(false);
+        });
     });
 
     const operand_3 = new TFloat(15.5);

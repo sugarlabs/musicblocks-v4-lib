@@ -113,6 +113,20 @@ export class TInt extends PrimitiveElement<number> {
     static mod(operand_1: TInt, operand_2: TInt) {
         return new TInt(operand_1.value % operand_2.value);
     }
+        /** Binary == operator. */
+    static equals(operand_1: TInt, operand_2: TInt) {
+        return new TBoolean(operand_1.value == operand_2.value);
+    }
+
+    /** Binary > operator. */
+    static greaterThan(operand_1: TInt, operand_2: TInt) {
+        return new TBoolean(operand_1.value > operand_2.value);
+    }
+
+    /** Binary < operator. */
+    static lessThan(operand_1: TInt, operand_2: TInt) {
+        return new TBoolean(operand_1.value < operand_2.value);
+    }
 }
 
 /**
