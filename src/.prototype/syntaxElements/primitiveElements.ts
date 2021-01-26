@@ -133,7 +133,7 @@ export class TInt extends PrimitiveElement<number> {
         return new TInt(operand_1.value + 1)
     }
 
-    /** Binary ++ operator. */
+    /** Binary -- operator. */
     static decrement(operand_1: TInt) {
         return new TInt(operand_1.value - 1)
     }
