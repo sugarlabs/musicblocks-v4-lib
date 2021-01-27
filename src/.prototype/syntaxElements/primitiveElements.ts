@@ -209,6 +209,16 @@ export class TFloat extends PrimitiveElement<number> {
     static lessThan(operand_1: TFloat | TInt, operand_2: TFloat | TInt) {
         return new TBoolean(operand_1.value < operand_2.value);
     }
+
+    /** Binary ++ operator. */
+    static increment(operand_1: TInt | TFloat) {
+        return new TFloat(operand_1.value + 1)
+    }
+
+    /** Binary -- operator. */
+    static decrement(operand_1: TInt | TFloat) {
+        return new TFloat(operand_1.value - 1)
+    }
 }
 
 /**

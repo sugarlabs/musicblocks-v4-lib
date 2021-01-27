@@ -238,6 +238,26 @@ describe('operations on type elements', () => {
         test('mod TFloat(15.5) and TInt(4) and expect new element value to be 3.5', () => {
             expect(TFloat.mod(operand_3, operand_2).value).toBe(3.5);
         });
+
+        test('check for equality TFloat(15.5) and TInt(4) and expect to get True or False', () => {
+            expect(TFloat.equals(operand_3, operand_2).value).toBe(false);
+        });
+
+        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+            expect(TFloat.greaterThan(operand_3, operand_2).value).toBe(true);
+        });
+
+        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+            expect(TFloat.lessThan(operand_1, operand_2).value).toBe(false);
+        });
+
+        test('check if TInt(15) is incremented to be 16.5', () => {
+            expect(TFloat.increment(operand_3).value).toBe(16.5);
+        });
+
+        test('check if TInt(15) is decremented to be 14', () => {
+            expect(TFloat.decrement(operand_3).value).toBe(14.5);
+        });
     });
 
     describe('class TChar', () => {
