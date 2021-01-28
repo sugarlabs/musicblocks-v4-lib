@@ -195,24 +195,24 @@ describe('operations on type elements', () => {
             expect(TInt.mod(operand_1, operand_2).value).toBe(3);
         });
 
-        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+        test('check for equality TInt(15) and TInt(4) and expect to get False', () => {
             expect(TInt.equals(operand_1, operand_2).value).toBe(false);
         });
 
-        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+        test('check if TInt(15) greater than TInt(4) and expect to get True', () => {
             expect(TInt.greaterThan(operand_1, operand_2).value).toBe(true);
         });
 
-        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+        test('check if TInt(15) less than TInt(4) and expect to get False', () => {
             expect(TInt.lessThan(operand_1, operand_2).value).toBe(false);
         });
 
-        test('check if TInt(15) is incremented to be 16', () => {
-            expect(TInt.increment(operand_1).value).toBe(16);
+        test('check if TInt(15) is incremented to be 15', () => {
+            expect(TInt.increment(operand_1)).toBe(16);
         });
 
         test('check if TInt(15) is decremented to be 14', () => {
-            expect(TInt.decrement(operand_1).value).toBe(14);
+            expect(TInt.decrement(operand_1)).toBe(14);
         });
     });
 
@@ -239,25 +239,26 @@ describe('operations on type elements', () => {
             expect(TFloat.mod(operand_3, operand_2).value).toBe(3.5);
         });
 
-        test('check for equality TFloat(15.5) and TInt(4) and expect to get True or False', () => {
+        test('check for equality of TFloat(15.5) and TInt(4) and expect to get false', () => {
             expect(TFloat.equals(operand_3, operand_2).value).toBe(false);
         });
 
-        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+        test('check if TFloat(15.5) greaterThan TInt(4) and expect to get true', () => {
             expect(TFloat.greaterThan(operand_3, operand_2).value).toBe(true);
         });
 
-        test('check for equality TInt(15) and TInt(4) and expect to get True or False', () => {
+        test('check if TFloat(15.5) lessThan TInt(4) and expect to get false', () => {
             expect(TFloat.lessThan(operand_1, operand_2).value).toBe(false);
         });
 
-        test('check if TInt(15) is incremented to be 16.5', () => {
-            expect(TFloat.increment(operand_3).value).toBe(16.5);
+        test('check if TFloat(15.5) is incremented to be 16.5', () => {
+            expect(TFloat.increment(operand_3)).toBe(16.5);
         });
 
-        test('check if TInt(15) is decremented to be 14', () => {
-            expect(TFloat.decrement(operand_3).value).toBe(14.5);
+        test('check if TFloat(15.5) is decremented to be 14.5', () => {
+            expect(TFloat.decrement(operand_3)).toBe(14.5);
         });
+
     });
 
     describe('class TChar', () => {
