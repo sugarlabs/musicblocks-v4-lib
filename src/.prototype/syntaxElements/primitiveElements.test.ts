@@ -173,6 +173,7 @@ describe('type conversions', () => {
 describe('operations on type elements', () => {
     const operand_1 = new TInt(15);
     const operand_2 = new TInt(4);
+    const operand_6 = new TInt(4);
 
     describe('class TInt', () => {
         test('add TInt(15) and TInt(4) and expect new element value to be 19', () => {
@@ -199,6 +200,11 @@ describe('operations on type elements', () => {
             expect(TInt.equals(operand_1, operand_2).value).toBe(false);
         });
 
+        test('check for equality TInt(4) and TInt(4) and expect to get True', () => {
+            expect(TInt.equals(operand_2, operand_6).value).toBe(true);
+        });
+
+
         test('check if TInt(15) greater than TInt(4) and expect to get True', () => {
             expect(TInt.greaterThan(operand_1, operand_2).value).toBe(true);
         });
@@ -217,6 +223,7 @@ describe('operations on type elements', () => {
     });
 
     const operand_3 = new TFloat(15.5);
+    const operand_7 = new TFloat(15.5);
 
     describe('class TFloat', () => {
         test('add TFloat(15.5) and TInt(4) and expect new element value to be 19.5', () => {
@@ -241,6 +248,10 @@ describe('operations on type elements', () => {
 
         test('check for equality of TFloat(15.5) and TInt(4) and expect to get false', () => {
             expect(TFloat.equals(operand_3, operand_2).value).toBe(false);
+        });
+
+        test('check for equality of TFloat(15.5) and TFloat(15.5) and expect to get true', () => {
+            expect(TFloat.equals(operand_3, operand_7).value).toBe(true);
         });
 
         test('check if TFloat(15.5) greaterThan TInt(4) and expect to get true', () => {
