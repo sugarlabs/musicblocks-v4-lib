@@ -204,7 +204,6 @@ describe('operations on type elements', () => {
             expect(TInt.equals(operand_2, operand_6).value).toBe(true);
         });
 
-
         test('check if TInt(15) greater than TInt(4) and expect to get True', () => {
             expect(TInt.greaterThan(operand_1, operand_2).value).toBe(true);
         });
@@ -213,12 +212,14 @@ describe('operations on type elements', () => {
             expect(TInt.lessThan(operand_1, operand_2).value).toBe(false);
         });
 
-        test('check if TInt(15) is incremented to be 15', () => {
-            expect(TInt.increment(operand_1)).toBe(16);
+        test('increment a TInt(15) object and expect value to be 16', () => {
+            operand_1.increment();
+            expect(operand_1.value).toBe(16);
         });
 
-        test('check if TInt(15) is decremented to be 14', () => {
-            expect(TInt.decrement(operand_1)).toBe(14);
+        test('decrement a TInt(16) object and expect value to be 15', () => {
+            operand_1.decrement();
+            expect(operand_1.value).toBe(15);
         });
     });
 
@@ -262,14 +263,15 @@ describe('operations on type elements', () => {
             expect(TFloat.lessThan(operand_1, operand_2).value).toBe(false);
         });
 
-        test('check if TFloat(15.5) is incremented to be 16.5', () => {
-            expect(TFloat.increment(operand_3)).toBe(16.5);
+        test('increment a TFloat(15.5) object and expect value to be 16.5', () => {
+            operand_3.increment();
+            expect(operand_3.value).toBe(16.5);
         });
 
-        test('check if TFloat(15.5) is decremented to be 14.5', () => {
-            expect(TFloat.decrement(operand_3)).toBe(14.5);
+        test('decrement a TFloat(16.5) object and expect value to be 15.5', () => {
+            operand_3.decrement();
+            expect(operand_3.value).toBe(15.5);
         });
-
     });
 
     describe('class TChar', () => {
@@ -306,6 +308,16 @@ describe('operations on type elements', () => {
 
         test('or TBoolean(false) and TBoolean(false) and expect new element value to be false', () => {
             expect(TBoolean.or(operand_5, operand_5).value).toBe(false);
+        });
+
+        test('invert a TBoolean(true) and expect value to be false', () => {
+            operand_4.invert();
+            expect(operand_4.value).toBe(false);
+        });
+
+        test('invert a TBoolean(false) and expect value to be true', () => {
+            operand_5.invert();
+            expect(operand_5.value).toBe(true);
         });
     });
 });

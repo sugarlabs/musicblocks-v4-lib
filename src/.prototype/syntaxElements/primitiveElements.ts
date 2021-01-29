@@ -88,10 +88,19 @@ export class TInt extends PrimitiveElement<number> {
     }
 
     // -- Operators ------------------------------------------------------------
+    // -- All static methods must return a TInt, non-static directly update value so return void
+
+    add(operand: TInt) {
+        this.value += operand.value;
+    }
 
     /** Binary + operator. */
     static add(operand_1: TInt, operand_2: TInt) {
         return new TInt(operand_1.value + operand_2.value);
+    }
+
+    subtract(operand: TInt) {
+        this.value -= operand.value;
     }
 
     /** Binary - operator. */
@@ -99,9 +108,17 @@ export class TInt extends PrimitiveElement<number> {
         return new TInt(operand_1.value - operand_2.value);
     }
 
+    multiply(operand: TInt) {
+        this.value *= operand.value;
+    }
+
     /** Binary * operator. */
     static multiply(operand_1: TInt, operand_2: TInt) {
         return new TInt(operand_1.value * operand_2.value);
+    }
+
+    divide(operand: TInt) {
+        this.value /= operand.value;
     }
 
     /** Binary / operator. */
@@ -109,12 +126,16 @@ export class TInt extends PrimitiveElement<number> {
         return new TInt(operand_1.value / operand_2.value);
     }
 
+    mod(operand: TInt) {
+        this.value %= operand.value;
+    }
+
     /** Binary % operator. */
     static mod(operand_1: TInt, operand_2: TInt) {
         return new TInt(operand_1.value % operand_2.value);
     }
 
-        /** Binary == operator. */
+    /** Binary == operator. */
     static equals(operand_1: TInt, operand_2: TInt) {
         return new TBoolean(operand_1.value == operand_2.value);
     }
@@ -129,14 +150,14 @@ export class TInt extends PrimitiveElement<number> {
         return new TBoolean(operand_1.value < operand_2.value);
     }
 
-    /** Binary ++ operator. */
-    static increment(operand_1: TInt) {
-        return ((operand_1.value +1) as number);
+    /** Unary ++ operator. */
+    increment() {
+        this._value++;
     }
 
-    /** Binary -- operator. */
-    static decrement(operand_1: TInt) {
-        return ((operand_1.value -1) as number);
+    /** Unary -- operator. */
+    decrement() {
+        this._value--;
     }
 }
 
@@ -170,6 +191,7 @@ export class TFloat extends PrimitiveElement<number> {
     }
 
     // -- Operators ------------------------------------------------------------
+    // -- All static methods must return a TFloat, non-static directly update value so return void
 
     /** Binary + operator. */
     static add(operand_1: TFloat | TInt, operand_2: TFloat | TInt) {
@@ -211,16 +233,15 @@ export class TFloat extends PrimitiveElement<number> {
         return new TBoolean(operand_1.value < operand_2.value);
     }
 
-    /** Binary ++ operator. */
-    static increment(operand_1: TInt | TFloat) {
-        return ((operand_1.value +1) as number);
+    /** Unary ++ operator. */
+    increment() {
+        this._value++;
     }
 
-    /** Binary -- operator. */
-    static decrement(operand_1: TInt | TFloat) {
-        return ((operand_1.value -1) as number);
+    /** Unary -- operator. */
+    decrement() {
+        this._value--;
     }
-
 }
 
 /**
@@ -275,6 +296,7 @@ export class TChar extends PrimitiveElement<string> {
     }
 
     // -- Operators ------------------------------------------------------------
+    // -- All static methods must return a TChar, non-static directly update value so return void
 
     /** Unary add ASCII operator. */
     addOffset(offset: number) {
@@ -313,6 +335,7 @@ export class TBoolean extends PrimitiveElement<boolean> {
     }
 
     // -- Operators ------------------------------------------------------------
+    // -- All static methods must return a TBoolean, non-static directly update value so return void
 
     /** Binary && operator. */
     static and(operand_1: TBoolean, operand_2: TBoolean) {
@@ -324,4 +347,8 @@ export class TBoolean extends PrimitiveElement<boolean> {
         return new TBoolean(operand_1.value || operand_2.value);
     }
 
+    /** Unary ! operator. */
+    invert() {
+        this._value = !this._value;
+    }
 }
