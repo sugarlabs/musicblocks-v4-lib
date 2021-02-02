@@ -193,9 +193,17 @@ export class TFloat extends PrimitiveElement<number> {
     // -- Operators ------------------------------------------------------------
     // -- All static methods must return a TFloat, non-static directly update value so return void
 
+    add(operand: TInt | TFloat) {
+        this.value += operand.value;
+    }
+
     /** Binary + operator. */
     static add(operand_1: TFloat | TInt, operand_2: TFloat | TInt) {
         return new TFloat(operand_1.value + operand_2.value);
+    }
+
+    subtract(operand: TInt | TFloat) {
+        this.value -= operand.value;
     }
 
     /** Binary - operator. */
@@ -203,14 +211,26 @@ export class TFloat extends PrimitiveElement<number> {
         return new TFloat(operand_1.value - operand_2.value);
     }
 
+    multiply(operand: TInt | TFloat) {
+        this.value *= operand.value;
+    }
+
     /** Binary * operator. */
     static multiply(operand_1: TFloat | TInt, operand_2: TFloat | TInt) {
         return new TFloat(operand_1.value * operand_2.value);
     }
 
+    divide(operand: TInt | TFloat) {
+        this.value /= operand.value;
+    }
+
     /** Binary / operator. */
     static divide(operand_1: TFloat | TInt, operand_2: TFloat | TInt) {
         return new TFloat(operand_1.value / operand_2.value);
+    }
+
+    mod(operand: TInt | TFloat) {
+        this.value %= operand.value;
     }
 
     /** Binary % operator. */
