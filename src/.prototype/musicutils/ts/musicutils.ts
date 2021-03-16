@@ -14,11 +14,11 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 
-const SHARP = "♯";
-const FLAT = "♭";
-const NATURAL = "♮";
-const DOUBLESHARP = "𝄪";
-const DOUBLEFLAT = "𝄫";
+export const SHARP = "♯";
+export const FLAT = "♭";
+export const NATURAL = "♮";
+export const DOUBLESHARP = "𝄪";
+export const DOUBLEFLAT = "𝄫";
 export const CHROMATIC_NOTES_SHARP = [
     "c",
     "c#",
@@ -355,7 +355,7 @@ export function normalize_pitch(pitch: string){
     return _pitch;
 }
 
-function display_pitch(pitch: string) {
+export function display_pitch(pitch: string) {
     /**
      * The internal pitch name is converted to unicode, e.g., cb --> C♭
 
