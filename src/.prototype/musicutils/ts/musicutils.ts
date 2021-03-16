@@ -421,8 +421,8 @@ export function find_sharp_index(pitch_name:string) {
     number
         Index into the chromatic scale with sharp notes
     */
-    if( CHROMATIC_NOTES_FLAT.includes(pitch_name))
-        return CHROMATIC_NOTES_FLAT.indexOf(pitch_name);
+    if( CHROMATIC_NOTES_SHARP.includes(pitch_name))
+        return CHROMATIC_NOTES_SHARP.indexOf(pitch_name);
     if( pitch_name in CONVERT_UP){
         let new_pitch_name = CONVERT_UP[pitch_name];
         if( new_pitch_name in CHROMATIC_NOTES_SHARP){
