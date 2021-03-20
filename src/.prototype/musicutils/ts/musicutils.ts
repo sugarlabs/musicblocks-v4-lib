@@ -358,7 +358,7 @@ export class Musicutils implements IMusicutils {
             return pitch;
         }
         let pitch_to_display: string = pitch[0].toUpperCase();
-        if (pitch.length > 2 && pitch.slice(1, 2) == 'bb') {
+        if (pitch.length > 2 && pitch.slice(1, 3) == 'bb') {
             pitch_to_display += Musicutils.DOUBLEFLAT;
         } else if (pitch.length > 1) {
             if (pitch[1] == '#') {

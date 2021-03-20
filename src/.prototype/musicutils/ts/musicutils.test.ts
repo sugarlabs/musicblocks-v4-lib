@@ -3,11 +3,20 @@ import { Musicutils } from './musicutils';
 describe('class Musicutils', () => {
     describe('Validate stripAccidental', () => {
         const mu = new Musicutils();
-        test('test stripAccidental', () => {
+        test('Test stripAccidental on pitch gbb', () => {
             expect(mu.stripAccidental('gbb')).toEqual(['g', -2]);
         });
-        test('test stripAccidental', () => {
+        test('Test stripAccidental on pitch d𝄫', () => {
             expect(mu.stripAccidental('d𝄫')).toEqual(['d', -2]);
+        });
+        test('Test stripAccidental on pitch c♭', () => {
+            expect(mu.stripAccidental('c♭')).toEqual(['c', -1]);
+        });
+        test('Test stripAccidental on pitch a♯', () => {
+            expect(mu.stripAccidental('a♯')).toEqual(['a', 1]);
+        });
+        test('Test stripAccidental on pitch b♮', () => {
+            expect(mu.stripAccidental('b♮')).toEqual(['b', 0]);
         });
     });
     describe('Validate normalizePitch', () => {
@@ -18,14 +27,23 @@ describe('class Musicutils', () => {
         test('Generate normalized pitch of C♯ and verify', () => {
             expect(mu.normalizePitch('C♯')).toEqual('c#');
         });
+        test('Generate normalized pitch of C♮ and verify', () => {
+            expect(mu.normalizePitch('C♮')).toEqual('c');
+        });
+        test('Generate normalized pitch of C and verify', () => {
+            expect(mu.normalizePitch('C𝄫')).toEqual('cbb');
+        });
     });
     describe('Validate displayPitch', () => {
         const mu = new Musicutils();
         test('Generate diplay pitch of cb and verify', () => {
             expect(mu.diplayPitch('cb')).toEqual('C♭');
         });
-        test('Generate diplay pitch of cb and verify', () => {
+        test('Generate diplay pitch of d# and verify', () => {
             expect(mu.diplayPitch('d#')).toEqual('D♯');
+        });
+        test('Generate diplay pitch of dbb and verify', () => {
+            expect(mu.diplayPitch('dbb')).toEqual('D𝄫');
         });
     });
     describe('Validate isASharp', () => {
@@ -63,6 +81,9 @@ describe('class Musicutils', () => {
         test('Check if c# is a sharp pitch', () => {
             expect(mu.isAFlat('c#')).toEqual(false);
         });
+        test('Check if a# is a sharp pitch', () => {
+            expect(mu.isAFlat('a#')).toEqual(false);
+        });
     });
     describe('Validate findFlatIndex', () => {
         const mu = new Musicutils();
@@ -81,11 +102,14 @@ describe('class Musicutils', () => {
         test('Generate pitch type of bb pitch and verify', () => {
             expect(mu.getPitchType('bb')).toEqual('letter name');
         });
-        test('Generate pitch type of bb pitch and verify', () => {
+        test('Generate pitch type of do pitch and verify', () => {
             expect(mu.getPitchType('do')).toEqual('solfege name');
         });
-        test('Generate pitch type of bb pitch and verify', () => {
+        test('Generate pitch type of dha pitch and verify', () => {
             expect(mu.getPitchType('dha')).toEqual('east indian solfege name');
+        });
+        test('Generate pitch type of aaa pitch and verify', () => {
+            expect(mu.getPitchType('aaa')).toEqual('unknown');
         });
     });
 });
