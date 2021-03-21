@@ -487,7 +487,7 @@ export function getPitchType(pitchName: string): string {
 
     pitchName = stripAccidental(pitchName)[0];
 
-    if (pitchName[0] === 'n' && Number(pitchName.slice(1)) % 1 !== 0) {
+    if (pitchName[0] === 'n' && Number.isInteger(Number(pitchName.slice(1)))) {
         return GENERIC_NOTE_NAME;
     }
     if (SOLFEGE_NAMES.includes(pitchName)) {

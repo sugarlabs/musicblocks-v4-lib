@@ -11,7 +11,7 @@ import {
 
 describe('Music utilities', () => {
     describe('Validate stripAccidental', () => {
-        test('Strip accidental on pitch c and expect pitch g with 0 change in half steps', () => {
+        test('Strip accidental on pitch c and expect pitch c with 0 change in half steps', () => {
             expect(stripAccidental('c')).toEqual(['c', 0]);
         });
 
@@ -19,7 +19,7 @@ describe('Music utilities', () => {
             expect(stripAccidental('gbb')).toEqual(['g', -2]);
         });
 
-        test('Strip accidental on pitch cb and expect pitch g with -1 change in half steps', () => {
+        test('Strip accidental on pitch cb and expect pitch c with -1 change in half steps', () => {
             expect(stripAccidental('cb')).toEqual(['c', -1]);
         });
 
@@ -51,7 +51,7 @@ describe('Music utilities', () => {
             expect(stripAccidental('b♮')).toEqual(['b', 0]);
         });
 
-        test('Strip accidental on pitch c and expect pitch b with 0 change in half steps', () => {
+        test('Strip accidental on pitch c and expect pitch c with 0 change in half steps', () => {
             expect(stripAccidental('c')).toEqual(['c', 0]);
         });
     });
@@ -95,8 +95,8 @@ describe('Music utilities', () => {
             expect(displayPitch('dbb')).toBe('D𝄫');
         });
 
-        test('Pretty print sa and expect to be SA', () => {
-            expect(displayPitch('sa')).toBe('S');
+        test('Pretty print c and expect to be C', () => {
+            expect(displayPitch('c')).toBe('C');
         });
     });
 
@@ -190,7 +190,11 @@ describe('Music utilities', () => {
         });
 
         test("Generate pitch type of pitch n2.3 and expect 'scalar mode number'", () => {
-            expect(getPitchType('n2.3')).toBe('generic note name');
+            expect(getPitchType('n2.3')).toBe('unknown');
+        });
+
+        test("Generate pitch type of pitch n2 and expect 'scalar mode number'", () => {
+            expect(getPitchType('n2')).toBe('generic note name');
         });
     });
 });
