@@ -1107,93 +1107,99 @@ semitone steps.
 Scale
 -----
 
-```python
-class Scale:
-    """
+```typescript
+class Scale {
+    /*
     A scale is a selection of notes in an octave.
-    """
+    */
 
-    def __init__(
-        self,
-        half_steps_pattern=None,
-        starting_index=0,
-        number_of_semitones=12,
-        prefer_sharps=True,
-    ):
-        """
-        When defining a scale, we need the half steps pattern that defines
-        the selection anf a starting note, e.g., C or F#,
+    constructor(
+        halfStepsPattern: number[] | null = null,
+        startingIndex: number = 0,
+        numberOfSemitones: number = 12,
+        preferSharps: boolean = true
+    ) {
+        /*
+            When defining a scale, we need the half steps pattern that defines
+            the selection anf a starting note, e.g., C or F#,
 
-        Parameters
-        ----------
-        half_steps_pattern : list
-            A list of int values that define how many half steps to take
-            between each note in the scale, e.g., [2, 2, 1, 2, 2, 2, 1]
-            defines the steps for a Major scale
+            Parameters
+            ----------
+            halfStepsPattern : number[] | null
+                A list of int values that define how many half steps to take
+                between each note in the scale, e.g., [2, 2, 1, 2, 2, 2, 1]
+                defines the steps for a Major scale
 
-        starting_index : int
-            An index into the half steps defining an octave that determines
-            from where to start building the scale, e.g., 0 for C and 7 for G
-            in a 12-step temperament
+            startingIndex : number
+                An index into the half steps defining an octave that determines
+                from where to start building the scale, e.g., 0 for C and 7 for G
+                in a 12-step temperament
 
-        number_of_semitones : int
-            If the half_steps_pattern is an empty list, then use the number
-            of semitones instead. (Or trigger a mapping from 12 to 21.)
+            numberOfSemitones : number
+                If the half_steps_pattern is an empty list, then use the number
+                of semitones instead. (Or trigger a mapping from 12 to 21.)
 
-        prefer_sharps : boolean
-            If we are mapping from 12 to 21 semitones, we need to know
-            whether or not to prefer sharps or flats.
-        """
+            preferSharps : boolean
+                If we are mapping from 12 to 21 semitones, we need to know
+                whether or not to prefer sharps or flats.
+        */
+    }
 
-    def get_number_of_semitones(self):
-        """
+    get numberOfSemitones(): number {
+        /*
         The number of semitones is the number of notes in the temperament.
 
         Returns
         -------
-        int
+        number
             The number of notes in the scale
-        """
+        */
+    }
 
-    def get_note_names(self):
-        """
-        The notes defined by the temperament are used to build the scale.
+    get noteNames(): string[] {
+        /*
+            The notes defined by the temperament are used to build the scale.
 
-        Returns
-        -------
-        list
-            The notes defined by the temperament
-        """
+            Returns
+            -------
+            string[]
+                The notes defined by the temperament
+        */
+    }
 
-    def get_scale(self, pitch_format=None):
-        """
-        The notes in the scale are a subset of the notes defined by the
-        temperament.
+    getScale(pitchFormat?: string[]) {
+        /*
+            The notes in the scale are a subset of the notes defined by the
+            temperament.
 
-        Returns
-        -------
-        list
-            The notes in the scale
-        """
+            Returns
+            -------
+            string[]
+                The notes in the scale
+        */
+    }
 
-    def get_scale_and_octave_deltas(self, pitch_format=None):
-        """
-        The notes in the scale are a subset of the notes defined by the
-        temperament.
+    getScaleAndOctaveDeltas(pitchFormat?: string[]): [string[], number[]] {
+        /*
+            The notes in the scale are a subset of the notes defined by the
+            temperament.
 
-        Returns
-        -------
-        list
-            The notes in the scale
-        list
-        The octave deltas (either 0 or 1) are used to mark notes above
-        B#, which would be in the next octave, e.g., G3, A3, B3, C4...
-        """
+            Returns
+            -------
+            An array (2-tuple) of
+                string[]
+                    The notes in the scale
+                number[]
+                The octave deltas (either 0 or 1) are used to mark notes above
+                B#, which would be in the next octave, e.g., G3, A3, B3, C4...
+        */
+    }
+}
 ```
 
 The Scale object holds the list of notes defined in the scale defined
 by a key and mode. While it is unlikely you'll need to access this
-object directly, there are public methods available for accessing the
+object directly, there are public getters available for accessing the
 notes in a scale as an array, the number of notes in the scale, and
 the octave offsets associated with a scale (new octaves always start
 at C regardless of the temperament, key, or mode.
