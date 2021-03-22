@@ -1201,8 +1201,8 @@ at C regardless of the temperament, key, or mode.
 Music Utils
 -----------
 
-```python
-# Pitch name types
+```typescript
+// Pitch name types
 GENERIC_NOTE_NAME = "generic note name"
 LETTER_NAME = "letter name"
 SOLFEGE_NAME = "solfege name"
@@ -1212,131 +1212,132 @@ CUSTOM_NAME = "custom name"
 UNKNOWN_PITCH_NAME = "unknown"
 
 
-def strip_accidental(pitch):
-    """
-    Remove an accidental and return the number of half steps that
-    would have resulted from its application to the pitch
+stripAccidental(pitch: string): [string, number]{
+    /*
+        Remove an accidental and return the number of half steps that
+        would have resulted from its application to the pitch
 
-    Parameters
-    ----------
-    pitch : str
-        Upper or lowecase pitch name with accidentals as ASCII or Unicode
+        Parameters
+        ----------
+        pitch : string
+            Upper or lowecase pitch name with accidentals as ASCII or Unicode
 
-    Returns
-    -------
-    str
-        Normalized pitch name
-    int
-        Change in half steps represented by the removed accidental
-    """
+        Returns
+        -------
+        string
+            Normalized pitch name
+        number
+            Change in half steps represented by the removed accidental
+    */
+}
 
+normalizePitch(pitch: string): string {
+    /*
+        Internally, we use a standardize form for our pitch letter names:
+        * Lowercase c, d, e, f, g, a, b for letter names;
+        * #, b, x, and bb for sharp, flat, double sharp, and double flat for
+        accidentals.
 
-def normalize_pitch(pitch):
-    """
-    Internally, we use a standardize form for our pitch letter names:
-    * Lowercase c, d, e, f, g, a, b for letter names;
-    * #, b, x, and bb for sharp, flat, double sharp, and double flat for
-      accidentals.
+        Note names for temperaments with more than 12 semitones are of the
+        form: n0, n1, ...
 
-    Note names for temperaments with more than 12 semitones are of the
-    form: n0, n1, ...
+        Parameters
+        ----------
+        pitch : string
+            Upper or lowecase pitch name with accidentals as ASCII or Unicode
 
-    Parameters
-    ----------
-    pitch : str
-        Upper or lowecase pitch name with accidentals as ASCII or Unicode
+        Returns
+        -------
+        string
+            Normalized pitch name
+    */
+}
 
-    Returns
-    -------
-    str
-        Normalized pitch name
-    """
+displayPitch(pitch: string): string {
+    /*
+        The internal pitch name is converted to unicode, e.g., cb --> C♭
 
+        Parameters
+        ----------
+        pitch : string
+            Upper or lowecase pitch name with accidentals as ASCII or Unicode
 
-def display_pitch(pitch):
-    """
-    The internal pitch name is converted to unicode, e.g., cb --> C♭
+        Returns
+        -------
+        string
+            Pretty pitch name
+    */
+}
 
-    Parameters
-    ----------
-    pitch : str
-        Upper or lowecase pitch name with accidentals as ASCII or Unicode
+isASharp(pitchName: string): boolean {
+    /*
+        Is the pitch a sharp or not flat?
 
-    Returns
-    -------
-    str
-        Pretty pitch name
-    """
+        Parameters
+        ----------
+        pitch_name : string
+            The pitch name to test
 
+        Returns
+        -------
+        boolean
+            Result of the test
+    */
+}
 
-def is_a_sharp(pitch_name):
-    """
-    Is the pitch a sharp or not flat?
+findSharpIndex(pitchName: string): number {
+    /*
+        Return the index value of the pitch name
 
-    Parameters
-    ----------
-    pitch_name : str
-        The pitch name to test
+        Parameters
+        ----------
+        pitch_name : string
+            The pitch name to test
 
-    Returns
-    -------
-    boolean
-        Result of the test
-    """
+        Returns
+        -------
+        number
+            Index into the chromatic scale with sharp notes
+    */
+}
 
+isAFlat(pitchName: string): boolean {
+    /*
+        Is the pitch a flat or not sharp?
 
-def find_sharp_index(pitch_name):
-    """
-    Return the index value of the pitch name
+        Parameters
+        ----------
+        pitch_name : string
+            The pitch name to test
 
-    Parameters
-    ----------
-    pitch_name : str
-        The pitch name to test
+        Returns
+        -------
+        boolean
+            Result of the test
+    */
+}
 
-    Returns
-    -------
-    int
-        Index into the chromatic scale with sharp notes
-    """
+findFlatIndex(pitchName: string): number {
+    /*
+        Return the index value of the pitch name
 
+        Parameters
+        ----------
+        pitch_name : string
+            The pitch name to test
 
-def is_a_flat(pitch_name):
-    """
-    Is the pitch a flat or not sharp?
+        Returns
+        -------
+        number
+            Index into the chromatic scale with sharp notes
+    */
+}
 
-    Parameters
-    ----------
-    pitch_name : str
-        The pitch name to test
-
-    Returns
-    -------
-    boolean
-        Result of the test
-    """
-
-
-def find_flat_index(pitch_name):
-    """
-    Return the index value of the pitch name
-
-    Parameters
-    ----------
-    pitch_name : str
-        The pitch name to test
-
-    Returns
-    -------
-    int
-        Index into the chromatic scale with sharp notes
-    """
-
-
-def get_pitch_type(pitch_name):
-    """
-    Pitches can be specified as a letter name, a solfege name, etc.
-    """
+getPitchType(pitchName: string): string {
+    /*
+        Pitches can be specified as a letter name, a solfege name, etc.
+    */
+}
 ```
 
 EXAMPLE
