@@ -1344,32 +1344,32 @@ EXAMPLE
 
 Putting it all together...
 
-```python
-from temperament import Temperament
-from keysignature import KeySignature
-from currentpitch import CurrentPitch
+```typescript
+import Temperament from temperament
+import KeySignature from keysignature
+import CurrentPitch from currentpitch
 
 # Use the default tuning (Equal temperament) and the default key and
 # mode (C Major).
 cp = CurrentPitch()
-print(cp.get_freq())
+console.log(cp.get_freq())
 
 # Use Pythagorean tuning and G Major.
 t = Temperament(name="pythagorean")
 ks = KeySignature(mode="major", key="g")
 cp = CurrentPitch(keysignature=ks, temperament=t)
-print(cp.get_freq())
+console.log(cp.get_freq())
 
 # Walk through the scale.
 mode_length = ks.get_mode_length()
-print(cp.get_freq())
-for i in range(mode_length):
+console.log(cp.get_freq())
+for(i=0;i<mode_length;i++){
     cp.apply_scalar_transposition(1)
-    print(cp.get_freq())
+    console.log(cp.get_freq()) }
 
 # Set the current pitch to G4.
 cp.set_pitch("g", 4)
-print(cp)
+console.log(cp)
 ```
 
 The default settings are Equal temperament, C Major, and G4. This
@@ -1380,7 +1380,7 @@ Switching to Pythagorean tuning results in G4 mapping to
 
 The frequencies in G Major (Octave 4) are:
 
-```python
+```typescript
 403.21972995787394
 453.62219620260817
 510.3249707279342
