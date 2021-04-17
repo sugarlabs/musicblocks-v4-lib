@@ -233,6 +233,9 @@ class Temperament:
 
         name : str
             The name of a temperament, e.g., "equal", "just intonation". etc.
+
+        octave_ratio : float
+            The ratio between octaves (2 by default)
         """
         self.name = name
         self.octave_length = 12  # in semitones
@@ -592,7 +595,7 @@ class Temperament:
         Parameters
         ----------
         octave_ratio : float
-        The ratio between octaves
+            The ratio between octaves
         """
         self.octave_ratio = octave_ratio
 

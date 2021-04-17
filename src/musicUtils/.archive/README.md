@@ -221,7 +221,7 @@ class Temperament:
     temperaments are based on ratios.
     """
 
-    def __init__(self, name="equal"):
+    def __init__(self, name="equal", octave_ratio=2):
         """
         Initialize the class. A temperament will be generated but it can
         subsequently be overriden.
@@ -231,6 +231,21 @@ class Temperament:
 
         name : str
             The name of a temperament, e.g., "equal", "just intonation". etc.
+
+	octave_ratio : float
+	    The ratio between octaves (2 by default)
+        """
+
+    def set_octave_ratio(self, octave_ratio):
+        """
+        The octave ratio is used to determine the size of an octave. By
+        default, it is 2:1, so going up by one octave will double the
+        frequency. But this can be overriden.
+
+        Parameters
+        ----------
+        octave_ratio : float
+        The ratio between octaves
         """
 
     def tune(self, pitch_name, octave, frequency):
