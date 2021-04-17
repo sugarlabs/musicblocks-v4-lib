@@ -223,7 +223,7 @@ class Temperament:
     generic_note_names = []  # An array of names for each note in an octave
     C0 = 16.3516  # By default, we use C in Octave 0 as our base frequency.
 
-    def __init__(self, name="equal"):
+    def __init__(self, name="equal", octave_ratio=2):
         """
         Initialize the class. A temperament will be generated but it can
         subsequently be overriden.
@@ -240,6 +240,8 @@ class Temperament:
         self.number_of_octaves = 8
         self.ratios = None
         self.intervals = None
+        # By default, going up by one octave doubles the frequency.
+        self.octave_ratio = octave_ratio
         self.generate(self.name)
 
     def tune(self, pitch_name, octave, frequency):
@@ -272,9 +274,9 @@ class Temperament:
             return
 
         if self.ratios is not None and self.intervals is not None:
-            self.base_frequency = (frequency / 2 ** octave) / self.ratios[
-                self.intervals[i]
-            ]
+            self.base_frequency = \
+                (frequency / self.octave_ratio ** octave) / (
+                    self.ratios[self.intervals[i]] * self.octave_ratio / 2)
             self.generate(self.name)
         return
 
@@ -581,6 +583,19 @@ class Temperament:
         for i in range(self.octave_length):
             self.generic_note_names.append("n%d" % i)
 
+    def set_octave_ratio(self, octave_ratio):
+        """
+        The octave ratio is used to determine the size of an octave. By
+        default, it is 2:1, so going up by one octave will double the
+        frequency. But this can be overriden.
+
+        Parameters
+        ----------
+        octave_ratio : float
+        The ratio between octaves
+        """
+        self.octave_ratio = octave_ratio
+
     def generate(self, name):
         """
         Generate creates one of the predefined temperaments based on the
@@ -633,7 +648,7 @@ class Temperament:
             for i in range(self.octave_length):
                 if i == 0:
                     continue
-                self.freqs.append(c * ratios[intervals[i]])
+                self.freqs.append(c * ratios[intervals[i]] * self.octave_ratio / 2)
 
         self._generate_generic_note_names()
 
@@ -659,8 +674,8 @@ class Temperament:
         self.octave_length = nsteps
         self.freqs = [self.base_frequency]
 
-        # nth root of 2
-        root = 2 ** (1 / nsteps)
+        # nth root of the octave ratio (2 by default)
+        root = self.octave_ratio ** (1 / nsteps)
         for octave in range(self.number_of_octaves):
             for i in range(self.octave_length):
                 if i == 0:
@@ -683,7 +698,8 @@ class Temperament:
             frequencies in an octave. The dictionary keys are defined
             in the intervals list. Each ratio (between 1 and 2) is applied
             to the base frequency of the octave. The final frequency
-            should always be equal to 2.
+            should always be equal to 2. This value gets modulated by
+            the octave ratio.
 
         name : str
             The name associated with the custom temperament
@@ -698,7 +714,7 @@ class Temperament:
             for i in range(self.octave_length):
                 if i == 0:
                     continue
-                self.freqs.append(c * ratios[intervals[i]])
+                self.freqs.append(c * ratios[intervals[i]] * self.octave_ratio / 2)
 
         self._generate_generic_note_names()
 
