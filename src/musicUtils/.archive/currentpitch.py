@@ -125,7 +125,8 @@ class CurrentPitch:
                 self._number = self._t.get_nearest_freq_index(self._freq)
         elif isinstance(pitch_name, str):
             # Assume it is a name of some sort.
-            self._generic_name = self._ks.convert_to_generic_note_name(pitch_name)[0]
+            scale = self._ks.get_scale()
+            self._generic_name = scale.convert_to_generic_note_name(pitch_name)[0]
             self._semitone_index = self._t.get_modal_index(self._generic_name)
             self._octave = octave
             self._freq = self._t.get_freq_by_modal_index_and_octave(
