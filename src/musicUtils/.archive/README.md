@@ -232,8 +232,8 @@ class Temperament:
         name : str
             The name of a temperament, e.g., "equal", "just intonation". etc.
 
-	octave_ratio : float
-	    The ratio between octaves (2 by default)
+        octave_ratio : float
+            The ratio between octaves (2 by default)
         """
 
     def set_octave_ratio(self, octave_ratio):
