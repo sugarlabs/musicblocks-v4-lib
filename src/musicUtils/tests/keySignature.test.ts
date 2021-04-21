@@ -21,12 +21,40 @@ import {
     UNKNOWN_PITCH_NAME,
     EAST_INDIAN_SOLFEGE_NAME
 } from '../musicUtils';
+import { InvalidArgumentError, ItemNotFoundDefaultError } from '../errors';
 
 describe('Key Signature', () => {
     test('instantiation', () => {
         const ks = new KeySignature('major', 'c');
         expect(ks.modeLength).toBe(7);
         expect(ks.numberOfSemitones).toBe(12);
+    });
+
+    test('exceptions', () => {
+        const ks = new KeySignature();
+
+        // set customNoteNames - A unique name must be assigned to every note in the mode.
+        expect(() => {
+            ks.customNoteNames = new Array<string>(ks.modeLength + 2);
+        }).toThrow(InvalidArgumentError);
+        expect(() => {
+            ks.customNoteNames = ['charlie', 'charlie', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        }).toThrow(InvalidArgumentError);
+
+        // convertToGenericNoteName - supplied pitch name should match one of the types
+        expect(ks.convertToGenericNoteName.bind(ks, 'unknownPitch')).toThrow(
+            ItemNotFoundDefaultError
+        );
+
+        // semitoneTransform
+        expect(ks.semitoneTransform.bind(ks, 'unknownPitch', 1)).toThrow(ItemNotFoundDefaultError);
+        const ks41 = new KeySignature([], 'c', 41);
+        expect(ks41.semitoneTransform.bind(ks41, 'unknownPitch', 1)).toThrow(
+            ItemNotFoundDefaultError
+        );
+
+        // closestNote
+        expect(ks.closestNote.bind(ks, 'unknownNote')).toThrow(ItemNotFoundDefaultError);
     });
 
     test('closest note tests', () => {
