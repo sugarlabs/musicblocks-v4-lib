@@ -738,6 +738,16 @@ class KeySignature:
 
     def get_scale(self):
         """
+        The scale defined by the key signature.
+
+        Returns
+        -------
+        obj
+            The scale object
+        """
+
+    def get_notes_in_scale(self):
+        """
         The (scalar) notes in the scale.
 
         Returns
@@ -745,7 +755,8 @@ class KeySignature:
         list
             The (scalar) notes in the scale.
 
-        NOTE: The internal definition of the scale includes the octave.
+        NOTE: The internal definition of the notes in a scale includes
+        the octave.
         """
 
     def get_mode_length(self):
@@ -793,29 +804,6 @@ by the key and mode at the time of instanciation.
     scale = ks.get_scale()
 ```
 
-Key Signature supports a variety of naming schemes, including the
-generic note names used by the Temperament object, letter names, both
-fixed and moveable Solfege, East Indian Solfege, scale degree, and
-custom defined names (The pitch name types are defined in
-musicutils.py).
-
-```python
-    ks.set_custom_note_names(
-        ["charlie", "delta", "echo", "foxtrot", "golf", "alfa", "bravo"]
-    )
-
-    generic_name = ks.convert_to_generic_note_name("g")
-    generic_name = ks.convert_to_generic_note_name("sol")
-    generic_name = ks.convert_to_generic_note_name("5")
-    generic_name = ks.convert_to_generic_note_name("pa")
-    generic_name = ks.convert_to_generic_note_name("golf")
-
-    letter_name = ks.generic_note_name_convert_to_type("n7", LETTER_NAME)  # "g"
-    solfege_name = ks.generic_note_name_convert_to_type("n7", SOLFEGE_NAME)  # "sol"
-    ei_solfege_name = ks.generic_note_name_convert_to_type("n7", EAST_INDIAN_SOLFEGE_NAME)  # "pa"
-    custom_name = ks.generic_note_name_convert_to_type("n7", CUSTOM_NAME)  # "golf"
-    scalar_mode_number = ks.generic_note_name_convert_to_type("n7", SCALAR_MODE_NUMBER)  # "5"
-```
 
 Fixed Solfege means that the mapping between Solfege and letter names
 is fixed: do == c, re == d, ...
@@ -825,21 +813,10 @@ scale, etc.
 
 ```python
     ks = KeySignature(key="g", mode="major")
-    generic_name = ks.convert_to_generic_note_name("sol")[0]  # "n7"
+    s = ks.get_scale()
+    generic_name = s.convert_to_generic_note_name("sol")[0]  # "n7"
     ks.set_fixed_solfege(False)  # Moveable
-    generic_name = ks.convert_to_generic_note_name("do")[0]  # "n7"
-```
-
-The Key Signature is used to navigate the scale, either by scalar or
-semitone steps.
-
-```python
-    generic_name, delta_octave, error = ks.semitone_transform(
-        generic_name, number_of_half_steps
-    )
-    generic_name, delta_octave, error = ks.scalar_transform(
-        generic_name, number_of_scalar_steps
-    )
+    generic_name = s.convert_to_generic_note_name("do")[0]  # "n7"
 ```
 
 Scale
@@ -1212,6 +1189,42 @@ object directly, there are public methods available for accessing the
 notes in a scale as an array, the number of notes in the scale, and
 the octave offsets associated with a scale (new octaves always start
 at C regardless of the temperament, key, or mode.
+
+Ths Scale object supports a variety of naming schemes, including the
+generic note names used by the Temperament object, letter names, both
+fixed and moveable Solfege, East Indian Solfege, scale degree, and
+custom defined names (The pitch name types are defined in
+musicutils.py).
+
+```python
+    s.set_custom_note_names(
+        ["charlie", "delta", "echo", "foxtrot", "golf", "alfa", "bravo"]
+    )
+
+    generic_name = s.convert_to_generic_note_name("g")
+    generic_name = s.convert_to_generic_note_name("sol")
+    generic_name = s.convert_to_generic_note_name("5")
+    generic_name = s.convert_to_generic_note_name("pa")
+    generic_name = s.convert_to_generic_note_name("golf")
+
+    letter_name = s.generic_note_name_convert_to_type("n7", LETTER_NAME)  # "g"
+    solfege_name = s.generic_note_name_convert_to_type("n7", SOLFEGE_NAME)  # "sol"
+    ei_solfege_name = s.generic_note_name_convert_to_type("n7", EAST_INDIAN_SOLFEGE_NAME)  # "pa"
+    custom_name = s.generic_note_name_convert_to_type("n7", CUSTOM_NAME)  # "golf"
+    scalar_mode_number = s.generic_note_name_convert_to_type("n7", SCALAR_MODE_NUMBER)  # "5"
+```
+
+The Scale obj is used to navigate the scale, either by scalar or
+semitone steps.
+
+```python
+    generic_name, delta_octave, error = s.semitone_transform(
+        generic_name, number_of_half_steps
+    )
+    generic_name, delta_octave, error = s.scalar_transform(
+        generic_name, number_of_scalar_steps
+    )
+```
 
 Music Utils
 -----------
