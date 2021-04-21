@@ -318,14 +318,15 @@ class MusicUtilsTestCase(unittest.TestCase):
 
     def test_chromatic_key_signature(self):
         ks = KeySignature(mode="chromatic", key="c")
+        s = ks.get_scale()
         self.assertEqual(ks.get_mode_length(), 12)
         self.assertEqual(ks.get_number_of_semitones(), 12)
-        self.assertEqual(ks.scale.scalar_transform("c", 2)[0], "d")
-        self.assertEqual(ks.scale.scalar_transform("c#", 2)[0], "d#")
-        self.assertEqual(ks.scale.semitone_transform("c", 2)[0], "d")
-        self.assertEqual(ks.scale.semitone_transform("c#", 2)[0], "d#")
-        self.assertEqual(ks.scale.semitone_transform("b", 1)[0], "c")
-        self.assertEqual(ks.scale._map_to_scalar_range(13, 0)[0], 1)
+        self.assertEqual(s.scalar_transform("c", 2)[0], "d")
+        self.assertEqual(s.scalar_transform("c#", 2)[0], "d#")
+        self.assertEqual(s.semitone_transform("c", 2)[0], "d")
+        self.assertEqual(s.semitone_transform("c#", 2)[0], "d#")
+        self.assertEqual(s.semitone_transform("b", 1)[0], "c")
+        self.assertEqual(s._map_to_scalar_range(13, 0)[0], 1)
 
     def test_third_comma_meantone_key_signature(self):
         t = Temperament(name="third comma meantone")
@@ -334,74 +335,92 @@ class MusicUtilsTestCase(unittest.TestCase):
             number_of_semitones=t.get_number_of_semitones_in_octave(),
             mode=[2, 2, 1, 2, 2, 2, 7, 1],
         )
+        s = ks.get_scale()
         self.assertEqual(ks.get_mode_length(), 8)
         self.assertEqual(ks.get_number_of_semitones(), 19)
         self.assertEqual(len(ks.get_notes_in_scale()), 8)
         self.assertEqual(ks.get_notes_in_scale()[7], "n18")
-        self.assertEqual(ks.scale.closest_note("n12")[0], "n11")
-        self.assertEqual(ks.scale.scalar_transform("n5", 2)[0], "n9")
-        self.assertEqual(ks.scale.closest_note("n10#")[0], "n11")
+        self.assertEqual(s.closest_note("n12")[0], "n11")
+        self.assertEqual(s.scalar_transform("n5", 2)[0], "n9")
+        self.assertEqual(s.closest_note("n10#")[0], "n11")
 
     def test_mode_equivalents(self):
         ks = KeySignature(key="e", mode="major")
+        s = ks.get_scale()
         source = ks.scale.normalize_scale(ks.notes_in_scale)
         ks = KeySignature(key="db", mode="minor")
+        s = ks.get_scale()
         target = ks.scale.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="c#", mode="minor")
+        s = ks.get_scale()
         target = ks.scale.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="eb", mode="locrian")
+        s = ks.get_scale()
         target = ks.scale.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="d#", mode="locrian")
+        s = ks.get_scale()
         target = ks.scale.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="b", mode="mixolydian")
+        s = ks.get_scale()
         target = ks.scale.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="a", mode="lydian")
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="g#", mode="phrygian")
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="ab", mode="phrygian")
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="f#", mode="dorian")
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="gb", mode="dorian")
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
         ks = KeySignature(key="e", mode=[2, 2, 1, 2, 2, 2, 1])
-        target = ks.scale.normalize_scale(ks.notes_in_scale)
+        s = ks.get_scale()
+        target = s.normalize_scale(ks.notes_in_scale)
         self.assertTrue(compare_scales(source, target))
 
     def test_solfege_mapper(self):
         ks = KeySignature(key="c", mode="major")
-        self.assertEqual(len(ks.scale.solfege_notes), 8)
+        s = ks.get_scale()
+        self.assertEqual(len(s.solfege_notes), 8)
 
         ks = KeySignature(key="c", mode="major pentatonic")
-        self.assertEqual(len(ks.scale.solfege_notes), 6)
-        self.assertEqual(ks.scale.solfege_notes[2], "me")
-        self.assertEqual(ks.scale.solfege_notes[3], "sol")
+        s = ks.get_scale()
+        self.assertEqual(len(s.solfege_notes), 6)
+        self.assertEqual(s.solfege_notes[2], "me")
+        self.assertEqual(s.solfege_notes[3], "sol")
 
         ks = KeySignature(key="c", mode="minor pentatonic")
-        self.assertEqual(len(ks.scale.solfege_notes), 6)
-        self.assertEqual(ks.scale.solfege_notes[2], "fa")
-        self.assertEqual(ks.scale.solfege_notes[3], "sol")
+        s = ks.get_scale()
+        self.assertEqual(len(s.solfege_notes), 6)
+        self.assertEqual(s.solfege_notes[2], "fa")
+        self.assertEqual(s.solfege_notes[3], "sol")
 
         ks = KeySignature(key="c", mode="whole tone")
-        self.assertEqual(len(ks.scale.solfege_notes), 7)
-        self.assertEqual(ks.scale.solfege_notes[2], "me")
-        self.assertEqual(ks.scale.solfege_notes[4], "sol")
+        s = ks.get_scale()
+        self.assertEqual(len(s.solfege_notes), 7)
+        self.assertEqual(s.solfege_notes[2], "me")
+        self.assertEqual(s.solfege_notes[4], "sol")
 
         ks = KeySignature(key="c", mode="chromatic")
-        self.assertEqual(len(ks.scale.solfege_notes), 13)
-        self.assertEqual(ks.scale.solfege_notes[2], "re")
-        self.assertEqual(ks.scale.solfege_notes[3], "meb")
+        s = ks.get_scale()
+        self.assertEqual(len(s.solfege_notes), 13)
+        self.assertEqual(s.solfege_notes[2], "re")
+        self.assertEqual(s.solfege_notes[3], "meb")
 
     def test_convert_to_generic_note_name(self):
         s = Scale()
@@ -493,33 +512,24 @@ class MusicUtilsTestCase(unittest.TestCase):
 
     def test_fixed_solfege(self):
         ks = KeySignature(key="g", mode="major")
-        self.assertEqual(
-            ks.scale.generic_note_name_convert_to_type("n7", SOLFEGE_NAME), "sol"
-        )
-        self.assertEqual(ks.scale.convert_to_generic_note_name("sol")[0], "n7")
-        ks.scale.set_fixed_solfege(True)
-        self.assertTrue(ks.scale.get_fixed_solfege())
+        s = ks.get_scale()
+        self.assertEqual(s.generic_note_name_convert_to_type("n7", SOLFEGE_NAME), "sol")
+        self.assertEqual(s.convert_to_generic_note_name("sol")[0], "n7")
+        s.set_fixed_solfege(True)
+        self.assertTrue(s.get_fixed_solfege())
 
+        self.assertEqual(s.generic_note_name_convert_to_type("n7", SOLFEGE_NAME), "do")
+        self.assertEqual(s.convert_to_generic_note_name("do")[0], "n7")
         self.assertEqual(
-            ks.scale.generic_note_name_convert_to_type("n7", SOLFEGE_NAME), "do"
-        )
-        self.assertEqual(ks.scale.convert_to_generic_note_name("do")[0], "n7")
-        self.assertEqual(
-            ks.scale._generic_note_name_to_letter_name("n6", prefer_sharps=True)[0],
+            s._generic_note_name_to_letter_name("n6", prefer_sharps=True)[0],
             "f#",
         )
         self.assertEqual(
-            ks.scale._generic_note_name_to_solfege("n6", prefer_sharps=True)[0], "ti"
+            s._generic_note_name_to_solfege("n6", prefer_sharps=True)[0], "ti"
         )
-        self.assertEqual(
-            ks.scale._convert_from_note_name("n7", ks.scale.solfege_notes)[0], "do"
-        )
-        self.assertEqual(
-            ks.scale._generic_note_name_to_east_indian_solfege("n7")[0], "sa"
-        )
-        self.assertEqual(
-            ks.scale._generic_note_name_to_scalar_mode_number("n7")[0], "1"
-        )
+        self.assertEqual(s._convert_from_note_name("n7", s.solfege_notes)[0], "do")
+        self.assertEqual(s._generic_note_name_to_east_indian_solfege("n7")[0], "sa")
+        self.assertEqual(s._generic_note_name_to_scalar_mode_number("n7")[0], "1")
 
     def test_get_frequency(self):
         t = Temperament()
@@ -589,25 +599,32 @@ class MusicUtilsTestCase(unittest.TestCase):
 
     def test_meantone_scales(self):
         ks = KeySignature(mode=[], number_of_semitones=21)
+        s = ks.get_scale()
         self.assertEqual(ks.get_mode_length(), 21)
         self.assertEqual(ks.get_number_of_semitones(), 21)
-        self.assertEqual(ks.scale.closest_note("cb")[0], "cb")
-        self.assertEqual(ks.scale.semitone_transform("gb", 1)[0], "g")
-        self.assertEqual(ks.scale.semitone_transform("cb", 3)[0], "d")
-        self.assertEqual(ks.scale.semitone_transform("c", -3)[0], "bb")
+        self.assertEqual(s.closest_note("cb")[0], "cb")
+        self.assertEqual(s.semitone_transform("gb", 1)[0], "g")
+        self.assertEqual(s.semitone_transform("cb", 3)[0], "d")
+        self.assertEqual(s.semitone_transform("c", -3)[0], "bb")
+
         ks = KeySignature(mode=[3, 3, 3, 3, 3, 3, 3], number_of_semitones=21)
-        self.assertEqual(ks.scale.closest_note("cb")[0], "c")
-        self.assertEqual(ks.scale.closest_note("db")[0], "d")
-        self.assertEqual(ks.scale.closest_note("c#")[0], "c")
-        self.assertEqual(ks.scale.scalar_transform("c", 1)[0], "d")
+        s = ks.get_scale()
+        self.assertEqual(s.closest_note("cb")[0], "c")
+        self.assertEqual(s.closest_note("db")[0], "d")
+        self.assertEqual(s.closest_note("c#")[0], "c")
+        self.assertEqual(s.scalar_transform("c", 1)[0], "d")
+
         ks = KeySignature(number_of_semitones=21)
-        self.assertEqual(ks.scale.closest_note("cb")[0], "c")
-        self.assertEqual(ks.scale.closest_note("db")[0], "d")
-        self.assertEqual(ks.scale.closest_note("c#")[0], "c")
-        self.assertEqual(ks.scale.scalar_transform("c", 1)[0], "d")
+        s = ks.get_scale()
+        self.assertEqual(s.closest_note("cb")[0], "c")
+        self.assertEqual(s.closest_note("db")[0], "d")
+        self.assertEqual(s.closest_note("c#")[0], "c")
+        self.assertEqual(s.scalar_transform("c", 1)[0], "d")
+
         ks = KeySignature(key="bb", mode="lydian", number_of_semitones=21)
-        self.assertEqual(ks.scale.closest_note("bb")[0], "bb")
-        self.assertEqual(ks.scale.closest_note("n18")[0], "n17")
+        s = ks.get_scale()
+        self.assertEqual(s.closest_note("bb")[0], "bb")
+        self.assertEqual(s.closest_note("n18")[0], "n17")
 
     def print_scales(self):
         ks = KeySignature(key="c", mode="ionian")
