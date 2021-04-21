@@ -736,22 +736,6 @@ class KeySignature:
             State of fixed Solfege
         """
 
-    def normalize_scale(self, scale):
-        """
-        Normalize the scale by converting double sharps and double flats.
-
-        Parameters
-        ----------
-        scale : list
-            The notes in a scale
-
-        Returns
-        -------
-        list
-            The same scale where the notes have been converted to just
-            sharps, flats, and naturals
-        """
-
     def get_scale(self):
         """
         The (scalar) notes in the scale.
@@ -784,6 +768,180 @@ class KeySignature:
         int
             The number of semitones in the temperament used to define
             the scale
+        """
+```
+
+Key Signatures are defined by a key and a mode, e.g. `C Major`. This is used
+to define which semitones (half steps) in an octave are in the scale.
+
+```python
+    ks = KeySignature(mode="major", key="c")
+```
+
+By default, the Key Signature object assumes that there are 12
+semitones per octave, but this can be overriden for temperaments with
+other configurations, e.g. the meantone temperaments.
+
+```python
+    ks = KeySignature(mode="major", key="c", number_of_semitones=12)
+```
+
+Within each Key Signature object is a Scale object, which is defined
+by the key and mode at the time of instanciation.
+
+```python
+    scale = ks.get_scale()
+```
+
+Key Signature supports a variety of naming schemes, including the
+generic note names used by the Temperament object, letter names, both
+fixed and moveable Solfege, East Indian Solfege, scale degree, and
+custom defined names (The pitch name types are defined in
+musicutils.py).
+
+```python
+    ks.set_custom_note_names(
+        ["charlie", "delta", "echo", "foxtrot", "golf", "alfa", "bravo"]
+    )
+
+    generic_name = ks.convert_to_generic_note_name("g")
+    generic_name = ks.convert_to_generic_note_name("sol")
+    generic_name = ks.convert_to_generic_note_name("5")
+    generic_name = ks.convert_to_generic_note_name("pa")
+    generic_name = ks.convert_to_generic_note_name("golf")
+
+    letter_name = ks.generic_note_name_convert_to_type("n7", LETTER_NAME)  # "g"
+    solfege_name = ks.generic_note_name_convert_to_type("n7", SOLFEGE_NAME)  # "sol"
+    ei_solfege_name = ks.generic_note_name_convert_to_type("n7", EAST_INDIAN_SOLFEGE_NAME)  # "pa"
+    custom_name = ks.generic_note_name_convert_to_type("n7", CUSTOM_NAME)  # "golf"
+    scalar_mode_number = ks.generic_note_name_convert_to_type("n7", SCALAR_MODE_NUMBER)  # "5"
+```
+
+Fixed Solfege means that the mapping between Solfege and letter names
+is fixed: do == c, re == d, ...
+
+Moveable (not fixed) Solfege means that do == the first note in the
+scale, etc.
+
+```python
+    ks = KeySignature(key="g", mode="major")
+    generic_name = ks.convert_to_generic_note_name("sol")[0]  # "n7"
+    ks.set_fixed_solfege(False)  # Moveable
+    generic_name = ks.convert_to_generic_note_name("do")[0]  # "n7"
+```
+
+The Key Signature is used to navigate the scale, either by scalar or
+semitone steps.
+
+```python
+    generic_name, delta_octave, error = ks.semitone_transform(
+        generic_name, number_of_half_steps
+    )
+    generic_name, delta_octave, error = ks.scalar_transform(
+        generic_name, number_of_scalar_steps
+    )
+```
+
+Scale
+-----
+
+```python
+class Scale:
+    """
+    A scale is a selection of notes in an octave.
+    """
+
+    def __init__(
+        self,
+        half_steps_pattern=None,
+        starting_index=0,
+        number_of_semitones=12,
+        prefer_sharps=True,
+    ):
+        """
+        When defining a scale, we need the half steps pattern that defines
+        the selection anf a starting note, e.g., C or F#,
+
+        Parameters
+        ----------
+        half_steps_pattern : list
+            A list of int values that define how many half steps to take
+            between each note in the scale, e.g., [2, 2, 1, 2, 2, 2, 1]
+            defines the steps for a Major scale
+
+        starting_index : int
+            An index into the half steps defining an octave that determines
+            from where to start building the scale, e.g., 0 for C and 7 for G
+            in a 12-step temperament
+
+        number_of_semitones : int
+            If the half_steps_pattern is an empty list, then use the number
+            of semitones instead. (Or trigger a mapping from 12 to 21.)
+
+        prefer_sharps : boolean
+            If we are mapping from 12 to 21 semitones, we need to know
+            whether or not to prefer sharps or flats.
+        """
+
+    def get_number_of_semitones(self):
+        """
+        The number of semitones is the number of notes in the temperament.
+
+        Returns
+        -------
+        int
+            The number of notes in the scale
+        """
+
+    def get_note_names(self):
+        """
+        The notes defined by the temperament are used to build the scale.
+
+        Returns
+        -------
+        list
+            The notes defined by the temperament
+        """
+
+    def get_scale(self, pitch_format=None):
+        """
+        The notes in the scale are a subset of the notes defined by the
+        temperament.
+
+        Returns
+        -------
+        list
+            The notes in the scale
+        """
+
+    def get_scale_and_octave_deltas(self, pitch_format=None):
+        """
+        The notes in the scale are a subset of the notes defined by the
+        temperament.
+
+        Returns
+        -------
+        list
+            The notes in the scale
+        list
+        The octave deltas (either 0 or 1) are used to mark notes above
+        B#, which would be in the next octave, e.g., G3, A3, B3, C4...
+        """
+
+    def normalize_scale(self, scale):
+        """
+        Normalize the scale by converting double sharps and double flats.
+
+        Parameters
+        ----------
+        scale : list
+            The notes in a scale
+
+        Returns
+        -------
+        list
+            The same scale where the notes have been converted to just
+            sharps, flats, and naturals
         """
 
     def set_custom_note_names(self, custom_names):
@@ -1045,164 +1203,6 @@ class KeySignature:
             target matches a scale pitch, then distance = 0.)
         int
             error code (0 means success)
-        """
-```
-
-Key Signatures are defined by a key and a mode, e.g. `C Major`. This is used
-to define which semitones (half steps) in an octave are in the scale.
-
-```python
-    ks = KeySignature(mode="major", key="c")
-```
-
-By default, the Key Signature object assumes that there are 12
-semitones per octave, but this can be overriden for temperaments with
-other configurations, e.g. the meantone temperaments.
-
-```python
-    ks = KeySignature(mode="major", key="c", number_of_semitones=12)
-```
-
-Within each Key Signature object is a Scale object, which is defined
-by the key and mode at the time of instanciation.
-
-```python
-    scale = ks.get_scale()
-```
-
-Key Signature supports a variety of naming schemes, including the
-generic note names used by the Temperament object, letter names, both
-fixed and moveable Solfege, East Indian Solfege, scale degree, and
-custom defined names (The pitch name types are defined in
-musicutils.py).
-
-```python
-    ks.set_custom_note_names(
-        ["charlie", "delta", "echo", "foxtrot", "golf", "alfa", "bravo"]
-    )
-
-    generic_name = ks.convert_to_generic_note_name("g")
-    generic_name = ks.convert_to_generic_note_name("sol")
-    generic_name = ks.convert_to_generic_note_name("5")
-    generic_name = ks.convert_to_generic_note_name("pa")
-    generic_name = ks.convert_to_generic_note_name("golf")
-
-    letter_name = ks.generic_note_name_convert_to_type("n7", LETTER_NAME)  # "g"
-    solfege_name = ks.generic_note_name_convert_to_type("n7", SOLFEGE_NAME)  # "sol"
-    ei_solfege_name = ks.generic_note_name_convert_to_type("n7", EAST_INDIAN_SOLFEGE_NAME)  # "pa"
-    custom_name = ks.generic_note_name_convert_to_type("n7", CUSTOM_NAME)  # "golf"
-    scalar_mode_number = ks.generic_note_name_convert_to_type("n7", SCALAR_MODE_NUMBER)  # "5"
-```
-
-Fixed Solfege means that the mapping between Solfege and letter names
-is fixed: do == c, re == d, ...
-
-Moveable (not fixed) Solfege means that do == the first note in the
-scale, etc.
-
-```python
-    ks = KeySignature(key="g", mode="major")
-    generic_name = ks.convert_to_generic_note_name("sol")[0]  # "n7"
-    ks.set_fixed_solfege(False)  # Moveable
-    generic_name = ks.convert_to_generic_note_name("do")[0]  # "n7"
-```
-
-The Key Signature is used to navigate the scale, either by scalar or
-semitone steps.
-
-```python
-    generic_name, delta_octave, error = ks.semitone_transform(
-        generic_name, number_of_half_steps
-    )
-    generic_name, delta_octave, error = ks.scalar_transform(
-        generic_name, number_of_scalar_steps
-    )
-```
-
-Scale
------
-
-```python
-class Scale:
-    """
-    A scale is a selection of notes in an octave.
-    """
-
-    def __init__(
-        self,
-        half_steps_pattern=None,
-        starting_index=0,
-        number_of_semitones=12,
-        prefer_sharps=True,
-    ):
-        """
-        When defining a scale, we need the half steps pattern that defines
-        the selection anf a starting note, e.g., C or F#,
-
-        Parameters
-        ----------
-        half_steps_pattern : list
-            A list of int values that define how many half steps to take
-            between each note in the scale, e.g., [2, 2, 1, 2, 2, 2, 1]
-            defines the steps for a Major scale
-
-        starting_index : int
-            An index into the half steps defining an octave that determines
-            from where to start building the scale, e.g., 0 for C and 7 for G
-            in a 12-step temperament
-
-        number_of_semitones : int
-            If the half_steps_pattern is an empty list, then use the number
-            of semitones instead. (Or trigger a mapping from 12 to 21.)
-
-        prefer_sharps : boolean
-            If we are mapping from 12 to 21 semitones, we need to know
-            whether or not to prefer sharps or flats.
-        """
-
-    def get_number_of_semitones(self):
-        """
-        The number of semitones is the number of notes in the temperament.
-
-        Returns
-        -------
-        int
-            The number of notes in the scale
-        """
-
-    def get_note_names(self):
-        """
-        The notes defined by the temperament are used to build the scale.
-
-        Returns
-        -------
-        list
-            The notes defined by the temperament
-        """
-
-    def get_scale(self, pitch_format=None):
-        """
-        The notes in the scale are a subset of the notes defined by the
-        temperament.
-
-        Returns
-        -------
-        list
-            The notes in the scale
-        """
-
-    def get_scale_and_octave_deltas(self, pitch_format=None):
-        """
-        The notes in the scale are a subset of the notes defined by the
-        temperament.
-
-        Returns
-        -------
-        list
-            The notes in the scale
-        list
-        The octave deltas (either 0 or 1) are used to mark notes above
-        B#, which would be in the next octave, e.g., G3, A3, B3, C4...
         """
 ```
 

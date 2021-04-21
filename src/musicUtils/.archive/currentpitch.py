@@ -125,8 +125,9 @@ class CurrentPitch:
                 self._number = self._t.get_nearest_freq_index(self._freq)
         elif isinstance(pitch_name, str):
             # Assume it is a name of some sort.
-            scale = self._ks.get_scale()
-            self._generic_name = scale.convert_to_generic_note_name(pitch_name)[0]
+            self._generic_name = self._ks.scale.convert_to_generic_note_name(
+                pitch_name
+            )[0]
             self._semitone_index = self._t.get_modal_index(self._generic_name)
             self._octave = octave
             self._freq = self._t.get_freq_by_modal_index_and_octave(
@@ -145,7 +146,7 @@ class CurrentPitch:
         number_of_half_steps : int
             The transposition in half steps
         """
-        self._generic_name, delta_octave = self._ks.semitone_transform(
+        self._generic_name, delta_octave = self._ks.scale.semitone_transform(
             self._generic_name, number_of_half_steps
         )[0:2]
 
@@ -167,7 +168,7 @@ class CurrentPitch:
         number_of_scalar_steps : int
             The transposition in scalar steps
         """
-        self._generic_name, delta_octave = self._ks.scalar_transform(
+        self._generic_name, delta_octave = self._ks.scale.scalar_transform(
             self._generic_name, number_of_scalar_steps
         )[0:2]
 
@@ -193,7 +194,7 @@ class CurrentPitch:
         float
             The frequency of the note at the specified interval.
         """
-        generic_name, delta_octave = self._ks.semitone_transform(
+        generic_name, delta_octave = self._ks.scale.semitone_transform(
             self._generic_name, number_of_half_steps
         )[0:2]
         semitone_index = self._t.get_modal_index(generic_name)
@@ -215,7 +216,7 @@ class CurrentPitch:
         float
             The frequency of the note at the specified interval.
         """
-        generic_name, delta_octave = self._ks.scalar_transform(
+        generic_name, delta_octave = self._ks.scale.scalar_transform(
             self._generic_name, number_of_scalar_steps
         )[0:2]
         semitone_index = self._t.get_modal_index(generic_name)
