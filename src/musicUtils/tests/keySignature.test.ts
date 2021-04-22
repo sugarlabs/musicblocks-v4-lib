@@ -59,20 +59,25 @@ describe('Key Signature', () => {
 
     test('closest note tests', () => {
         const ks: KeySignature = new KeySignature('major', 'c');
-        expect(ks.closestNote('c')[0]).toBe('c');
-        expect(ks.noteInScale('c')).toBe(true);
-        expect(ks.closestNote('f#')[0]).toBe('f');
-        expect(ks.noteInScale('f#')).toBe(false);
-        expect(ks.closestNote('g#')[0]).toBe('g');
-        expect(ks.noteInScale('g#')).toBe(false);
-        expect(ks.closestNote('cb')[0]).toBe('b');
-        expect(ks.noteInScale('cb')).toBe(true);
-        expect(ks.closestNote('db')[0]).toBe('c');
-        expect(ks.noteInScale('db')).toBe(false);
-        expect(ks.closestNote('n10#')[0]).toBe('n11');
-        expect(ks.closestNote('n10x')[0]).toBe('n0');
-        expect(ks.closestNote('sol')[0]).toBe('sol');
-        expect(ks.closestNote('pa')[0]).toBe('pa');
+        try {
+            expect(ks.closestNote('c')[0]).toBe('c');
+            expect(ks.noteInScale('c')).toBe(true);
+            expect(ks.closestNote('f#')[0]).toBe('f');
+            expect(ks.noteInScale('f#')).toBe(false);
+            expect(ks.closestNote('g#')[0]).toBe('g');
+            expect(ks.noteInScale('g#')).toBe(false);
+            expect(ks.closestNote('cb')[0]).toBe('b');
+            expect(ks.noteInScale('cb')).toBe(true);
+            expect(ks.closestNote('db')[0]).toBe('c');
+            expect(ks.noteInScale('db')).toBe(false);
+            expect(ks.closestNote('n10#')[0]).toBe('n11');
+            expect(ks.closestNote('n10x')[0]).toBe('n0');
+            expect(ks.closestNote('sol')[0]).toBe('sol');
+            expect(ks.closestNote('pa')[0]).toBe('pa');
+        } catch (err) {
+            console.error(`Error finding closest note to target pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
     });
 
     test('scalar distance', () => {
@@ -99,20 +104,25 @@ describe('Key Signature', () => {
 
     test('semitone transforms', () => {
         const ks: KeySignature = new KeySignature('major', 'c');
-        expect(ks.semitoneTransform('c', 2)[0]).toBe('d');
-        expect(ks.semitoneTransform('c#', 2)[0]).toBe('d#');
-        expect(ks.semitoneTransform('b', 1)[0]).toBe('c');
-        expect(ks.semitoneTransform('b', 1)[1]).toBe(1); // increment octave
-        expect(ks.semitoneTransform('n3', 1)[0]).toBe('n4');
-        expect(ks.semitoneTransform('n3#', 1)[0]).toBe('n5');
-        expect(ks.semitoneTransform('n0', -1)[0]).toBe('n11');
-        expect(ks.semitoneTransform('n0', -1)[1]).toBe(-1); // decrement octave
-        expect(ks.semitoneTransform('n0b', -1)[0]).toBe('n10');
-        expect(ks.semitoneTransform('n0b', -1)[1]).toBe(-1); // decrement octave
-        expect(ks.semitoneTransform('n1b', -1)[0]).toBe('n11');
-        expect(ks.semitoneTransform('n1b', -1)[1]).toBe(-1); // decrement octave
-        expect(ks.semitoneTransform('n11x', 1)[0]).toBe('n2');
-        expect(ks.semitoneTransform('n11x', 1)[1]).toBe(1); // increment octave
+        try {
+            expect(ks.semitoneTransform('c', 2)[0]).toBe('d');
+            expect(ks.semitoneTransform('c#', 2)[0]).toBe('d#');
+            expect(ks.semitoneTransform('b', 1)[0]).toBe('c');
+            expect(ks.semitoneTransform('b', 1)[1]).toBe(1); // increment octave
+            expect(ks.semitoneTransform('n3', 1)[0]).toBe('n4');
+            expect(ks.semitoneTransform('n3#', 1)[0]).toBe('n5');
+            expect(ks.semitoneTransform('n0', -1)[0]).toBe('n11');
+            expect(ks.semitoneTransform('n0', -1)[1]).toBe(-1); // decrement octave
+            expect(ks.semitoneTransform('n0b', -1)[0]).toBe('n10');
+            expect(ks.semitoneTransform('n0b', -1)[1]).toBe(-1); // decrement octave
+            expect(ks.semitoneTransform('n1b', -1)[0]).toBe('n11');
+            expect(ks.semitoneTransform('n1b', -1)[1]).toBe(-1); // decrement octave
+            expect(ks.semitoneTransform('n11x', 1)[0]).toBe('n2');
+            expect(ks.semitoneTransform('n11x', 1)[1]).toBe(1); // increment octave
+        } catch (err) {
+            console.error(`Error adding semitone transform to Pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
     });
 
     test('invert transforms', () => {
@@ -129,20 +139,30 @@ describe('Key Signature', () => {
         expect(ks.invert('b', 5, 'c', 5, 'scalar')[0]).toBe('d');
 
         const t = new Temperament();
-        expect(
-            Math.floor(
-                t.getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('a'), 4) + 0.5
-            )
-        ).toBe(440);
+        try {
+            expect(
+                Math.floor(
+                    t.getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('a'), 4) + 0.5
+                )
+            ).toBe(440);
+        } catch (err) {
+            console.error('Error while converting to generic note name');
+            expect(true).toBeFalsy();
+        }
 
         const ks1 = new KeySignature('chromatic', 'c');
         expect(ks1.modeLength).toBe(12);
         expect(ks1.numberOfSemitones).toBe(12);
         expect(ks1.scalarTransform('c', 2)[0]).toBe('d');
         expect(ks1.scalarTransform('c#', 2)[0]).toBe('d#');
-        expect(ks1.semitoneTransform('c', 2)[0]).toBe('d');
-        expect(ks1.semitoneTransform('c#', 2)[0]).toBe('d#');
-        expect(ks1.semitoneTransform('b', 1)[0]).toBe('c');
+        try {
+            expect(ks1.semitoneTransform('c', 2)[0]).toBe('d');
+            expect(ks1.semitoneTransform('c#', 2)[0]).toBe('d#');
+            expect(ks1.semitoneTransform('b', 1)[0]).toBe('c');
+        } catch (err) {
+            console.error(`Error adding semitone transform to Pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
 
         // const t1 = new Temperament('third comma meantone');
         const ks2 = new KeySignature([2, 2, 1, 2, 2, 2, 7, 1], 'n0');
@@ -150,9 +170,14 @@ describe('Key Signature', () => {
         expect(ks2.numberOfSemitones).toBe(19);
         expect(ks2.scale.length).toBe(8);
         expect(ks2.scale[7]).toBe('n18');
-        expect(ks2.closestNote('n12')[0]).toBe('n11');
-        expect(ks2.scalarTransform('n5', 2)[0]).toBe('n9');
-        expect(ks2.closestNote('n10#')[0]).toBe('n11');
+        try {
+            expect(ks2.closestNote('n12')[0]).toBe('n11');
+            expect(ks2.scalarTransform('n5', 2)[0]).toBe('n9');
+            expect(ks2.closestNote('n10#')[0]).toBe('n11');
+        } catch (err) {
+            console.error(`Error finding closest note to target pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
     });
 
     test('Mode equivalents', () => {
@@ -218,30 +243,46 @@ describe('Key Signature', () => {
         expect(ks.solfegeNotes[3]).toBe('meb');
 
         ks = new KeySignature();
-        expect(ks.convertToGenericNoteName('g')).toBe('n7');
-        expect(ks.convertToGenericNoteName('sol')).toBe('n7');
-        expect(ks.convertToGenericNoteName('5')).toBe('n7');
-        expect(ks.convertToGenericNoteName('pa')).toBe('n7');
-        expect(ks.convertToGenericNoteName('g#')).toBe('n8');
-        expect(ks.convertToGenericNoteName('sol#')).toBe('n8');
-        expect(ks.convertToGenericNoteName('5#')).toBe('n8');
-        expect(ks.convertToGenericNoteName('pa#')).toBe('n8');
-
-        ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
-        expect(ks.convertToGenericNoteName('golf')).toBe('n7');
-        expect(ks.convertToGenericNoteName('golf#')).toBe('n8');
-
-        expect(ks.semitoneTransform('g', 3)[0]).toBe('a#');
-        expect(ks.semitoneTransform('n7', 3)[0]).toBe('n10');
-        expect(ks.semitoneTransform('sol', 3)[0]).toBe('tib');
-        expect(ks.semitoneTransform('5', 3)[0]).toBe('7b');
-        expect(ks.semitoneTransform('pa', 3)[0]).toBe('nib');
-        expect(ks.semitoneTransform('golf', 3)[0]).toBe('n10');
+        try {
+            expect(ks.convertToGenericNoteName('g')).toBe('n7');
+            expect(ks.convertToGenericNoteName('sol')).toBe('n7');
+            expect(ks.convertToGenericNoteName('5')).toBe('n7');
+            expect(ks.convertToGenericNoteName('pa')).toBe('n7');
+            expect(ks.convertToGenericNoteName('g#')).toBe('n8');
+            expect(ks.convertToGenericNoteName('sol#')).toBe('n8');
+            expect(ks.convertToGenericNoteName('5#')).toBe('n8');
+            expect(ks.convertToGenericNoteName('pa#')).toBe('n8');
+            ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+            expect(ks.convertToGenericNoteName('golf')).toBe('n7');
+            expect(ks.convertToGenericNoteName('golf#')).toBe('n8');
+        } catch (err) {
+            if (err instanceof InvalidArgumentError) {
+                console.error('Error while setting custom note names of key signature');
+            } else if (err instanceof ItemNotFoundDefaultError) {
+                console.error('Error while converting to generic note name');
+            } else {
+                console.error(`${err.name}: ${err.message}`);
+            }
+            expect(true).toBeFalsy();
+        }
+        try {
+            expect(ks.semitoneTransform('g', 3)[0]).toBe('a#');
+            expect(ks.semitoneTransform('n7', 3)[0]).toBe('n10');
+            expect(ks.semitoneTransform('sol', 3)[0]).toBe('tib');
+            expect(ks.semitoneTransform('5', 3)[0]).toBe('7b');
+            expect(ks.semitoneTransform('pa', 3)[0]).toBe('nib');
+            expect(ks.semitoneTransform('golf', 3)[0]).toBe('n10');
+        } catch (err) {
+            console.error(`Error adding semitone transform to Pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
     });
 
     test('type conversions', () => {
         const ks = new KeySignature();
-        ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        expect(() => {
+            ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        }).not.toThrow(InvalidArgumentError);
         expect(ks.genericNoteNameConvertToType('n7', LETTER_NAME)).toBe('g');
         expect(ks.genericNoteNameConvertToType('n7', SOLFEGE_NAME)).toBe('sol');
         expect(ks.genericNoteNameConvertToType('n8', SOLFEGE_NAME)).toBe('sol#');
@@ -256,7 +297,9 @@ describe('Key Signature', () => {
 
     test('pitch type check', () => {
         const ks = new KeySignature();
-        ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        expect(() => {
+            ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        }).not.toThrow(InvalidArgumentError);
         expect(ks.pitchNameType('g')).toBe(LETTER_NAME);
         expect(ks.pitchNameType('c#')).toBe(LETTER_NAME);
         expect(ks.pitchNameType('n7')).toBe(GENERIC_NOTE_NAME);
@@ -281,70 +324,105 @@ describe('Key Signature', () => {
     test('fixed solfege', () => {
         const ks = new KeySignature('major', 'g');
         expect(ks.genericNoteNameConvertToType('n7', SOLFEGE_NAME)).toBe('sol');
-        expect(ks.convertToGenericNoteName('sol')).toBe('n7');
-        ks.fixedSolfege = true;
-        expect(ks.fixedSolfege).toBe(true);
-        expect(ks.genericNoteNameConvertToType('n7', SOLFEGE_NAME)).toBe('do');
-        expect(ks.convertToGenericNoteName('do')).toBe('n7');
+        try {
+            expect(ks.convertToGenericNoteName('sol')).toBe('n7');
+            ks.fixedSolfege = true;
+            expect(ks.fixedSolfege).toBe(true);
+            expect(ks.genericNoteNameConvertToType('n7', SOLFEGE_NAME)).toBe('do');
+            expect(ks.convertToGenericNoteName('do')).toBe('n7');
+        } catch (err) {
+            if (err instanceof ItemNotFoundDefaultError) {
+                console.error('Error while converting to generic note name');
+            } else {
+                console.error(`${err.name}: ${err.message}`);
+            }
+            expect(true).toBeFalsy();
+        }
     });
 
     test('frequency conversion', () => {
         const t = new Temperament();
         const ks = new KeySignature();
-        ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
-
-        expect(
-            Number(
-                t.getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('g'), 4).toFixed(2)
-            )
-        ).toBe(392.0);
-        expect(
-            Number(
-                t
-                    .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('sol'), 4)
-                    .toFixed(2)
-            )
-        ).toBe(392.0);
-        expect(
-            Number(
-                t.getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('5'), 4).toFixed(2)
-            )
-        ).toBe(392.0);
-        expect(
-            Number(
-                t.getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('pa'), 4).toFixed(2)
-            )
-        ).toBe(392.0);
-        expect(
-            Number(
-                t
-                    .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('golf'), 4)
-                    .toFixed(2)
-            )
-        ).toBe(392.0);
+        expect(() => {
+            ks.customNoteNames = ['charlie', 'delta', 'echo', 'foxtrot', 'golf', 'alfa', 'bravo'];
+        }).not.toThrow(InvalidArgumentError);
+        try {
+            expect(
+                Number(
+                    t
+                        .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('g'), 4)
+                        .toFixed(2)
+                )
+            ).toBe(392.0);
+            expect(
+                Number(
+                    t
+                        .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('sol'), 4)
+                        .toFixed(2)
+                )
+            ).toBe(392.0);
+            expect(
+                Number(
+                    t
+                        .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('5'), 4)
+                        .toFixed(2)
+                )
+            ).toBe(392.0);
+            expect(
+                Number(
+                    t
+                        .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('pa'), 4)
+                        .toFixed(2)
+                )
+            ).toBe(392.0);
+            expect(
+                Number(
+                    t
+                        .getFreqByGenericNoteNameAndOctave(ks.convertToGenericNoteName('golf'), 4)
+                        .toFixed(2)
+                )
+            ).toBe(392.0);
+        } catch (err) {
+            if (err instanceof ItemNotFoundDefaultError) {
+                console.error('Error while converting to generic note name');
+            } else {
+                console.error(`${err.name}: ${err.message}`);
+            }
+            expect(true).toBeFalsy();
+        }
     });
 
     test('Testing meantone scales', () => {
         let ks = new KeySignature([], 'c', 21);
         expect(ks.modeLength).toBe(21);
         expect(ks.numberOfSemitones).toBe(21);
-        expect(ks.closestNote('cb')[0]).toBe('cb');
-        expect(ks.semitoneTransform('gb', 1)[0]).toBe('g');
-        expect(ks.semitoneTransform('cb', 3)[0]).toBe('d');
-        expect(ks.semitoneTransform('c', -3)[0]).toBe('bb');
-        ks = new KeySignature([3, 3, 3, 3, 3, 3, 3], 'c', 21);
-        expect(ks.closestNote('cb')[0]).toBe('c');
-        expect(ks.closestNote('db')[0]).toBe('d');
-        expect(ks.closestNote('c#')[0]).toBe('c');
-        expect(ks.scalarTransform('c', 1)[0]).toBe('d');
-        ks = new KeySignature('major', 'c', 21);
-        expect(ks.closestNote('cb')[0]).toBe('c');
-        expect(ks.closestNote('db')[0]).toBe('d');
-        expect(ks.closestNote('c#')[0]).toBe('c');
-        expect(ks.scalarTransform('c', 1)[0]).toBe('d');
-        ks = new KeySignature('lydian', 'bb', 21);
-        expect(ks.closestNote('bb')[0]).toBe('bb');
-        expect(ks.closestNote('n18')[0]).toBe('n17');
+        try {
+            expect(ks.semitoneTransform('gb', 1)[0]).toBe('g');
+            expect(ks.semitoneTransform('cb', 3)[0]).toBe('d');
+            expect(ks.semitoneTransform('c', -3)[0]).toBe('bb');
+        } catch (err) {
+            console.error(`Error adding semitone transform to Pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
+        try {
+            expect(ks.closestNote('cb')[0]).toBe('cb');
+            ks = new KeySignature([3, 3, 3, 3, 3, 3, 3], 'c', 21);
+            expect(ks.closestNote('cb')[0]).toBe('c');
+            expect(ks.closestNote('db')[0]).toBe('d');
+            expect(ks.closestNote('c#')[0]).toBe('c');
+            expect(ks.scalarTransform('c', 1)[0]).toBe('d');
+            ks = new KeySignature('major', 'c', 21);
+            expect(ks.closestNote('cb')[0]).toBe('c');
+            expect(ks.closestNote('db')[0]).toBe('d');
+            expect(ks.closestNote('c#')[0]).toBe('c');
+            expect(ks.scalarTransform('c', 1)[0]).toBe('d');
+            ks = new KeySignature('lydian', 'bb', 21);
+            expect(ks.closestNote('bb')[0]).toBe('bb');
+            expect(ks.closestNote('n18')[0]).toBe('n17');
+        } catch (err) {
+            console.error(`Error finding closest note to target pitch. ${err.message}`);
+            expect(true).toBeFalsy();
+        }
     });
 
     test('print scales', () => {
