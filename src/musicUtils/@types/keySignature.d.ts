@@ -24,7 +24,10 @@ export interface IKeySignature {
     readonly modeLength: number;
     /** Getter for the number of semitones (half-steps) in the temperament. */
     readonly numberOfSemitones: number;
-    /** Getter and Setter for custom note names defined by the user. */
+    /**
+     * Getter and Setter for custom note names defined by the user.
+     * @throws {InvalidArgumentError} - setter
+     */
     customNoteNames: string[];
 
     /** Normalizes the scale by converting double sharps and double flats. */
@@ -34,6 +37,7 @@ export interface IKeySignature {
     /**
      * Converts from a letter name used by 12-semitone temperaments to a generic note name as
      * defined by the temperament.
+     * @throws {ItemNotFoundDefaultError<string>}
      */
     convertToGenericNoteName: (pitchName: string) => string;
     /** Returns the corresponding pitch in the scale (and any change in octave). */
@@ -43,6 +47,7 @@ export interface IKeySignature {
     /**
      * Given a starting pitch, add a semitone transform and return the resultant pitch (and any
      * change in octave).
+     * @throws {ItemNotFoundDefaultError<[string, number]>}
      */
     semitoneTransform: (startingPitch: string, numberOfHalfSteps: number) => [string, number];
     /**
@@ -75,6 +80,7 @@ export interface IKeySignature {
     ) => [string, number];
     /**
      * Given a target pitch, returns the closest note in the current key signature (key and mode).
+     * @throws {ItemNotFoundDefaultError<[string, number, number]>}
      */
     closestNote: (target: string) => [string, number, number];
     /** Returns the key, mode, number of half steps, and the scale. */

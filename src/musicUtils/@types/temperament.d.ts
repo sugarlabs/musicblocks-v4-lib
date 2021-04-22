@@ -37,6 +37,8 @@ export interface ITemperament {
     /** Returns the frequency that corresponds to the index and octave (in Hertz). */
     getFreqByModalIndexAndOctave: (modalIndex: number, octave: number) => number;
     getGenericNoteNameAndOctaveByFreqIndex: (idx: number) => [string, number];
+
+    /** @throws {ItemNotFoundError}*/
     getFreqIndexByGenericNoteNameAndOctave: (noteName: string, octave: number) => number;
     getFreqByGenericNoteNameAndOctave: (noteName: string, octave: number) => number;
 
@@ -47,6 +49,9 @@ export interface ITemperament {
     generate: (name: string) => void;
     generateEqualTemperament: (numberOfSteps: number) => void;
     generateCustom: (intervals: string[], ratios: { [key: string]: number }, name: string) => void;
-    /** Calculates a base frequency based on a pitch and frequency. */
+    /**
+     * Calculates a base frequency based on a pitch and frequency.
+     * @throws {ItemNotFoundError}
+     * */
     tune: (pitchNameArg: string, octave: number, frequency: number) => number;
 }
