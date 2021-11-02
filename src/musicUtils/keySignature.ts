@@ -641,7 +641,7 @@ export default class KeySignature implements IKeySignature {
             try {
                 return this.convertToGenericNoteName(this._scale[i]);
             } catch (err) {
-                return err.defaultValue;
+                return (err as ItemNotFoundDefaultError<string>).defaultValue;
             }
         }
 
@@ -653,7 +653,7 @@ export default class KeySignature implements IKeySignature {
             try {
                 noteName = this.convertToGenericNoteName(this._scale[i]);
             } catch (err) {
-                noteName = err.defaultValue;
+                noteName = (err as ItemNotFoundDefaultError<string>).defaultValue;
             }
 
             i = this._noteNames.indexOf(noteName);
@@ -1012,12 +1012,14 @@ export default class KeySignature implements IKeySignature {
         try {
             res = this._convertFromNoteName(noteName, this._solfegeNotes);
         } catch (err) {
-            res = err.defaultValue;
+            res = (
+                err as InvalidArgumentDefaultError<[string]> | ItemNotFoundDefaultError<[string]>
+            ).defaultValue;
         }
         try {
             res1 = this._findMoveable(noteName, SOLFEGE_SHARP, SOLFEGE_FLAT, preferSharps);
         } catch (err) {
-            res1 = err.defaultValue;
+            res1 = (err as InvalidArgumentDefaultError<[string]>).defaultValue;
         }
         return this._fixedSolfege ? res : res1;
     }
@@ -1043,12 +1045,14 @@ export default class KeySignature implements IKeySignature {
         try {
             res = this._convertFromNoteName(noteName, this._eastIndianSolfegeNotes);
         } catch (err) {
-            res = err.defaultValue;
+            res = (
+                err as InvalidArgumentDefaultError<[string]> | ItemNotFoundDefaultError<[string]>
+            ).defaultValue;
         }
         try {
             res1 = this._findMoveable(noteName, EAST_INDIAN_SHARP, EAST_INDIAN_FLAT, preferSharps);
         } catch (err) {
-            res1 = err.defaultValue;
+            res1 = (err as InvalidArgumentDefaultError<[string]>).defaultValue;
         }
         return this._fixedSolfege ? res : res1;
     }
@@ -1074,7 +1078,9 @@ export default class KeySignature implements IKeySignature {
         try {
             res = this._convertFromNoteName(noteName, this._scalarModeNumbers);
         } catch (err) {
-            res = err.defaultValue;
+            res = (
+                err as InvalidArgumentDefaultError<[string]> | ItemNotFoundDefaultError<[string]>
+            ).defaultValue;
         }
         try {
             res1 = this._findMoveable(
@@ -1084,7 +1090,7 @@ export default class KeySignature implements IKeySignature {
                 preferSharps
             );
         } catch (err) {
-            res1 = err.defaultValue;
+            res1 = (err as InvalidArgumentDefaultError<[string]>).defaultValue;
         }
         return this._fixedSolfege ? res : res1;
     }
@@ -1105,7 +1111,7 @@ export default class KeySignature implements IKeySignature {
         try {
             return this._convertFromNoteName(noteName, this._customNoteNames);
         } catch (err) {
-            return err.defaultValue;
+            return (err as InvalidArgumentDefaultError<[string]>).defaultValue;
         }
     }
 
@@ -1148,7 +1154,9 @@ export default class KeySignature implements IKeySignature {
         try {
             return this.closestNote(target)[2] === 0;
         } catch (err) {
-            return err.defaultValue[2] === 0;
+            return (
+                (err as ItemNotFoundDefaultError<[string, number, number]>).defaultValue[2] === 0
+            );
         }
     }
 
@@ -1238,7 +1246,7 @@ export default class KeySignature implements IKeySignature {
             try {
                 res = this.convertToGenericNoteName(startingPitch);
             } catch (err) {
-                res = err.defaultValue;
+                res = (err as ItemNotFoundDefaultError<string>).defaultValue;
             }
             const noteName = res;
             const [strippedPitch, delta] = stripAccidental(noteName); // startingPitch
@@ -1404,7 +1412,7 @@ export default class KeySignature implements IKeySignature {
         try {
             genericPitch = this.convertToGenericNoteName(startingPitch);
         } catch (err) {
-            genericPitch = err.defaultValue;
+            genericPitch = (err as ItemNotFoundDefaultError<string>).defaultValue;
         }
         let res: [string, number, number];
         try {
@@ -1489,7 +1497,11 @@ export default class KeySignature implements IKeySignature {
             try {
                 return this._genericNoteNameToLetterName(pitchName, preferSharps)[0];
             } catch (err) {
-                return err.defaultValue[0];
+                return (
+                    err as
+                        | InvalidArgumentDefaultError<[string]>
+                        | ItemNotFoundDefaultError<[string]>
+                ).defaultValue[0];
             }
         }
 
@@ -1526,7 +1538,7 @@ export default class KeySignature implements IKeySignature {
         try {
             genericName = this.convertToGenericNoteName(pitchName);
         } catch (err) {
-            genericName = err.defaultValue;
+            genericName = (err as ItemNotFoundDefaultError<string>).defaultValue;
         }
         const ni = this._noteNames.indexOf(genericName);
         const i = octave * this._numberOfSemitones + ni;
@@ -1573,13 +1585,13 @@ export default class KeySignature implements IKeySignature {
         try {
             closest1 = this.closestNote(pitchA);
         } catch (err) {
-            closest1 = err.defaultValue;
+            closest1 = (err as ItemNotFoundDefaultError<[string, number, number]>).defaultValue;
         }
         let closest2: [string, number, number];
         try {
             closest2 = this.closestNote(pitchB);
         } catch (err) {
-            closest2 = err.defaultValue;
+            closest2 = (err as ItemNotFoundDefaultError<[string, number, number]>).defaultValue;
         }
         const a = closest1[1] + this.modeLength * octaveA;
         const b = closest2[1] + this.modeLength * octaveB;
@@ -1628,7 +1640,9 @@ export default class KeySignature implements IKeySignature {
             try {
                 [invertedPitch, deltaOctave] = this.semitoneTransform(pitchName, -delta);
             } catch (err) {
-                [invertedPitch, deltaOctave] = err.defaultValue;
+                [invertedPitch, deltaOctave] = (
+                    err as ItemNotFoundDefaultError<[string, number]>
+                ).defaultValue;
             }
         } else {
             let delta = this.scalarDistance(
@@ -1672,7 +1686,7 @@ export default class KeySignature implements IKeySignature {
         try {
             target = this.convertToGenericNoteName(target);
         } catch (err) {
-            target = err.defaultValue;
+            target = (err as ItemNotFoundDefaultError<string>).defaultValue;
         }
         const [strippedTarget, delta] = stripAccidental(target);
 

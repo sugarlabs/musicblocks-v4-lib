@@ -427,7 +427,7 @@ export default class Temperament implements ITemperament {
      * @param octave - Which octave to access.
      * @returns The index into the frequency list.
      *
-     * @throws {ItemNotFoundError}
+     * @throws {ItemNotFoundDefaultError}
      * Thrown if note name does not exist in list of generic note names.
      */
     public getFreqIndexByGenericNoteNameAndOctave(noteName: string, octave: number): number {
@@ -464,7 +464,7 @@ export default class Temperament implements ITemperament {
             }
             return this._freqs[this.getFreqIndexByGenericNoteNameAndOctave(noteName, octave)];
         } catch (err) {
-            return this._freqs[err.defaultValue];
+            return this._freqs[(err as ItemNotFoundDefaultError<number>).defaultValue];
         }
     }
 

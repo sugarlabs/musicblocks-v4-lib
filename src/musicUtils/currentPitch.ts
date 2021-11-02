@@ -9,6 +9,7 @@
 import { ICurrentPitch } from './@types/currentPitch';
 import Temperament from './temperament';
 import KeySignature from './keySignature';
+import { ItemNotFoundDefaultError } from './errors';
 
 /**
  * Defines an object that manages pitch state.
@@ -144,10 +145,8 @@ export default class CurrentPitch implements ICurrentPitch {
                     // Assume it is a pitch number.
                     this._number = pitchName;
                     this._freq = this._t.getFreqByIndex(this._number);
-                    [
-                        this._semitoneIndex,
-                        this._octave
-                    ] = this._t.getModalIndexAndOctaveFromFreqIndex(this._number);
+                    [this._semitoneIndex, this._octave] =
+                        this._t.getModalIndexAndOctaveFromFreqIndex(this._number);
                     this._genericName = this._t.getNoteName(this._semitoneIndex);
                 } else {
                     // Assume it is a semitone index.
@@ -166,7 +165,7 @@ export default class CurrentPitch implements ICurrentPitch {
             try {
                 this._genericName = this._ks.convertToGenericNoteName(pitchName);
             } catch (err) {
-                this._genericName = err.defaultValue;
+                this._genericName = (err as ItemNotFoundDefaultError<string>).defaultValue;
             }
             this._semitoneIndex = this._t.getModalIndex(this._genericName);
             this._octave = octave;
@@ -190,7 +189,9 @@ export default class CurrentPitch implements ICurrentPitch {
                 numberOfHalfSteps
             );
         } catch (err) {
-            [genericName, deltaOctave] = err.defaultValue;
+            [genericName, deltaOctave] = (
+                err as ItemNotFoundDefaultError<[string, number]>
+            ).defaultValue;
         }
 
         this._genericName = genericName;
@@ -232,7 +233,9 @@ export default class CurrentPitch implements ICurrentPitch {
                 numberOfHalfSteps
             );
         } catch (err) {
-            [genericName, deltaOctave] = err.defaultValue;
+            [genericName, deltaOctave] = (
+                err as ItemNotFoundDefaultError<[string, number]>
+            ).defaultValue;
         }
 
         const semitoneIndex = this._t.getModalIndex(genericName);
