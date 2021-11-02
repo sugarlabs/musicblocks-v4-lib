@@ -12,9 +12,8 @@
   ],
   "author": "Anindya Kundu <anindya.k22@outlook.com> (https://github.com/meganindya/)",
   "license": "AGPL-3.0",
-  "dependencies": {
-    "tone": "^14.7.58"
-  },
+  "main": "dist/index.js",
+  "types": "dist",
   "devDependencies": {
     "@types/jest": "^26.0.19",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
@@ -32,9 +31,9 @@
     "webpack-dev-server": "^3.11.1"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "rm -rf dist/* && tsc -p .",
     "lint": "eslint src/**/*.ts",
     "test": "jest --passWithNoTests",
-    "watch": "webpack --watch"
+    "serve": "webpack serve"
   }
 }
