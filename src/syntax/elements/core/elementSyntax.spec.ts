@@ -1,4 +1,4 @@
-import { TDataName } from '@/@types/syntax/elementsCore';
+import { TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
 
 class DummyElementSyntax extends ElementSyntax {

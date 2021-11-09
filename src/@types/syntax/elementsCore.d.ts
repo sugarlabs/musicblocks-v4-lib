@@ -1,8 +1,4 @@
-/** Data-type of a value. */
-export type TData = number | string | boolean;
-
-/** Data-type name of a value. */
-export type TDataName = 'number' | 'string' | 'boolean';
+import { TData, TDataName } from './data';
 
 /** Interface for the class that implements a syntax element. */
 export interface IElementSyntax {
