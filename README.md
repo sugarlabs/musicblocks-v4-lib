@@ -5,8 +5,6 @@ The core of the new [Music Blocks (v4)](https://github.com/sugarlabs/musicblocks
 ## Tech Stack
 
 This core of Music Blocks v4 uses `TypeScript 4`. In addition, `Jest` shall be used for testing.
-`Webpack` has been configured to transpile and bundle the source code, for deployment on a web
-browser.
 
 ## Contributing
 
@@ -62,11 +60,11 @@ on the web.
 
 ### Code Quality Notes
 
-1. Sticking to _TypeScript_ conventions, use _camelCase_ for filenames, _CAPITALCASE_ for
-constants, _camelCase_ for identifiers, and _PascalCase for classes_. Linting has been strictly
-configured. A `super-linter` is configured to lint check the files on a pull request. In fact, the
-_TypeScript_ watcher or build will throw errors/warnings if there are linting problems. This has
-been done to maintain code quality.
+1. Sticking to _TypeScript_ conventions, use _camelCase_ for filenames (_PascalCase_ for _class_
+files), _CAPITALCASE_ for constants, _camelCase_ for identifiers, and _PascalCase_ for _classes_.
+Linting has been strictly configured. A `super-linter` is configured to lint check the files on a
+pull request. In fact, the _TypeScript_ watcher or build will throw errors/warnings if there are
+linting problems. This has been done to maintain code quality.
 
 2. If a PR is addressing an issue, prefix the branch name with the issue number. For example, say a
 PR is addressing issue `100`, a branch name could be `100-patch-foobar`.
@@ -77,6 +75,8 @@ dirty, please do an _interactive rebase_ with _squash_ and _reword_ to improve.
 4. Follow
 [conventional commit messages specification](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)
 to help issue tracking. More often than not, take time to add meaningful commit descriptions.
+However, add specificity by mentioning the component; prefer `mycomponent: [feat] Add button` over
+`feat: Add button`, `mycomponent: [fix] Use try-catch` over `fix: Use try-catch`.
 
 5. At any point, when new components are created or existing components are modified, unit tests
 (passing) reflecting the changes need to be part of the PR before being reviewed.
@@ -98,14 +98,48 @@ allow the competition of ideas (Sugar Labs is a meritocracy)._
 
 ## Setup Development Environment
 
-_This project is containerized using [**docker**](https://www.docker.com/). Therefore, it requires
-**docker** to be installed on the development machine._
+### Without Docker
+
+This is a _**TypeScript**_ project that uses _**React**_. You'll need _[**Node.js**](https://nodejs.org/en/)_
+and _**NPM**_ installed on your development machine. You'll need _**tsc**_ (_TypeScript Compiler_)
+to manually compile `.ts` files. You'll need _**ts-node**_ (_Node executable for TypeScript_) to manually
+execute `.ts` scripts directly.
+
+Once _**NPM**_ is installed, to install the above, run
+
+```bash
+npm i -g typescript
+npm i -g ts-node
+```
+
+_**Note:**_ Users on _Linux_ and _Mac OS_ are required to add a `sudo` before these commands.
+
+Check installation using
+
+```bash
+node -v && npm -v && tsc -v && ts-node -v
+```
+
+Output should look like
+
+```bash
+v14.17.0
+6.14.13
+Version 4.3.2
+v10.0.0
+```
+
+### With Docker
+
+This project development tools have been containerized using [**docker**](https://www.docker.com/).
+Therefore, to use an execution sandbox, it requires **docker** to be installed on the development machine.
 
 1. Setup _docker_.
 
-    - For _Linux_, [install _Docker Engine_](https://docs.docker.com/engine/install/).
-    - For _Windows_ or _Mac_ (_x86_64 / amd64_),
-    [install _Docker Desktop_](https://www.docker.com/products/docker-desktop).
+    - For _Linux_, [install _Docker Engine_](https://docs.docker.com/engine/install/). You'll also
+    need to [install _Docker Compose_](https://docs.docker.com/compose/install/).
+
+    - For _Windows_ or _Mac_, [install _Docker Desktop_](https://www.docker.com/products/docker-desktop).
 
 2. Open a teminal and navigate to working directory (where the source code will reside).
 
@@ -256,7 +290,7 @@ spawned and standard input/output is connected to the terminal.
         npm run lint -- --fix
         ```
 
-    _**Note:**_ If you're running using _Docker Desktop_ on _Windows_ or _Mac_, you might experience
+    _**Note:**_ If you're running using _Docker Desktop_ on _Windows_, you might experience
     longer execution times for these scripts. This happens due to cross-file-system communication.
     Duration varies across machines; duration primarily depends on hard drive read/write speed.
 
