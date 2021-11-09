@@ -1,10 +1,9 @@
 import {
     IElementBlock,
     IElementInstruction,
-    IElementStatement,
-    TData,
-    TDataName
+    IElementStatement
 } from '@/@types/syntax/elementsCore';
+import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
 
 /**
