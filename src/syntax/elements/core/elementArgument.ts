@@ -1,10 +1,5 @@
-import {
-    IElementArgument,
-    IElementExpression,
-    IElementValue,
-    TData,
-    TDataName
-} from '@/@types/syntax/elementsCore';
+import { IElementArgument, IElementExpression, IElementValue } from '@/@types/syntax/elementsCore';
+import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
 
 /**
