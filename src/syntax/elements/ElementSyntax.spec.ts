@@ -1,4 +1,4 @@
-import { TData } from '@/@types/elementsStructure';
+import { TDataName } from '@/@types/elementsStructure';
 import { ElementSyntax } from './ElementSyntax';
 
 class DummyElementSyntax extends ElementSyntax {
@@ -6,7 +6,7 @@ class DummyElementSyntax extends ElementSyntax {
         name: string,
         kind: 'Argument' | 'Instruction',
         type: 'Value' | 'Expression' | 'Statement' | 'Block',
-        argMap: { [key: string]: TData[] }
+        argMap: { [key: string]: TDataName[] }
     ) {
         super(name, kind, type, argMap);
     }
