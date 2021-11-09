@@ -1,4 +1,4 @@
-import { ElementArgument, ElementExpression, ElementValue } from './ElementArgument';
+import { ElementArgument, ElementExpression, ElementValue } from './elementArgument';
 
 class DummyElementArgument<T> extends ElementArgument<T> {}
 

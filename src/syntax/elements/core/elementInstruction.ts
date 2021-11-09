@@ -4,8 +4,8 @@ import {
     IElementStatement,
     TData,
     TDataName
-} from '@/@types/elementsStructure';
-import { ElementSyntax } from './ElementSyntax';
+} from '@/@types/syntax/elementsCore';
+import { ElementSyntax } from './elementSyntax';
 
 /**
  * @virtual

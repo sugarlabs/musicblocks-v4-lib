@@ -1,4 +1,4 @@
-import { IElementSyntax, TDataName } from '@/@types/elementsStructure';
+import { IElementSyntax, TDataName } from '@/@types/syntax/elementsCore';
 
 /**
  * @virtual
