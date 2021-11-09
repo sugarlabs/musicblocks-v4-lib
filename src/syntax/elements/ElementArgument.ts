@@ -18,6 +18,8 @@ import { ElementSyntax } from './ElementSyntax';
  * this class.
  */
 export abstract class ElementArgument<T> extends ElementSyntax implements IElementArgument<T> {
+    /** Stores the return type of the value returned by the argument element. */
+    private _returnType: TDataName[];
     /** Stores the value this is returned by the argument element. */
     protected _value: T;
 
@@ -28,12 +30,19 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
         type: 'Value' | 'Expression',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
+        /** Return types of the value returned by the argument element. */
+        returnType: TDataName[],
         /** Initial return value of the argument. */
         initialValue: T
     ) {
         super(name, 'Argument', type, argMap);
 
+        this._returnType = returnType;
         this._value = initialValue;
+    }
+
+    public get returnType(): TDataName[] {
+        return this._returnType;
     }
 
     public get value(): T {
@@ -50,6 +59,19 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
  * Value elements return a stored value.
  */
 export abstract class ElementValue<T> extends ElementArgument<T> implements IElementValue<T> {
+    constructor(
+        /** Name of the value element. */
+        name: string,
+        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
+        argMap: { [key: string]: TDataName[] },
+        /** Return types of the value returned by the argument element. */
+        returnType: TDataName[],
+        /** Initial return value of the argument. */
+        initialValue: T
+    ) {
+        super(name, 'Value', argMap, returnType, initialValue);
+    }
+
     public update(value: T): void {
         this._value = value;
     }
@@ -68,5 +90,18 @@ export abstract class ElementExpression<T>
     extends ElementArgument<T>
     implements IElementExpression<T>
 {
+    constructor(
+        /** Name of the expression element. */
+        name: string,
+        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
+        argMap: { [key: string]: TDataName[] },
+        /** Return types of the value returned by the argument element. */
+        returnType: TDataName[],
+        /** Initial return value of the argument. */
+        initialValue: T
+    ) {
+        super(name, 'Expression', argMap, returnType, initialValue);
+    }
+
     public abstract evaluate(params: { [key: string]: TData }): void;
 }

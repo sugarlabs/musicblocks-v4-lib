@@ -17,11 +17,13 @@ export interface IElementSyntax {
     /** Names of the arguments the syntax element registers. */
     argLabels: string[];
     /** An object describing the type specification of each argument as a `argName: type[]` pair. */
-    argMap: { [key: string]: TData[] };
+    argMap: { [key: string]: TDataName[] };
 }
 
 /** Generic interface for the class that implements the argument element. */
 export interface IElementArgument<T> extends IElementSyntax {
+    /** Return types of the value returned by the argument element. */
+    returnType: TDataName[];
     /** Value returned by the argument element. */
     value: T;
 }

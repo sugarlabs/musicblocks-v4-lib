@@ -1,4 +1,4 @@
-import { IElementSyntax, TData } from '@/@types/elementsStructure';
+import { IElementSyntax, TDataName } from '@/@types/elementsStructure';
 
 /**
  * @virtual
@@ -21,7 +21,7 @@ export abstract class ElementSyntax implements IElementSyntax {
     /** Stores the names of the arguments the syntax element registers. */
     private _argLabels: string[];
     /** Stores an object describing the type specification of each argument. */
-    private _argMap: { [key: string]: TData[] };
+    private _argMap: { [key: string]: TDataName[] };
 
     constructor(
         /** Name of the syntax element. */
@@ -31,7 +31,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         /** Type (`Value`, `Expression`, `Statement`, `Block`) of the syntax element. */
         type: 'Value' | 'Expression' | 'Statement' | 'Block',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
-        argMap: { [key: string]: TData[] }
+        argMap: { [key: string]: TDataName[] }
     ) {
         this._name = name;
         this._kind = kind;
@@ -61,7 +61,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         return this._argLabels;
     }
 
-    public get argMap(): { [key: string]: TData[] } {
+    public get argMap(): { [key: string]: TDataName[] } {
         return this._argMap;
     }
 }
