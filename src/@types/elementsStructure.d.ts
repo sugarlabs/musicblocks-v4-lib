@@ -1,5 +1,8 @@
 /** Data-type of a value. */
-export type TData = 'number' | 'string' | 'boolean';
+export type TData = number | string | boolean;
+
+/** Data-type name of a value. */
+export type TDataName = 'number' | 'string' | 'boolean';
 
 /** Interface for the class that implements the syntax element. */
 export interface IElementSyntax {
@@ -15,4 +18,28 @@ export interface IElementSyntax {
     argLabels: string[];
     /** An object describing the type specification of each argument as a `argName: type[]` pair. */
     argMap: { [key: string]: TData[] };
+}
+
+/** Generic interface for the class that implements the argument element. */
+export interface IElementArgument<T> extends IElementSyntax {
+    /** Value returned by the argument element. */
+    value: T;
+}
+
+/** Generic interface for the class that implements the value element. */
+export interface IElementValue<T> extends IElementArgument<T> {
+    /**
+     * Updates the value stored in the value element.
+     * @param value - new value
+     */
+    update(value: T): void;
+}
+
+/** Generic interface for the class that implements the expression element. */
+export interface IElementExpression<T> extends IElementArgument<T> {
+    /**
+     * Evalutates the logic of the expression using the supplied parameters and stores the value.
+     * @param params - An object containing key-value pairs of each argument and it's value
+     */
+    evaluate(params: { [key: string]: TData }): void;
 }
