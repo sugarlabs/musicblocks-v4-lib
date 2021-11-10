@@ -6,8 +6,8 @@ export interface IElementSyntax {
     name: string;
     /** Kind (`Argument`, `Instruction`) of the syntax element. */
     kind: 'Argument' | 'Instruction';
-    /** Type (`Value`, `Expression`, `Statement`, `Block`) of the syntax element. */
-    type: 'Value' | 'Expression' | 'Statement' | 'Block';
+    /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
+    type: 'Data' | 'Expression' | 'Statement' | 'Block';
     /** Number of arguments the syntax element registers. */
     argCount: number;
     /** Names of the arguments the syntax element registers. */
@@ -24,10 +24,10 @@ export interface IElementArgument<T> extends IElementSyntax {
     value: T;
 }
 
-/** Generic interface for the class that implements a value element. */
-export interface IElementValue<T> extends IElementArgument<T> {
+/** Generic interface for the class that implements a data element. */
+export interface IElementData<T> extends IElementArgument<T> {
     /**
-     * Updates the value stored in the value element.
+     * Updates the value stored in the data element.
      * @param value - new value
      */
     update(value: T): void;

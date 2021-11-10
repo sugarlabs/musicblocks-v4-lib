@@ -16,7 +16,7 @@ export abstract class ElementSyntax implements IElementSyntax {
     /** Stores the kind of the syntax element. */
     private _kind: 'Argument' | 'Instruction';
     /** Stores the type of the syntax element. */
-    private _type: 'Value' | 'Expression' | 'Statement' | 'Block';
+    private _type: 'Data' | 'Expression' | 'Statement' | 'Block';
     /** Stores the number of arguments the syntax element registers. */
     private _argCount: number;
     /** Stores the names of the arguments the syntax element registers. */
@@ -29,8 +29,8 @@ export abstract class ElementSyntax implements IElementSyntax {
         name: string,
         /** Kind (`Argument`, `Instruction`) of the syntax element. */
         kind: 'Argument' | 'Instruction',
-        /** Type (`Value`, `Expression`, `Statement`, `Block`) of the syntax element. */
-        type: 'Value' | 'Expression' | 'Statement' | 'Block',
+        /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
+        type: 'Data' | 'Expression' | 'Statement' | 'Block',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
@@ -50,7 +50,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         return this._kind;
     }
 
-    public get type(): 'Value' | 'Expression' | 'Statement' | 'Block' {
+    public get type(): 'Data' | 'Expression' | 'Statement' | 'Block' {
         return this._type;
     }
 
