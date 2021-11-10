@@ -1,5 +1,5 @@
 import { TDataName } from '@/@types/syntax/data';
-import { ElementData } from '../core/elementArgument';
+import { ElementData } from '../../core/elementArgument';
 
 /**
  * @virtual
