@@ -1,4 +1,4 @@
-import { IElementArgument, IElementExpression, IElementValue } from '@/@types/syntax/elementsCore';
+import { IElementArgument, IElementExpression, IElementData } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
 
@@ -8,8 +8,8 @@ import { ElementSyntax } from './elementSyntax';
  * Generic class that defines a generic argument element.
  *
  * @classdesc
- * Argument elements return a value which is either stored (value element) or evaluated (expression
- * element) from the parameters passed. Every value element and expression element needs to extend
+ * Argument elements return a value which is either stored (data element) or evaluated (expression
+ * element) from the parameters passed. Every data element and expression element needs to extend
  * this class.
  */
 export abstract class ElementArgument<T> extends ElementSyntax implements IElementArgument<T> {
@@ -21,8 +21,8 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
     constructor(
         /** Name of the argument element. */
         name: string,
-        /** Type (`Value`, `Expression`) of the argument element. */
-        type: 'Value' | 'Expression',
+        /** Type (`Data`, `Expression`) of the argument element. */
+        type: 'Data' | 'Expression',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
         /** Return types of the value returned by the argument element. */
@@ -48,14 +48,14 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
 /**
  * @virtual
  * @class
- * Generic class that defines a generic value element.
+ * Generic class that defines a generic data element.
  *
  * @classdesc
- * Value elements return a stored value.
+ * Data elements return a stored value.
  */
-export abstract class ElementValue<T> extends ElementArgument<T> implements IElementValue<T> {
+export abstract class ElementData<T> extends ElementArgument<T> implements IElementData<T> {
     constructor(
-        /** Name of the value element. */
+        /** Name of the data element. */
         name: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
@@ -64,7 +64,7 @@ export abstract class ElementValue<T> extends ElementArgument<T> implements IEle
         /** Initial return value of the argument. */
         initialValue: T
     ) {
-        super(name, 'Value', argMap, returnType, initialValue);
+        super(name, 'Data', argMap, returnType, initialValue);
     }
 
     public update(value: T): void {

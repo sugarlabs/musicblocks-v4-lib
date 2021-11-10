@@ -5,7 +5,7 @@ class DummyElementSyntax extends ElementSyntax {
     constructor(
         name: string,
         kind: 'Argument' | 'Instruction',
-        type: 'Value' | 'Expression' | 'Statement' | 'Block',
+        type: 'Data' | 'Expression' | 'Statement' | 'Block',
         argMap: { [key: string]: TDataName[] }
     ) {
         super(name, kind, type, argMap);
@@ -16,10 +16,10 @@ describe('class ElementSyntax', () => {
     test('instantiate class that extends ElementSyntax with 0 arguments and validate API', () => {
         let dummyElementSyntax: DummyElementSyntax;
 
-        dummyElementSyntax = new DummyElementSyntax('dummy', 'Argument', 'Value', {});
+        dummyElementSyntax = new DummyElementSyntax('dummy', 'Argument', 'Data', {});
         expect(dummyElementSyntax.name).toBe('dummy');
         expect(dummyElementSyntax.kind).toBe('Argument');
-        expect(dummyElementSyntax.type).toBe('Value');
+        expect(dummyElementSyntax.type).toBe('Data');
         expect(dummyElementSyntax.argCount).toBe(0);
         expect(dummyElementSyntax.argLabels).toEqual([]);
         expect(dummyElementSyntax.argMap).toEqual({});
