@@ -1,0 +1,114 @@
+import { TData, TDataName } from '@/@types/syntax/data';
+import { ElementExpression } from '../../core/elementArgument';
+
+/** Type definition for the operator symbols */
+type TOperator = '+' | '-' | '*' | '/' | '%';
+
+/**
+ * @virtual
+ * @class
+ * Generic class that defines a generic math operator element.
+ *
+ * @classdesc
+ * Math operator elements are expression elements that take two arguments (operands) and return the
+ * result of operation on those arguments.
+ */
+abstract class ElementOperatorMath<T> extends ElementExpression<T> {
+    private _operator: TOperator;
+
+    constructor(name: string, returnType: TDataName[], operator: TOperator, initialValue: T) {
+        super(name, { operand1: returnType, operand2: returnType }, returnType, initialValue);
+        this._operator = operator;
+    }
+
+    public evaluate(params: { operand1: number; operand2: number }): void;
+    public evaluate(params: { operand1: number | string; operand2: number | string }): void;
+    public evaluate(params: { operand1: TData; operand2: TData }): void {
+        const { operand1, operand2 } = params;
+
+        switch (this._operator) {
+            case '+':
+                this._value = (typeof operand1 === 'string' || typeof operand2 === 'string'
+                    ? `${operand1}${operand2}`
+                    : (operand1 as number) + (operand2 as number)) as unknown as T;
+                break;
+            case '-':
+                this._value = ((operand1 as number) - (operand2 as number)) as unknown as T;
+                break;
+            case '*':
+                this._value = ((operand1 as number) * (operand2 as number)) as unknown as T;
+                break;
+            case '/':
+                this._value = ((operand1 as number) / (operand2 as number)) as unknown as T;
+                break;
+            case '%':
+                this._value = ((operand1 as number) % (operand2 as number)) as unknown as T;
+                break;
+        }
+    }
+}
+
+/**
+ * @class
+ * Defines a plus math-operator element.
+ *
+ * @classdesc
+ * Performs addition on numbers and concatenation on strings.
+ */
+export class ElementOperatorMathPlus extends ElementOperatorMath<number | string> {
+    constructor() {
+        super('operator-plus', ['number', 'string'], '+', 0);
+    }
+}
+
+/**
+ * @class
+ * Defines a minus math-operator element.
+ *
+ * @classdesc
+ * Performs subtraction on numbers.
+ */
+export class ElementOperatorMathMinus extends ElementOperatorMath<number> {
+    constructor() {
+        super('operator-minus', ['number'], '-', 0);
+    }
+}
+
+/**
+ * @class
+ * Defines a times math-operator element.
+ *
+ * @classdesc
+ * Performs multiplication on numbers.
+ */
+export class ElementOperatorMathTimes extends ElementOperatorMath<number> {
+    constructor() {
+        super('operator-times', ['number'], '*', 0);
+    }
+}
+
+/**
+ * @class
+ * Defines a divide math-operator element.
+ *
+ * @classdesc
+ * Performs division on numbers.
+ */
+export class ElementOperatorMathDivide extends ElementOperatorMath<number> {
+    constructor() {
+        super('operator-divide', ['number'], '/', 0);
+    }
+}
+
+/**
+ * @class
+ * Defines a modulus math-operator element.
+ *
+ * @classdesc
+ * Performs modulus operation on numbers.
+ */
+export class ElementOperatorMathModulus extends ElementOperatorMath<number> {
+    constructor() {
+        super('operator-modulus', ['number'], '%', 0);
+    }
+}
