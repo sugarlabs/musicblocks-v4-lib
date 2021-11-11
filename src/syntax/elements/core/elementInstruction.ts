@@ -19,12 +19,14 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
     constructor(
         /** Name of the instruction element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** Type (`Statement`, `Block`) of the instruction element. */
         type: 'Statement' | 'Block',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
-        super(name, 'Instruction', type, argMap);
+        super(name, label, 'Instruction', type, argMap);
     }
 
     public abstract onVisit(params: { [key: string]: TData }): void;
@@ -42,10 +44,12 @@ export abstract class ElementStatement extends ElementInstruction implements IEl
     constructor(
         /** Name of the statement element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
-        super(name, 'Statement', argMap);
+        super(name, label, 'Statement', argMap);
     }
 }
 
@@ -63,10 +67,12 @@ export abstract class ElementBlock extends ElementInstruction implements IElemen
     constructor(
         /** Name of the block element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
-        super(name, 'Block', argMap);
+        super(name, label, 'Block', argMap);
     }
 
     public abstract onInnerVisit(): void;

@@ -11,17 +11,17 @@ import { getGlobalVariable } from '../../../symbol-table/symbolTable';
  * @throws `Error` (ItemNotFoundError)
  */
 abstract class ElementBoxIdentifier<T> extends ElementData<T> {
-    constructor(name: string, returnType: ['boolean'], initialValue: boolean, initialLabel: string);
-    constructor(name: string, returnType: ['number'], initialValue: number, initialLabel: string);
-    constructor(name: string, returnType: ['string'], initialValue: string, initialLabel: string);
+    constructor(name: string, label: string, returnType: ['boolean'], initialValue: boolean);
+    constructor(name: string, label: string, returnType: ['number'], initialValue: number);
+    constructor(name: string, label: string, returnType: ['string'], initialValue: string);
     constructor(
         name: string,
+        label: string,
         returnType: ['boolean', 'number', 'string'],
-        initialValue: TData,
-        initialLabel: string
+        initialValue: TData
     );
-    constructor(name: string, returnType: TDataName[], initialValue: T, initialLabel: string) {
-        super(name, {}, returnType, initialValue, initialLabel);
+    constructor(name: string, label: string, returnType: TDataName[], initialValue: T) {
+        super(name, label, {}, returnType, initialValue);
     }
 
     /** @override */
@@ -29,7 +29,7 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
         const expectedType = typeof this._value as TDataName;
 
         try {
-            const { dataType, value } = getGlobalVariable(this._label)!;
+            const { dataType, value } = getGlobalVariable(this.label)!;
             if (this.returnType.length > 1) {
                 this._value = value as unknown as T;
             } else if (dataType === expectedType) {
@@ -39,10 +39,10 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
             }
         } catch (e) {
             if (this.returnType.length > 1) {
-                throw Error(`ItemNotFoundError: box "${this._label}" does not exist`);
+                throw Error(`ItemNotFoundError: box "${this.label}" does not exist`);
             } else {
                 throw Error(
-                    `ItemNotFoundError: box "${this._label}" of type "${expectedType}" does not exist`
+                    `ItemNotFoundError: box "${this.label}" of type "${expectedType}" does not exist`
                 );
             }
         }
@@ -56,7 +56,7 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
  */
 export class ElementBoxIdentifierGeneric extends ElementBoxIdentifier<TData> {
     constructor() {
-        super('boxidentifier-generic', ['boolean', 'number', 'string'], '', '');
+        super('boxidentifier-generic', '', ['boolean', 'number', 'string'], '');
     }
 }
 
@@ -67,7 +67,7 @@ export class ElementBoxIdentifierGeneric extends ElementBoxIdentifier<TData> {
  */
 export class ElementBoxIdentifierBoolean extends ElementBoxIdentifier<boolean> {
     constructor() {
-        super('boxidentifier-boolean', ['boolean'], true, '');
+        super('boxidentifier-boolean', '', ['boolean'], true);
     }
 }
 
@@ -78,7 +78,7 @@ export class ElementBoxIdentifierBoolean extends ElementBoxIdentifier<boolean> {
  */
 export class ElementBoxIdentifierNumber extends ElementBoxIdentifier<number> {
     constructor() {
-        super('boxidentifier-number', ['number'], 0, '');
+        super('boxidentifier-number', '', ['number'], 0);
     }
 }
 
@@ -89,6 +89,6 @@ export class ElementBoxIdentifierNumber extends ElementBoxIdentifier<number> {
  */
 export class ElementBoxIdentifierString extends ElementBoxIdentifier<string> {
     constructor() {
-        super('boxidentifier-string', ['string'], '', '');
+        super('boxidentifier-string', '', ['string'], '');
     }
 }

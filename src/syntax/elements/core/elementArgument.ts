@@ -21,6 +21,8 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
     constructor(
         /** Name of the argument element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** Type (`Data`, `Expression`) of the argument element. */
         type: 'Data' | 'Expression',
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
@@ -30,7 +32,7 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
         /** Initial return value of the argument. */
         initialValue: T
     ) {
-        super(name, 'Argument', type, argMap);
+        super(name, label, 'Argument', type, argMap);
 
         this._returnType = returnType;
         this._value = initialValue;
@@ -54,31 +56,19 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
  * Data elements return a stored value.
  */
 export abstract class ElementData<T> extends ElementArgument<T> implements IElementData<T> {
-    /** Stores the label of the data element. */
-    protected _label: string;
-
     constructor(
         /** Name of the data element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
         /** Return types of the value returned by the argument element. */
         returnType: TDataName[],
         /** Initial return value of the argument. */
-        initialValue: T,
-        /** Initial label of the data element. */
-        initialLabel: string
+        initialValue: T
     ) {
-        super(name, 'Data', argMap, returnType, initialValue);
-        this._label = initialLabel;
-    }
-
-    public get label(): string {
-        return this._label;
-    }
-
-    public updateLabel(value: string): void {
-        this._label = value;
+        super(name, label, 'Data', argMap, returnType, initialValue);
     }
 
     public abstract evaluate(): void;
@@ -100,6 +90,8 @@ export abstract class ElementExpression<T>
     constructor(
         /** Name of the expression element. */
         name: string,
+        /** Display name of the instruction element. */
+        label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
         /** Return types of the value returned by the argument element. */
@@ -107,7 +99,7 @@ export abstract class ElementExpression<T>
         /** Initial return value of the argument. */
         initialValue: T
     ) {
-        super(name, 'Expression', argMap, returnType, initialValue);
+        super(name, label, 'Expression', argMap, returnType, initialValue);
     }
 
     public abstract evaluate(params: { [key: string]: TData }): void;
