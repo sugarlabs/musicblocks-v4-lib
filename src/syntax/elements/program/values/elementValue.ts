@@ -14,29 +14,29 @@ abstract class ElementValue<T> extends ElementData<T> {
     constructor(name: string, returnType: ['string'], initialValue: string);
     constructor(name: string, returnType: ['boolean'], initialValue: boolean);
     constructor(name: string, returnType: [TDataName], initialValue: T) {
-        super(name, {}, returnType, initialValue, '');
+        super(name, '', {}, returnType, initialValue);
     }
 
     /** @throws `Error` (TypeMismatchError) */
     public evaluate(): void {
         switch (this.returnType[0]) {
             case 'boolean':
-                if (this._label === 'true' || this._label === 'false') {
-                    this._value = (this._label === 'true') as unknown as T;
+                if (this.label === 'true' || this.label === 'false') {
+                    this._value = (this.label === 'true') as unknown as T;
                 } else {
-                    throw Error(`TypeMismatchError: ${this._label} is not of type "boolean"`);
+                    throw Error(`TypeMismatchError: ${this.label} is not of type "boolean"`);
                 }
                 break;
             case 'number':
-                if (!isNaN(Number(this._label))) {
-                    this._value = Number(this._label) as unknown as T;
+                if (!isNaN(Number(this.label))) {
+                    this._value = Number(this.label) as unknown as T;
                 } else {
-                    throw Error(`TypeMismatchError: ${this._label} is not of type "number"`);
+                    throw Error(`TypeMismatchError: ${this.label} is not of type "number"`);
                 }
                 break;
             case 'string':
             default:
-                this._value = this._label as unknown as T;
+                this._value = this.label as unknown as T;
         }
     }
 }

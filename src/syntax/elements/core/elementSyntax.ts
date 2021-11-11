@@ -13,6 +13,8 @@ import { TDataName } from '@/@types/syntax/data';
 export abstract class ElementSyntax implements IElementSyntax {
     /** Stores the name of the syntax element. */
     private _name: string;
+    /** Stores the display name of the syntax element. */
+    private _label: string;
     /** Stores the kind of the syntax element. */
     private _kind: 'Argument' | 'Instruction';
     /** Stores the type of the syntax element. */
@@ -27,6 +29,8 @@ export abstract class ElementSyntax implements IElementSyntax {
     constructor(
         /** Name of the syntax element. */
         name: string,
+        /** Display of the syntax element. */
+        label: string,
         /** Kind (`Argument`, `Instruction`) of the syntax element. */
         kind: 'Argument' | 'Instruction',
         /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
@@ -35,6 +39,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         argMap: { [key: string]: TDataName[] }
     ) {
         this._name = name;
+        this._label = name;
         this._kind = kind;
         this._type = type;
         this._argMap = argMap;
@@ -44,6 +49,10 @@ export abstract class ElementSyntax implements IElementSyntax {
 
     public get name(): string {
         return this._name;
+    }
+
+    public get label(): string {
+        return this._label;
     }
 
     public get kind(): 'Argument' | 'Instruction' {
@@ -64,5 +73,9 @@ export abstract class ElementSyntax implements IElementSyntax {
 
     public get argMap(): { [key: string]: TDataName[] } {
         return this._argMap;
+    }
+
+    public updateLabel(value: string): void {
+        this._label = value;
     }
 }

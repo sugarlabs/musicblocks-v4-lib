@@ -4,6 +4,8 @@ import { TData, TDataName } from './data';
 export interface IElementSyntax {
     /** Name of the syntax element. */
     name: string;
+    /** Display name of the syntax element. */
+    label: string;
     /** Kind (`Argument`, `Instruction`) of the syntax element. */
     kind: 'Argument' | 'Instruction';
     /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
@@ -14,6 +16,11 @@ export interface IElementSyntax {
     argLabels: string[];
     /** An object describing the type specification of each argument as a `argName: type[]` pair. */
     argMap: { [key: string]: TDataName[] };
+    /**
+     * Updates the label of the syntax element.
+     * @param value - new label value
+     */
+    updateLabel(value: string): void;
 }
 
 /** Generic interface for the class that implements an argument element. */
@@ -26,13 +33,6 @@ export interface IElementArgument<T> extends IElementSyntax {
 
 /** Generic interface for the class that implements a data element. */
 export interface IElementData<T> extends IElementArgument<T> {
-    /** The display name of the data element. */
-    label: string;
-    /**
-     * Updates the label of the data element.
-     * @param value - new label value
-     */
-    updateLabel(value: string): void;
     /**
      * Evalutates the logic of the data element (usually based on the label).
      */

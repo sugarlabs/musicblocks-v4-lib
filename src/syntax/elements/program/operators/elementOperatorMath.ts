@@ -17,8 +17,9 @@ abstract class ElementOperatorMath<T> extends ElementExpression<T> {
     private _operator: TOperator;
 
     constructor(name: string, returnType: TDataName[], operator: TOperator, initialValue: T) {
-        super(name, { operand1: returnType, operand2: returnType }, returnType, initialValue);
+        super(name, '', { operand1: returnType, operand2: returnType }, returnType, initialValue);
         this._operator = operator;
+        this.updateLabel(this._operator);
     }
 
     public evaluate(params: { operand1: number; operand2: number }): void;

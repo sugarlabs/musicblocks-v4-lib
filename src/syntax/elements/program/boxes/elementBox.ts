@@ -11,8 +11,8 @@ import { addGlobalVariable } from '../../../symbol-table/symbolTable';
  * Box elements add (declare) variables to the symbol table.
  */
 abstract class ElementBox extends ElementStatement {
-    constructor(name: string, types: TDataName[]) {
-        super(name, {
+    constructor(name: string, label: string, types: TDataName[]) {
+        super(name, label, {
             name: ['string'],
             value: types
         });
@@ -42,7 +42,7 @@ abstract class ElementBox extends ElementStatement {
  */
 export class ElementBoxGeneric extends ElementBox {
     constructor() {
-        super('box-generic', ['boolean', 'number', 'string']);
+        super('box-generic', 'box', ['boolean', 'number', 'string']);
     }
 
     /** @override */
@@ -57,7 +57,7 @@ export class ElementBoxGeneric extends ElementBox {
  */
 export class ElementBoxBoolean extends ElementBox {
     constructor() {
-        super('box-boolean', ['boolean']);
+        super('box-boolean', 'box (boolean)', ['boolean']);
     }
 
     /** @override */
@@ -72,7 +72,7 @@ export class ElementBoxBoolean extends ElementBox {
  */
 export class ElementBoxNumber extends ElementBox {
     constructor() {
-        super('box-number', ['number']);
+        super('box-number', 'box (number)', ['number']);
     }
 
     /** @override */
@@ -87,7 +87,7 @@ export class ElementBoxNumber extends ElementBox {
  */
 export class ElementBoxString extends ElementBox {
     constructor() {
-        super('box-string', ['string']);
+        super('box-string', 'box (string)', ['string']);
     }
 
     /** @override */
