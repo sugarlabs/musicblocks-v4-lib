@@ -1,18 +1,11 @@
 import {
     TElementBlockName,
-    TElementCategoryBlock,
-    TElementCategoryData,
-    TElementCategoryExpression,
-    TElementCategoryStatement,
     TElementDataName,
     TElementExpressionName,
-    TElementName,
     TElementStatementName
 } from '@/@types/syntax/elementSpecification';
-import { TData } from '@/@types/syntax/data';
 
-import { ElementData, ElementExpression } from './core/elementArgument';
-import { ElementBlock, ElementStatement } from './core/elementInstruction';
+import { ElementBlock } from './core/elementInstruction';
 
 import {
     ElementValueBoolean,
@@ -61,47 +54,19 @@ class ElementBlockDummy extends ElementBlock {
     }
 }
 
-abstract class ElementDataCover extends ElementData<TData> {}
-abstract class ElementExpressionCover extends ElementExpression<TData> {}
-
-interface IElementInstructionSpecification {
-    allowAbove?: TElementName[] | boolean;
-    allowBelow?: TElementName[] | boolean;
-    forbidAbove?: TElementName[] | boolean;
-    forbidBelow?: TElementName[] | boolean;
-    allowedNestLevel?: number[] | 'any';
-    allowedNestInside?: TElementBlockName[] | boolean;
-    forbiddenNestInside?: TElementBlockName[] | boolean;
-}
+import {
+    IElementDataSpecification,
+    IElementExpressionSpecification,
+    IElementStatementSpecification,
+    IElementBlockSpecification
+} from '@/@types/syntax/elementSpecification';
 
 const elementSpecification: {
     [identifier: string]:
-        | {
-              label: string;
-              type: 'Data';
-              category: TElementCategoryData;
-              prototype: (name: TElementDataName, label: string) => ElementDataCover;
-          }
-        | {
-              label: string;
-              type: 'Expression';
-              category: TElementCategoryExpression;
-              prototype: (name: TElementExpressionName, label: string) => ElementExpressionCover;
-          }
-        | (IElementInstructionSpecification & {
-              label: string;
-              type: 'Statement';
-              category: TElementCategoryStatement;
-              prototype: (name: TElementStatementName, label: string) => ElementStatement;
-          })
-        | (IElementInstructionSpecification & {
-              label: string;
-              type: 'Block';
-              category: TElementCategoryBlock;
-              prototype: (name: TElementBlockName, label: string) => ElementBlock;
-              allowNestInside?: TElementBlockName[] | boolean;
-              forbidNestInside?: TElementBlockName[] | boolean;
-          });
+        | IElementDataSpecification
+        | IElementExpressionSpecification
+        | IElementStatementSpecification
+        | IElementBlockSpecification;
 } = {
     // -- value elements ---------------------------------------------------------------------------
     'value-boolean': {
