@@ -1,9 +1,10 @@
 import { TData, TDataName } from './data';
+import { TElementName } from './elementSpecification';
 
 /** Interface for the class that implements a syntax element. */
 export interface IElementSyntax {
     /** Name of the syntax element. */
-    name: string;
+    name: TElementName;
     /** Display name of the syntax element. */
     label: string;
     /** Kind (`Argument`, `Instruction`) of the syntax element. */

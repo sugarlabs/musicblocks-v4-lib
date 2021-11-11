@@ -12,7 +12,9 @@ addGlobalVariable('myVar3', 'string', 'foo');
 
 describe('Box Identifier Elements', () => {
     describe('class ElementBoxIdentifierGeneric', () => {
-        const elementBoxIdentifierGeneric = new ElementBoxIdentifierGeneric();
+        const elementBoxIdentifierGeneric = new ElementBoxIdentifierGeneric(
+            'boxidentifier-generic'
+        );
 
         test('update label to name with boolean variable in symbol table and verify evaluation', () => {
             elementBoxIdentifierGeneric.updateLabel('myVar1');
@@ -41,7 +43,9 @@ describe('Box Identifier Elements', () => {
     });
 
     describe('class ElementBoxIdentifierBoolean', () => {
-        const elementBoxIdentifierBoolean = new ElementBoxIdentifierBoolean();
+        const elementBoxIdentifierBoolean = new ElementBoxIdentifierBoolean(
+            'boxidentifier-boolean'
+        );
 
         test('update label to name with boolean variable in symbol table and verify evaluation', () => {
             elementBoxIdentifierBoolean.updateLabel('myVar1');
@@ -58,7 +62,7 @@ describe('Box Identifier Elements', () => {
     });
 
     describe('class ElementBoxIdentifierNumber', () => {
-        const elementBoxIdentifierNumber = new ElementBoxIdentifierNumber();
+        const elementBoxIdentifierNumber = new ElementBoxIdentifierNumber('boxidentifier-number');
 
         test('update label to name with number variable in symbol table and verify evaluation', () => {
             elementBoxIdentifierNumber.updateLabel('myVar2');
@@ -75,7 +79,7 @@ describe('Box Identifier Elements', () => {
     });
 
     describe('class ElementBoxIdentifierString', () => {
-        const elementBoxIdentifierString = new ElementBoxIdentifierString();
+        const elementBoxIdentifierString = new ElementBoxIdentifierString('boxidentifier-string');
 
         test('update label to name with string variable in symbol table and verify evaluation', () => {
             elementBoxIdentifierString.updateLabel('myVar3');

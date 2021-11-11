@@ -4,7 +4,7 @@ describe('class ElementValueBoolean', () => {
     let elementValueBoolean: ElementValueBoolean;
 
     test('instantiate element and verify initial value', () => {
-        elementValueBoolean = new ElementValueBoolean();
+        elementValueBoolean = new ElementValueBoolean('value-boolean');
         expect(elementValueBoolean.value).toBe(true);
     });
 
@@ -19,7 +19,7 @@ describe('class ElementValueNumber', () => {
     let elementValueNumber: ElementValueNumber;
 
     test('instantiate element and verify initial value', () => {
-        elementValueNumber = new ElementValueNumber();
+        elementValueNumber = new ElementValueNumber('value-number');
         expect(elementValueNumber.value).toBe(0);
     });
 
@@ -34,7 +34,7 @@ describe('class ElementValueString', () => {
     let elementValueString: ElementValueString;
 
     test('instantiate element and verify initial value', () => {
-        elementValueString = new ElementValueString();
+        elementValueString = new ElementValueString('value-string');
         expect(elementValueString.value).toBe('');
     });
 
