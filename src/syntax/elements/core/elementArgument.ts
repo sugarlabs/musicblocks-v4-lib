@@ -1,7 +1,6 @@
 import { IElementArgument, IElementExpression, IElementData } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
-import { SymbolTable } from '@/syntax/symbol-table/symbolTable';
 
 /**
  * @virtual
@@ -82,7 +81,7 @@ export abstract class ElementData<T> extends ElementArgument<T> implements IElem
         this._label = value;
     }
 
-    public abstract evaluate(symbolTable: SymbolTable): void;
+    public abstract evaluate(): void;
 }
 
 /**

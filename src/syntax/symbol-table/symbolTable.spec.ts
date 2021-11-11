@@ -1,6 +1,4 @@
-import { SymbolTable } from './symbolTable';
-
-const symbolTable = new SymbolTable();
+import * as symbolTable from './symbolTable';
 
 describe('Symbol Table', () => {
     describe('global variables', () => {
@@ -276,6 +274,23 @@ describe('Symbol Table', () => {
 
         test('flush all routine variables and verify by checking listing', () => {
             symbolTable.flushRoutineVariablesAll();
+            expect(symbolTable.getRoutineVariableNamesAll()).toEqual({});
+        });
+
+        test('flush all variables and verify', () => {
+            symbolTable.addGlobalVariable('myVar1', 'number', 0);
+            symbolTable.addProgramVariable('myVar2', 'number', 0, 'myProgram');
+            symbolTable.addRoutineVariable('myVar3', 'number', 0, 'myRoutine');
+            expect(new Set(symbolTable.getGlobalVariableNames())).toEqual(new Set(['myVar1']));
+            expect(new Set(Object.entries(symbolTable.getProgramVariableNamesAll()))).toEqual(
+                new Set([['myProgram', ['myVar2']]])
+            );
+            expect(new Set(Object.entries(symbolTable.getRoutineVariableNamesAll()))).toEqual(
+                new Set([['myRoutine', ['myVar3']]])
+            );
+            symbolTable.flushAllVariables();
+            expect(symbolTable.getGlobalVariableNames()).toEqual([]);
+            expect(symbolTable.getProgramVariableNamesAll()).toEqual({});
             expect(symbolTable.getRoutineVariableNamesAll()).toEqual({});
         });
     });

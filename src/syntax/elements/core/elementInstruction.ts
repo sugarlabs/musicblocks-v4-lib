@@ -5,7 +5,6 @@ import {
 } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
-import { ISymbolTable } from '@/@types/syntax/symbolTable';
 
 /**
  * @virtual
@@ -28,7 +27,7 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
         super(name, 'Instruction', type, argMap);
     }
 
-    public abstract onVisit(params: { [key: string]: TData }, symbolTable: ISymbolTable): void;
+    public abstract onVisit(params: { [key: string]: TData }): void;
 }
 
 /**
