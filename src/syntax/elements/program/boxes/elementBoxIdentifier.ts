@@ -56,8 +56,8 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
  * @throws `Error` (ItemNotFoundError)
  */
 export class ElementBoxIdentifierGeneric extends ElementBoxIdentifier<TData> {
-    constructor(name: TElementName) {
-        super(name, '', ['boolean', 'number', 'string'], '');
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['boolean', 'number', 'string'], '');
     }
 }
 
@@ -67,8 +67,8 @@ export class ElementBoxIdentifierGeneric extends ElementBoxIdentifier<TData> {
  * @throws `Error` (ItemNotFoundError)
  */
 export class ElementBoxIdentifierBoolean extends ElementBoxIdentifier<boolean> {
-    constructor(name: TElementName) {
-        super(name, '', ['boolean'], true);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['boolean'], true);
     }
 }
 
@@ -78,8 +78,8 @@ export class ElementBoxIdentifierBoolean extends ElementBoxIdentifier<boolean> {
  * @throws `Error` (ItemNotFoundError)
  */
 export class ElementBoxIdentifierNumber extends ElementBoxIdentifier<number> {
-    constructor(name: TElementName) {
-        super(name, '', ['number'], 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], 0);
     }
 }
 
@@ -89,7 +89,7 @@ export class ElementBoxIdentifierNumber extends ElementBoxIdentifier<number> {
  * @throws `Error` (ItemNotFoundError)
  */
 export class ElementBoxIdentifierString extends ElementBoxIdentifier<string> {
-    constructor(name: TElementName) {
-        super(name, '', ['string'], '');
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['string'], '');
     }
 }

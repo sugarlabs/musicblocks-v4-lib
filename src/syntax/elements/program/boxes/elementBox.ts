@@ -42,8 +42,8 @@ abstract class ElementBox extends ElementStatement {
  * Defines a box element that declares a variable of any data type.
  */
 export class ElementBoxGeneric extends ElementBox {
-    constructor(name: TElementName) {
-        super(name, 'box', ['boolean', 'number', 'string']);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['boolean', 'number', 'string']);
     }
 
     /** @override */
@@ -57,8 +57,8 @@ export class ElementBoxGeneric extends ElementBox {
  * Defines a box element that declares a variable of boolean type.
  */
 export class ElementBoxBoolean extends ElementBox {
-    constructor(name: TElementName) {
-        super(name, 'box (boolean)', ['boolean']);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['boolean']);
     }
 
     /** @override */
@@ -72,8 +72,8 @@ export class ElementBoxBoolean extends ElementBox {
  * Defines a box element that declares a variable of number type.
  */
 export class ElementBoxNumber extends ElementBox {
-    constructor(name: TElementName) {
-        super(name, 'box (number)', ['number']);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number']);
     }
 
     /** @override */
@@ -87,8 +87,8 @@ export class ElementBoxNumber extends ElementBox {
  * Defines a box element that declares a variable of string type.
  */
 export class ElementBoxString extends ElementBox {
-    constructor(name: TElementName) {
-        super(name, 'box (string)', ['string']);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['string']);
     }
 
     /** @override */

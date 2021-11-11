@@ -40,7 +40,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         argMap: { [key: string]: TDataName[] }
     ) {
         this._name = name;
-        this._label = name;
+        this._label = label;
         this._kind = kind;
         this._type = type;
         this._argMap = argMap;

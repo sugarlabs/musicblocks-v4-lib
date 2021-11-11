@@ -16,6 +16,7 @@ abstract class ElementExpressionCover extends ElementExpression<TData> {}
 describe('Syntax Element Specification', () => {
     describe('data element', () => {
         const dataElementEntry = specification['value-boolean'];
+        expect(dataElementEntry.label).toBe('true');
 
         test('fetch element and verify entry', () => {
             expect(dataElementEntry.type).toBe('Data');
@@ -24,9 +25,10 @@ describe('Syntax Element Specification', () => {
 
         test('instantiate prototype fetch from entry query and verify instance', () => {
             const prototype = dataElementEntry.prototype as (
-                name: TElementDataName
+                name: TElementDataName,
+                label: string
             ) => ElementDataCover;
-            const elementInstance = prototype('value-boolean');
+            const elementInstance = prototype('value-boolean', dataElementEntry.label);
             expect(elementInstance.name).toBe('value-boolean');
             expect(elementInstance.kind).toBe('Argument');
             expect(elementInstance.type).toBe('Data');
@@ -37,15 +39,17 @@ describe('Syntax Element Specification', () => {
         const dataElementEntry = specification['operator-math-plus'];
 
         test('fetch element and verify entry', () => {
+            expect(dataElementEntry.label).toBe('+');
             expect(dataElementEntry.type).toBe('Expression');
             expect(dataElementEntry.category).toBe('operator-math');
         });
 
         test('instantiate prototype fetch from entry query and verify instance', () => {
             const prototype = dataElementEntry.prototype as (
-                name: TElementExpressionName
+                name: TElementExpressionName,
+                label: string
             ) => ElementExpressionCover;
-            const elementInstance = prototype('operator-math-plus');
+            const elementInstance = prototype('operator-math-plus', dataElementEntry.label);
             expect(elementInstance.name).toBe('operator-math-plus');
             expect(elementInstance.kind).toBe('Argument');
             expect(elementInstance.type).toBe('Expression');
@@ -56,15 +60,17 @@ describe('Syntax Element Specification', () => {
         const dataElementEntry = specification['box-generic'];
 
         test('fetch element and verify entry', () => {
+            expect(dataElementEntry.label).toBe('Box');
             expect(dataElementEntry.type).toBe('Statement');
             expect(dataElementEntry.category).toBe('box');
         });
 
         test('instantiate prototype fetch from entry query and verify instance', () => {
             const prototype = dataElementEntry.prototype as (
-                name: TElementStatementName
+                name: TElementStatementName,
+                label: string
             ) => ElementStatement;
-            const elementInstance = prototype('box-generic');
+            const elementInstance = prototype('box-generic', dataElementEntry.label);
             expect(elementInstance.name).toBe('box-generic');
             expect(elementInstance.kind).toBe('Instruction');
             expect(elementInstance.type).toBe('Statement');
@@ -75,15 +81,17 @@ describe('Syntax Element Specification', () => {
         const dataElementEntry = specification['block-dummy'];
 
         test('fetch element and verify entry', () => {
+            expect(dataElementEntry.label).toBe('dummy');
             expect(dataElementEntry.type).toBe('Block');
             expect(dataElementEntry.category).toBe('block-dummy');
         });
 
         test('instantiate prototype fetch from entry query and verify instance', () => {
             const prototype = dataElementEntry.prototype as (
-                name: TElementBlockName
+                name: TElementBlockName,
+                label: string
             ) => ElementBlock;
-            const elementInstance = prototype('block-dummy');
+            const elementInstance = prototype('block-dummy', dataElementEntry.label);
             expect(elementInstance.name).toBe('block-dummy');
             expect(elementInstance.kind).toBe('Instruction');
             expect(elementInstance.type).toBe('Block');
