@@ -1,6 +1,6 @@
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementData } from '../../core/elementArgument';
-import { SymbolTable } from '@/syntax/symbol-table/symbolTable';
+import { getGlobalVariable } from '../../../symbol-table/symbolTable';
 
 /**
  * @virtual
@@ -25,11 +25,11 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
     }
 
     /** @override */
-    public evaluate(symbolTable: SymbolTable): void {
+    public evaluate(): void {
         const expectedType = typeof this._value as TDataName;
 
         try {
-            const { dataType, value } = symbolTable.getGlobalVariable(this._label)!;
+            const { dataType, value } = getGlobalVariable(this._label)!;
             if (this.returnType.length > 1) {
                 this._value = value as unknown as T;
             } else if (dataType === expectedType) {

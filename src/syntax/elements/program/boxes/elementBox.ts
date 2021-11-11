@@ -1,6 +1,6 @@
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementStatement } from '../../core/elementInstruction';
-import { SymbolTable } from '../../../symbol-table/symbolTable';
+import { addGlobalVariable } from '../../../symbol-table/symbolTable';
 
 /**
  * @virtual
@@ -19,16 +19,16 @@ abstract class ElementBox extends ElementStatement {
     }
 
     /** @override */
-    public onVisit(params: { name: string; value: TData }, symbolTable: SymbolTable): void {
+    public onVisit(params: { name: string; value: TData }): void {
         switch (typeof params.value) {
             case 'boolean':
-                symbolTable.addGlobalVariable(params.name, 'boolean', params.value);
+                addGlobalVariable(params.name, 'boolean', params.value);
                 break;
             case 'number':
-                symbolTable.addGlobalVariable(params.name, 'number', params.value);
+                addGlobalVariable(params.name, 'number', params.value);
                 break;
             case 'string':
-                symbolTable.addGlobalVariable(params.name, 'string', params.value);
+                addGlobalVariable(params.name, 'string', params.value);
                 break;
             default:
                 throw Error('Trespassing access: This should never be reached');
@@ -46,8 +46,8 @@ export class ElementBoxGeneric extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: TData }, symbolTable: SymbolTable): void {
-        super.onVisit(params, symbolTable);
+    onVisit(params: { name: string; value: TData }): void {
+        super.onVisit(params);
     }
 }
 
@@ -61,8 +61,8 @@ export class ElementBoxBoolean extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: boolean }, symbolTable: SymbolTable): void {
-        super.onVisit(params, symbolTable);
+    onVisit(params: { name: string; value: boolean }): void {
+        super.onVisit(params);
     }
 }
 
@@ -76,8 +76,8 @@ export class ElementBoxNumber extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: number }, symbolTable: SymbolTable): void {
-        super.onVisit(params, symbolTable);
+    onVisit(params: { name: string; value: number }): void {
+        super.onVisit(params);
     }
 }
 
@@ -91,7 +91,7 @@ export class ElementBoxString extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: string }, symbolTable: SymbolTable): void {
-        super.onVisit(params, symbolTable);
+    onVisit(params: { name: string; value: string }): void {
+        super.onVisit(params);
     }
 }

@@ -1,5 +1,4 @@
 import { TData, TDataName } from './data';
-import { ISymbolTable } from './symbolTable';
 
 /** Interface for the class that implements a syntax element. */
 export interface IElementSyntax {
@@ -36,9 +35,8 @@ export interface IElementData<T> extends IElementArgument<T> {
     updateLabel(value: string): void;
     /**
      * Evalutates the logic of the data element (usually based on the label).
-     * @param symbolTable - The symbol table instance to operate on variables
      */
-    evaluate(symbolTable: ISymbolTable): void;
+    evaluate(): void;
 }
 
 /** Generic interface for the class that implements an expression element. */
@@ -55,9 +53,8 @@ export interface IElementInstruction extends IElementSyntax {
     /**
      * Executes the instruction using the supplied parameters.
      * @param params - An object containing key-value pairs of each argument and it's value
-     * @param symbolTable - The symbol table instance to operate on variables
      */
-    onVisit(params: { [key: string]: TData }, symbolTable: ISymbolTable): void;
+    onVisit(params: { [key: string]: TData }): void;
 }
 
 /** Interface for the class that implements a statement element. */
