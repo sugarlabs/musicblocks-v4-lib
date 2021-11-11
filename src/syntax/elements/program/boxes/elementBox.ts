@@ -1,6 +1,7 @@
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementStatement } from '../../core/elementInstruction';
 import { addGlobalVariable } from '../../../symbol-table/symbolTable';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 
 /**
  * @virtual
@@ -11,7 +12,7 @@ import { addGlobalVariable } from '../../../symbol-table/symbolTable';
  * Box elements add (declare) variables to the symbol table.
  */
 abstract class ElementBox extends ElementStatement {
-    constructor(name: string, label: string, types: TDataName[]) {
+    constructor(name: TElementName, label: string, types: TDataName[]) {
         super(name, label, {
             name: ['string'],
             value: types
@@ -41,8 +42,8 @@ abstract class ElementBox extends ElementStatement {
  * Defines a box element that declares a variable of any data type.
  */
 export class ElementBoxGeneric extends ElementBox {
-    constructor() {
-        super('box-generic', 'box', ['boolean', 'number', 'string']);
+    constructor(name: TElementName) {
+        super(name, 'box', ['boolean', 'number', 'string']);
     }
 
     /** @override */
@@ -56,8 +57,8 @@ export class ElementBoxGeneric extends ElementBox {
  * Defines a box element that declares a variable of boolean type.
  */
 export class ElementBoxBoolean extends ElementBox {
-    constructor() {
-        super('box-boolean', 'box (boolean)', ['boolean']);
+    constructor(name: TElementName) {
+        super(name, 'box (boolean)', ['boolean']);
     }
 
     /** @override */
@@ -71,8 +72,8 @@ export class ElementBoxBoolean extends ElementBox {
  * Defines a box element that declares a variable of number type.
  */
 export class ElementBoxNumber extends ElementBox {
-    constructor() {
-        super('box-number', 'box (number)', ['number']);
+    constructor(name: TElementName) {
+        super(name, 'box (number)', ['number']);
     }
 
     /** @override */
@@ -86,8 +87,8 @@ export class ElementBoxNumber extends ElementBox {
  * Defines a box element that declares a variable of string type.
  */
 export class ElementBoxString extends ElementBox {
-    constructor() {
-        super('box-string', 'box (string)', ['string']);
+    constructor(name: TElementName) {
+        super(name, 'box (string)', ['string']);
     }
 
     /** @override */

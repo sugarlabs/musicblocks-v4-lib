@@ -1,9 +1,10 @@
 import { TDataName } from '@/@types/syntax/data';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 import { ElementSyntax } from './elementSyntax';
 
 class DummyElementSyntax extends ElementSyntax {
     constructor(
-        name: string,
+        name: TElementName,
         label: string,
         kind: 'Argument' | 'Instruction',
         type: 'Data' | 'Expression' | 'Statement' | 'Block',

@@ -8,7 +8,7 @@ import {
 
 describe('Operator Elements', () => {
     describe('class ElementOperatorPlus', () => {
-        const elementOperatorPlus = new ElementOperatorMathPlus();
+        const elementOperatorPlus = new ElementOperatorMathPlus('operator-math-plus');
 
         test('pass two numbers as parameters to evaluate and verify result', () => {
             elementOperatorPlus.evaluate({ operand1: 5, operand2: 15 });
@@ -27,7 +27,7 @@ describe('Operator Elements', () => {
     });
 
     describe('class ElementOperatorMinus', () => {
-        const elementOperatorMinus = new ElementOperatorMathMinus();
+        const elementOperatorMinus = new ElementOperatorMathMinus('operator-math-minus');
 
         test('pass two numbers as parameters to evaluate and verify result', () => {
             elementOperatorMinus.evaluate({ operand1: 15, operand2: 5 });
@@ -38,7 +38,7 @@ describe('Operator Elements', () => {
     });
 
     describe('class ElementOperatorTimes', () => {
-        const elementOperatorTime = new ElementOperatorMathTimes();
+        const elementOperatorTime = new ElementOperatorMathTimes('operator-math-times');
 
         test('pass two numbers as parameters to evaluate and verify result', () => {
             elementOperatorTime.evaluate({ operand1: 15, operand2: 5 });
@@ -49,7 +49,7 @@ describe('Operator Elements', () => {
     });
 
     describe('class ElementOperatorDivide', () => {
-        const elementOperatorDivide = new ElementOperatorMathDivide();
+        const elementOperatorDivide = new ElementOperatorMathDivide('operator-math-divide');
 
         test('pass two numbers as parameters to evaluate and verify result', () => {
             elementOperatorDivide.evaluate({ operand1: 15, operand2: 5 });
@@ -60,7 +60,7 @@ describe('Operator Elements', () => {
     });
 
     describe('class ElementOperatorModulus', () => {
-        const elementOperatorModulus = new ElementOperatorMathModulus();
+        const elementOperatorModulus = new ElementOperatorMathModulus('operator-math-modulus');
 
         test('pass two numbers as parameters to evaluate and verify result', () => {
             elementOperatorModulus.evaluate({ operand1: 15, operand2: 5 });
