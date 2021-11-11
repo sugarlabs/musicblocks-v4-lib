@@ -40,8 +40,8 @@ import {
 } from './program/operators/elementOperatorMath';
 
 class ElementBlockDummy extends ElementBlock {
-    constructor(name: TElementBlockName) {
-        super(name, 'block-dummy', {});
+    constructor(name: TElementBlockName, label: string) {
+        super(name, label, {});
     }
 
     onVisit(): void {
@@ -77,117 +77,149 @@ interface IElementInstructionSpecification {
 const elementSpecification: {
     [identifier: string]:
         | {
+              label: string;
               type: 'Data';
               category: TElementCategoryData;
-              prototype: (name: TElementDataName) => ElementDataCover;
+              prototype: (name: TElementDataName, label: string) => ElementDataCover;
           }
         | {
+              label: string;
               type: 'Expression';
               category: TElementCategoryExpression;
-              prototype: (name: TElementExpressionName) => ElementExpressionCover;
+              prototype: (name: TElementExpressionName, label: string) => ElementExpressionCover;
           }
         | (IElementInstructionSpecification & {
+              label: string;
               type: 'Statement';
               category: TElementCategoryStatement;
-              prototype: (name: TElementStatementName) => ElementStatement;
+              prototype: (name: TElementStatementName, label: string) => ElementStatement;
           })
         | (IElementInstructionSpecification & {
+              label: string;
               type: 'Block';
               category: TElementCategoryBlock;
-              prototype: (name: TElementBlockName) => ElementBlock;
+              prototype: (name: TElementBlockName, label: string) => ElementBlock;
               allowNestInside?: TElementBlockName[] | boolean;
               forbidNestInside?: TElementBlockName[] | boolean;
           });
 } = {
     // -- value elements ---------------------------------------------------------------------------
     'value-boolean': {
+        label: 'true',
         type: 'Data',
         category: 'value',
-        prototype: (name: TElementDataName) => new ElementValueBoolean(name)
+        prototype: (name: TElementDataName, label: string) => new ElementValueBoolean(name, label)
     },
     'value-number': {
+        label: '0',
         type: 'Data',
         category: 'value',
-        prototype: (name: TElementDataName) => new ElementValueNumber(name)
+        prototype: (name: TElementDataName, label: string) => new ElementValueNumber(name, label)
     },
     'value-string': {
+        label: 'string',
         type: 'Data',
         category: 'value',
-        prototype: (name: TElementDataName) => new ElementValueString(name)
+        prototype: (name: TElementDataName, label: string) => new ElementValueString(name, label)
     },
     // -- box elements -----------------------------------------------------------------------------
     'box-generic': {
+        label: 'Box',
         type: 'Statement',
         category: 'box',
-        prototype: (name: TElementStatementName) => new ElementBoxGeneric(name)
+        prototype: (name: TElementStatementName, label: string) =>
+            new ElementBoxGeneric(name, label)
     },
     'box-boolean': {
+        label: 'Box (boolean)',
         type: 'Statement',
         category: 'box',
-        prototype: (name: TElementStatementName) => new ElementBoxBoolean(name)
+        prototype: (name: TElementStatementName, label: string) =>
+            new ElementBoxBoolean(name, label)
     },
     'box-number': {
+        label: 'Box (number)',
         type: 'Statement',
         category: 'box',
-        prototype: (name: TElementStatementName) => new ElementBoxNumber(name)
+        prototype: (name: TElementStatementName, label: string) => new ElementBoxNumber(name, label)
     },
     'box-string': {
+        label: 'Box (string)',
         type: 'Statement',
         category: 'box',
-        prototype: (name: TElementStatementName) => new ElementBoxString(name)
+        prototype: (name: TElementStatementName, label: string) => new ElementBoxString(name, label)
     },
     // -- box identifier elements ------------------------------------------------------------------
     'boxidentifier-generic': {
+        label: 'Box 1',
         type: 'Data',
         category: 'boxidentifier',
-        prototype: (name: TElementDataName) => new ElementBoxIdentifierGeneric(name)
+        prototype: (name: TElementDataName, label: string) =>
+            new ElementBoxIdentifierGeneric(name, label)
     },
     'boxidentifier-boolean': {
+        label: 'Box 1',
         type: 'Data',
         category: 'boxidentifier',
-        prototype: (name: TElementDataName) => new ElementBoxIdentifierBoolean(name)
+        prototype: (name: TElementDataName, label: string) =>
+            new ElementBoxIdentifierBoolean(name, label)
     },
     'boxidentifier-number': {
+        label: 'Box 1',
         type: 'Data',
         category: 'boxidentifier',
-        prototype: (name: TElementDataName) => new ElementBoxIdentifierNumber(name)
+        prototype: (name: TElementDataName, label: string) =>
+            new ElementBoxIdentifierNumber(name, label)
     },
     'boxidentifier-string': {
+        label: 'Box 1',
         type: 'Data',
         category: 'boxidentifier',
-        prototype: (name: TElementDataName) => new ElementBoxIdentifierString(name)
+        prototype: (name: TElementDataName, label: string) =>
+            new ElementBoxIdentifierString(name, label)
     },
     // -- math operator elements -------------------------------------------------------------------
     'operator-math-plus': {
+        label: '+',
         type: 'Expression',
         category: 'operator-math',
-        prototype: (name: TElementExpressionName) => new ElementOperatorMathPlus(name)
+        prototype: (name: TElementExpressionName, label: string) =>
+            new ElementOperatorMathPlus(name, label)
     },
     'operator-math-minus': {
+        label: '-',
         type: 'Expression',
         category: 'operator-math',
-        prototype: (name: TElementExpressionName) => new ElementOperatorMathMinus(name)
+        prototype: (name: TElementExpressionName, label: string) =>
+            new ElementOperatorMathMinus(name, label)
     },
     'operator-math-times': {
+        label: '\u00d7',
         type: 'Expression',
         category: 'operator-math',
-        prototype: (name: TElementExpressionName) => new ElementOperatorMathTimes(name)
+        prototype: (name: TElementExpressionName, label: string) =>
+            new ElementOperatorMathTimes(name, label)
     },
     'operator-math-divide': {
+        label: '\u00f7',
         type: 'Expression',
         category: 'operator-math',
-        prototype: (name: TElementExpressionName) => new ElementOperatorMathDivide(name)
+        prototype: (name: TElementExpressionName, label: string) =>
+            new ElementOperatorMathDivide(name, label)
     },
     'operator-math-modulus': {
+        label: '%',
         type: 'Expression',
         category: 'operator-math',
-        prototype: (name: TElementExpressionName) => new ElementOperatorMathModulus(name)
+        prototype: (name: TElementExpressionName, label: string) =>
+            new ElementOperatorMathModulus(name, label)
     },
     // -- dummy block element ----------------------------------------------------------------------
     'block-dummy': {
+        label: 'dummy',
         type: 'Block',
         category: 'block-dummy',
-        prototype: (name: TElementBlockName) => new ElementBlockDummy(name)
+        prototype: (name: TElementBlockName, label: string) => new ElementBlockDummy(name, label)
     }
 };
 
