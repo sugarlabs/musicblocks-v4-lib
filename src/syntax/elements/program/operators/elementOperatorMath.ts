@@ -1,4 +1,5 @@
 import { TData, TDataName } from '@/@types/syntax/data';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 import { ElementExpression } from '../../core/elementArgument';
 
 /** Type definition for the operator symbols */
@@ -16,7 +17,13 @@ type TOperator = '+' | '-' | '*' | '/' | '%';
 abstract class ElementOperatorMath<T> extends ElementExpression<T> {
     private _operator: TOperator;
 
-    constructor(name: string, returnType: TDataName[], operator: TOperator, initialValue: T) {
+    constructor(
+        name: TElementName,
+        label: string,
+        returnType: TDataName[],
+        operator: TOperator,
+        initialValue: T
+    ) {
         super(name, '', { operand1: returnType, operand2: returnType }, returnType, initialValue);
         this._operator = operator;
         this.updateLabel(this._operator);
@@ -57,8 +64,8 @@ abstract class ElementOperatorMath<T> extends ElementExpression<T> {
  * Performs addition on numbers and concatenation on strings.
  */
 export class ElementOperatorMathPlus extends ElementOperatorMath<number | string> {
-    constructor() {
-        super('operator-plus', ['number', 'string'], '+', 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number', 'string'], '+', 0);
     }
 }
 
@@ -70,8 +77,8 @@ export class ElementOperatorMathPlus extends ElementOperatorMath<number | string
  * Performs subtraction on numbers.
  */
 export class ElementOperatorMathMinus extends ElementOperatorMath<number> {
-    constructor() {
-        super('operator-minus', ['number'], '-', 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], '-', 0);
     }
 }
 
@@ -83,8 +90,8 @@ export class ElementOperatorMathMinus extends ElementOperatorMath<number> {
  * Performs multiplication on numbers.
  */
 export class ElementOperatorMathTimes extends ElementOperatorMath<number> {
-    constructor() {
-        super('operator-times', ['number'], '*', 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], '*', 0);
     }
 }
 
@@ -96,8 +103,8 @@ export class ElementOperatorMathTimes extends ElementOperatorMath<number> {
  * Performs division on numbers.
  */
 export class ElementOperatorMathDivide extends ElementOperatorMath<number> {
-    constructor() {
-        super('operator-divide', ['number'], '/', 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], '/', 0);
     }
 }
 
@@ -109,7 +116,7 @@ export class ElementOperatorMathDivide extends ElementOperatorMath<number> {
  * Performs modulus operation on numbers.
  */
 export class ElementOperatorMathModulus extends ElementOperatorMath<number> {
-    constructor() {
-        super('operator-modulus', ['number'], '%', 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], '%', 0);
     }
 }

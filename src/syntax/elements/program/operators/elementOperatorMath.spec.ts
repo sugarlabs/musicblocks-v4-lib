@@ -8,65 +8,95 @@ import {
 
 describe('Operator Elements', () => {
     describe('class ElementOperatorPlus', () => {
-        const elementOperatorPlus = new ElementOperatorMathPlus();
+        const elementOperatorPlus = new ElementOperatorMathPlus('operator-math-plus', '+');
 
-        test('pass two numbers as parameters to evaluate and verify result', () => {
-            elementOperatorPlus.evaluate({ operand1: 5, operand2: 15 });
-            expect(elementOperatorPlus.value).toBe(20);
+        test('verify label', () => {
+            expect(elementOperatorPlus.label).toBe('+');
         });
 
-        test('pass a number and a string as parameters to evaluate and verify result', () => {
-            elementOperatorPlus.evaluate({ operand1: 5, operand2: 'foo' });
-            expect(elementOperatorPlus.value).toBe('5foo');
-        });
+        describe('evaluation', () => {
+            test('pass two numbers as parameters to evaluate and verify result', () => {
+                elementOperatorPlus.evaluate({ operand1: 5, operand2: 15 });
+                expect(elementOperatorPlus.value).toBe(20);
+            });
 
-        test('pass two strings as parameters to evaluate and verify result', () => {
-            elementOperatorPlus.evaluate({ operand1: '5', operand2: '15' });
-            expect(elementOperatorPlus.value).toBe('515');
+            test('pass a number and a string as parameters to evaluate and verify result', () => {
+                elementOperatorPlus.evaluate({ operand1: 5, operand2: 'foo' });
+                expect(elementOperatorPlus.value).toBe('5foo');
+            });
+
+            test('pass two strings as parameters to evaluate and verify result', () => {
+                elementOperatorPlus.evaluate({ operand1: '5', operand2: '15' });
+                expect(elementOperatorPlus.value).toBe('515');
+            });
         });
     });
 
     describe('class ElementOperatorMinus', () => {
-        const elementOperatorMinus = new ElementOperatorMathMinus();
+        const elementOperatorMinus = new ElementOperatorMathMinus('operator-math-minus', '-');
 
-        test('pass two numbers as parameters to evaluate and verify result', () => {
-            elementOperatorMinus.evaluate({ operand1: 15, operand2: 5 });
-            expect(elementOperatorMinus.value).toBe(10);
-            elementOperatorMinus.evaluate({ operand1: 5, operand2: 15 });
-            expect(elementOperatorMinus.value).toBe(-10);
+        test('verify label', () => {
+            expect(elementOperatorMinus.label).toBe('-');
+        });
+
+        describe('evaluation', () => {
+            test('pass two numbers as parameters to evaluate and verify result', () => {
+                elementOperatorMinus.evaluate({ operand1: 15, operand2: 5 });
+                expect(elementOperatorMinus.value).toBe(10);
+                elementOperatorMinus.evaluate({ operand1: 5, operand2: 15 });
+                expect(elementOperatorMinus.value).toBe(-10);
+            });
         });
     });
 
     describe('class ElementOperatorTimes', () => {
-        const elementOperatorTime = new ElementOperatorMathTimes();
+        const elementOperatorTimes = new ElementOperatorMathTimes('operator-math-times', '*');
 
-        test('pass two numbers as parameters to evaluate and verify result', () => {
-            elementOperatorTime.evaluate({ operand1: 15, operand2: 5 });
-            expect(elementOperatorTime.value).toBe(75);
-            elementOperatorTime.evaluate({ operand1: -5, operand2: 15 });
-            expect(elementOperatorTime.value).toBe(-75);
+        describe('verify label', () => {
+            expect(elementOperatorTimes.label).toBe('*');
+        });
+
+        describe('evaluation', () => {
+            test('pass two numbers as parameters to evaluate and verify result', () => {
+                elementOperatorTimes.evaluate({ operand1: 15, operand2: 5 });
+                expect(elementOperatorTimes.value).toBe(75);
+                elementOperatorTimes.evaluate({ operand1: -5, operand2: 15 });
+                expect(elementOperatorTimes.value).toBe(-75);
+            });
         });
     });
 
     describe('class ElementOperatorDivide', () => {
-        const elementOperatorDivide = new ElementOperatorMathDivide();
+        const elementOperatorDivide = new ElementOperatorMathDivide('operator-math-divide', '/');
 
-        test('pass two numbers as parameters to evaluate and verify result', () => {
-            elementOperatorDivide.evaluate({ operand1: 15, operand2: 5 });
-            expect(elementOperatorDivide.value).toBe(3);
-            elementOperatorDivide.evaluate({ operand1: -5, operand2: 10 });
-            expect(elementOperatorDivide.value).toBe(-0.5);
+        describe('verify label', () => {
+            expect(elementOperatorDivide.label).toBe('/');
+        });
+
+        describe('evaluation', () => {
+            test('pass two numbers as parameters to evaluate and verify result', () => {
+                elementOperatorDivide.evaluate({ operand1: 15, operand2: 5 });
+                expect(elementOperatorDivide.value).toBe(3);
+                elementOperatorDivide.evaluate({ operand1: -5, operand2: 10 });
+                expect(elementOperatorDivide.value).toBe(-0.5);
+            });
         });
     });
 
     describe('class ElementOperatorModulus', () => {
-        const elementOperatorModulus = new ElementOperatorMathModulus();
+        const elementOperatorModulus = new ElementOperatorMathModulus('operator-math-modulus', '%');
 
-        test('pass two numbers as parameters to evaluate and verify result', () => {
-            elementOperatorModulus.evaluate({ operand1: 15, operand2: 5 });
-            expect(elementOperatorModulus.value).toBe(0);
-            elementOperatorModulus.evaluate({ operand1: 15, operand2: 7 });
-            expect(elementOperatorModulus.value).toBe(1);
+        describe('verify label', () => {
+            expect(elementOperatorModulus.label).toBe('%');
+        });
+
+        describe('evaluation', () => {
+            test('pass two numbers as parameters to evaluate and verify result', () => {
+                elementOperatorModulus.evaluate({ operand1: 15, operand2: 5 });
+                expect(elementOperatorModulus.value).toBe(0);
+                elementOperatorModulus.evaluate({ operand1: 15, operand2: 7 });
+                expect(elementOperatorModulus.value).toBe(1);
+            });
         });
     });
 });

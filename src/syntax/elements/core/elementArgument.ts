@@ -1,6 +1,7 @@
 import { IElementArgument, IElementExpression, IElementData } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 
 /**
  * @virtual
@@ -20,7 +21,7 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
 
     constructor(
         /** Name of the argument element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** Type (`Data`, `Expression`) of the argument element. */
@@ -58,7 +59,7 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
 export abstract class ElementData<T> extends ElementArgument<T> implements IElementData<T> {
     constructor(
         /** Name of the data element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
@@ -89,7 +90,7 @@ export abstract class ElementExpression<T>
 {
     constructor(
         /** Name of the expression element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */

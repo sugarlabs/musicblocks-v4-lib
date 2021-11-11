@@ -1,4 +1,5 @@
 import { TDataName } from '@/@types/syntax/data';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 import { ElementData } from '../../core/elementArgument';
 
 /**
@@ -10,11 +11,12 @@ import { ElementData } from '../../core/elementArgument';
  * Value elements return a stored value.
  */
 abstract class ElementValue<T> extends ElementData<T> {
-    constructor(name: string, returnType: ['number'], initialValue: number);
-    constructor(name: string, returnType: ['string'], initialValue: string);
-    constructor(name: string, returnType: ['boolean'], initialValue: boolean);
-    constructor(name: string, returnType: [TDataName], initialValue: T) {
+    constructor(name: TElementName, label: string, returnType: ['number'], initialValue: number);
+    constructor(name: TElementName, label: string, returnType: ['string'], initialValue: string);
+    constructor(name: TElementName, label: string, returnType: ['boolean'], initialValue: boolean);
+    constructor(name: TElementName, label: string, returnType: [TDataName], initialValue: T) {
         super(name, '', {}, returnType, initialValue);
+        this.updateLabel(label);
     }
 
     /** @throws `Error` (TypeMismatchError) */
@@ -47,8 +49,8 @@ abstract class ElementValue<T> extends ElementData<T> {
  * @throws `Error` (TypeMismatchError)
  */
 export class ElementValueBoolean extends ElementValue<boolean> {
-    constructor() {
-        super('value-boolean', ['boolean'], true);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['boolean'], true);
     }
 }
 
@@ -58,8 +60,8 @@ export class ElementValueBoolean extends ElementValue<boolean> {
  * @throws `Error` (TypeMismatchError)
  */
 export class ElementValueNumber extends ElementValue<number> {
-    constructor() {
-        super('value-number', ['number'], 0);
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['number'], 0);
     }
 }
 
@@ -69,7 +71,7 @@ export class ElementValueNumber extends ElementValue<number> {
  * @throws `Error` (TypeMismatchError)
  */
 export class ElementValueString extends ElementValue<string> {
-    constructor() {
-        super('value-string', ['string'], '');
+    constructor(name: TElementName, label: string) {
+        super(name, label, ['string'], '');
     }
 }

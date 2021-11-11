@@ -5,6 +5,7 @@ import {
 } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
+import { TElementName } from '@/@types/syntax/elementSpecification';
 
 /**
  * @virtual
@@ -18,7 +19,7 @@ import { ElementSyntax } from './elementSyntax';
 export abstract class ElementInstruction extends ElementSyntax implements IElementInstruction {
     constructor(
         /** Name of the instruction element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** Type (`Statement`, `Block`) of the instruction element. */
@@ -43,7 +44,7 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
 export abstract class ElementStatement extends ElementInstruction implements IElementStatement {
     constructor(
         /** Name of the statement element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
@@ -66,7 +67,7 @@ export abstract class ElementStatement extends ElementInstruction implements IEl
 export abstract class ElementBlock extends ElementInstruction implements IElementBlock {
     constructor(
         /** Name of the block element. */
-        name: string,
+        name: TElementName,
         /** Display name of the instruction element. */
         label: string,
         /** An object describing the type specification of each argument as a `argName: type[]` pair. */
