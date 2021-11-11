@@ -8,8 +8,9 @@ describe('class ElementValueBoolean', () => {
         expect(elementValueBoolean.value).toBe(true);
     });
 
-    test('update value and verify new value', () => {
-        elementValueBoolean.update(false);
+    test('update label and verify new value', () => {
+        elementValueBoolean.updateLabel('false');
+        elementValueBoolean.evaluate();
         expect(elementValueBoolean.value).toBe(false);
     });
 });
@@ -22,8 +23,9 @@ describe('class ElementValueNumber', () => {
         expect(elementValueNumber.value).toBe(0);
     });
 
-    test('update value and verify new value', () => {
-        elementValueNumber.update(5);
+    test('update label and verify new value', () => {
+        elementValueNumber.updateLabel('5');
+        elementValueNumber.evaluate();
         expect(elementValueNumber.value).toBe(5);
     });
 });
@@ -36,8 +38,9 @@ describe('class ElementValueString', () => {
         expect(elementValueString.value).toBe('');
     });
 
-    test('update value and verify new value', () => {
-        elementValueString.update('foo');
+    test('update label and verify new value', () => {
+        elementValueString.updateLabel('foo');
+        elementValueString.evaluate();
         expect(elementValueString.value).toBe('foo');
     });
 });

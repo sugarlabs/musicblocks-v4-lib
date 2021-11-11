@@ -1,6 +1,7 @@
 import { IElementArgument, IElementExpression, IElementData } from '@/@types/syntax/elementsCore';
 import { TData, TDataName } from '@/@types/syntax/data';
 import { ElementSyntax } from './elementSyntax';
+import { SymbolTable } from '@/syntax/symbol-table/symbolTable';
 
 /**
  * @virtual
@@ -54,6 +55,9 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
  * Data elements return a stored value.
  */
 export abstract class ElementData<T> extends ElementArgument<T> implements IElementData<T> {
+    /** Stores the label of the data element. */
+    protected _label: string;
+
     constructor(
         /** Name of the data element. */
         name: string,
@@ -62,14 +66,23 @@ export abstract class ElementData<T> extends ElementArgument<T> implements IElem
         /** Return types of the value returned by the argument element. */
         returnType: TDataName[],
         /** Initial return value of the argument. */
-        initialValue: T
+        initialValue: T,
+        /** Initial label of the data element. */
+        initialLabel: string
     ) {
         super(name, 'Data', argMap, returnType, initialValue);
+        this._label = initialLabel;
     }
 
-    public update(value: T): void {
-        this._value = value;
+    public get label(): string {
+        return this._label;
     }
+
+    public updateLabel(value: string): void {
+        this._label = value;
+    }
+
+    public abstract evaluate(symbolTable: SymbolTable): void;
 }
 
 /**

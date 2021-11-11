@@ -48,23 +48,15 @@ describe('class ElementArgument', () => {
     });
 });
 
-class DummyElementData<T> extends ElementData<T> {}
-
-class DummyElementDataOverrideNumber extends ElementData<number> {
-    public get value(): number {
-        return this._value * 2;
-    }
-}
-
-class DummyElementDataOverrideString extends ElementData<string> {
-    public get value(): string {
-        return `foo ${this._value} bar`;
-    }
-}
-
-class DummyElementDataOverrideBoolean extends ElementData<boolean> {
-    public get value(): boolean {
-        return !this._value;
+class DummyElementData<T> extends ElementData<T> {
+    public evaluate(): void {
+        if (this._label === 'true' || this._label === 'false') {
+            this._value = (this._label === 'true') as unknown as T;
+        } else if (!isNaN(Number(this._label))) {
+            this._value = Number(this._label) as unknown as T;
+        } else {
+            this._value = this._label as unknown as T;
+        }
     }
 }
 
@@ -75,23 +67,29 @@ describe('class ElementData', () => {
                 'dummy',
                 {},
                 ['number'],
-                0
+                0,
+                'myData'
             );
             expect(dummyElementDataNumber1.value).toBe(0);
+            expect(dummyElementDataNumber1.label).toBe('myData');
             const dummyElementDataNumber2 = new DummyElementData<number>(
                 'dummy',
                 {},
                 ['number'],
-                5
+                5,
+                'myData'
             );
             expect(dummyElementDataNumber2.value).toBe(5);
+            expect(dummyElementDataNumber1.label).toBe('myData');
             const dummyElementDataNumber3 = new DummyElementData<number>(
                 'dummy',
                 {},
                 ['number'],
-                -5
+                -5,
+                'myData'
             );
             expect(dummyElementDataNumber3.value).toBe(-5);
+            expect(dummyElementDataNumber1.label).toBe('myData');
         });
 
         test('instantiate class of type string that extends ElementData and validate API', () => {
@@ -99,16 +97,20 @@ describe('class ElementData', () => {
                 'dummy',
                 {},
                 ['string'],
-                'foo'
+                'foo',
+                'myData'
             );
             expect(dummyElementDataString1.value).toBe('foo');
+            expect(dummyElementDataString1.label).toBe('myData');
             const dummyElementDataString2 = new DummyElementData<string>(
                 'dummy',
                 {},
                 ['string'],
-                ''
+                '',
+                'myData'
             );
             expect(dummyElementDataString2.value).toBe('');
+            expect(dummyElementDataString1.label).toBe('myData');
         });
 
         test('instantiate class of type boolean that extends ElementData and validate API', () => {
@@ -116,89 +118,84 @@ describe('class ElementData', () => {
                 'dummy',
                 {},
                 ['boolean'],
-                true
+                true,
+                'myData'
             );
             expect(dummyElementDataBoolean1.value).toBe(true);
+            expect(dummyElementDataBoolean1.label).toBe('myData');
             const dummyElementDataBoolean2 = new DummyElementData<boolean>(
                 'dummy',
                 {},
                 ['boolean'],
-                false
+                false,
+                'myData'
             );
             expect(dummyElementDataBoolean2.value).toBe(false);
+            expect(dummyElementDataBoolean1.label).toBe('myData');
         });
     });
 
-    describe('update', () => {
-        test('update value in instance of class of type number that extends ElementData and validate', () => {
-            const dummyElementDataNumber = new DummyElementData<number>('dummy', {}, ['number'], 0);
+    describe('update label', () => {
+        test('update value in instance of class that extends ElementData and validate', () => {
+            const dummyElementDataNumber = new DummyElementData<number | string | boolean>(
+                'dummy',
+                {},
+                ['number'],
+                0,
+                'myData'
+            );
+            expect(dummyElementDataNumber.label).toBe('myData');
+            dummyElementDataNumber.updateLabel('yourData');
+            expect(dummyElementDataNumber.label).toBe('yourData');
+            dummyElementDataNumber.updateLabel('data');
+            expect(dummyElementDataNumber.label).toBe('data');
+        });
+    });
+
+    describe('overwriting', () => {
+        test('evaluate instance of class of type number that extends ElementData and validate', () => {
+            const dummyElementDataNumber = new DummyElementData<number>(
+                'dummy',
+                {},
+                ['number'],
+                0,
+                'myData'
+            );
             expect(dummyElementDataNumber.value).toBe(0);
-            dummyElementDataNumber.update(5);
+            dummyElementDataNumber.updateLabel('5');
+            expect(dummyElementDataNumber.label).toBe('5');
+            dummyElementDataNumber.evaluate();
             expect(dummyElementDataNumber.value).toBe(5);
-            dummyElementDataNumber.update(-5);
-            expect(dummyElementDataNumber.value).toBe(-5);
         });
 
-        test('update value in instance of class of type string that extends ElementData and validate', () => {
+        test('evaluate instance of class of type string that extends ElementData and validate', () => {
             const dummyElementDataString = new DummyElementData<string>(
                 'dummy',
                 {},
                 ['string'],
-                ''
+                '',
+                'myData'
             );
             expect(dummyElementDataString.value).toBe('');
-            dummyElementDataString.update('foo');
+            dummyElementDataString.updateLabel('foo');
+            expect(dummyElementDataString.label).toBe('foo');
+            dummyElementDataString.evaluate();
             expect(dummyElementDataString.value).toBe('foo');
         });
 
-        test('update value in instance of class of type boolean that extends ElementData and validate', () => {
+        test('evaluate instance of class of type boolean that extends ElementData and validate', () => {
             const dummyElementDataBoolean = new DummyElementData<boolean>(
                 'dummy',
                 {},
                 ['boolean'],
-                true
+                true,
+                'myData'
             );
             expect(dummyElementDataBoolean.value).toBe(true);
-            dummyElementDataBoolean.update(false);
+            dummyElementDataBoolean.updateLabel('false');
+            expect(dummyElementDataBoolean.label).toBe('false');
+            dummyElementDataBoolean.evaluate();
             expect(dummyElementDataBoolean.value).toBe(false);
-        });
-    });
-
-    describe('override', () => {
-        test('override value in instance of class of type number that extends ElementData and validate', () => {
-            const dummyElementDataBoolean = new DummyElementDataOverrideNumber(
-                'dummy',
-                {},
-                ['number'],
-                5
-            );
-            expect(dummyElementDataBoolean.value).toBe(10);
-            dummyElementDataBoolean.update(-5);
-            expect(dummyElementDataBoolean.value).toBe(-10);
-        });
-
-        test('override value in instance of class of type string that extends ElementData and validate', () => {
-            const dummyElementDataBoolean = new DummyElementDataOverrideString(
-                'dummy',
-                {},
-                ['string'],
-                'foobar'
-            );
-            expect(dummyElementDataBoolean.value).toBe('foo foobar bar');
-            dummyElementDataBoolean.update('');
-            expect(dummyElementDataBoolean.value).toBe('foo  bar');
-        });
-
-        test('override value in instance of class of type boolean that extends ElementData and validate', () => {
-            const dummyElementDataBoolean = new DummyElementDataOverrideBoolean(
-                'dummy',
-                {},
-                ['boolean'],
-                true
-            );
-            expect(dummyElementDataBoolean.value).toBe(false);
-            dummyElementDataBoolean.update(false);
-            expect(dummyElementDataBoolean.value).toBe(true);
         });
     });
 });

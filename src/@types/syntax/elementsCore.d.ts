@@ -27,11 +27,18 @@ export interface IElementArgument<T> extends IElementSyntax {
 
 /** Generic interface for the class that implements a data element. */
 export interface IElementData<T> extends IElementArgument<T> {
+    /** The display name of the data element. */
+    label: string;
     /**
-     * Updates the value stored in the data element.
-     * @param value - new value
+     * Updates the label of the data element.
+     * @param value - new label value
      */
-    update(value: T): void;
+    updateLabel(value: string): void;
+    /**
+     * Evalutates the logic of the data element (usually based on the label).
+     * @param symbolTable - The symbol table instance to operate on variables
+     */
+    evaluate(symbolTable: ISymbolTable): void;
 }
 
 /** Generic interface for the class that implements an expression element. */
