@@ -9,10 +9,10 @@ import {
     TElementCategoryExpression,
     TElementCategoryStatement,
     TElementCategoryBlock,
-    TElementDataName,
-    TElementExpressionName,
-    TElementStatementName,
-    TElementBlockName,
+    TElementNameData,
+    TElementNameExpression,
+    TElementNameStatement,
+    TElementNameBlock,
 } from '@/@types/specification';
 import elementSpecification from './specification';
 
@@ -43,28 +43,28 @@ let _elementMap: {
         | {
               instance: _ElementDataCover;
               type: 'Data';
-              name: TElementDataName;
+              name: TElementNameData;
               kind: 'Argument';
               category: TElementCategoryData;
           }
         | {
               instance: _ElementExpressionCover;
               type: 'Expression';
-              name: TElementExpressionName;
+              name: TElementNameExpression;
               kind: 'Argument';
               category: TElementCategoryExpression;
           }
         | {
               instance: ElementStatement;
               type: 'Statement';
-              name: TElementStatementName;
+              name: TElementNameStatement;
               kind: 'Instruction';
               category: TElementCategoryStatement;
           }
         | {
               instance: ElementBlock;
               type: 'Block';
-              name: TElementBlockName;
+              name: TElementNameBlock;
               kind: 'Instruction';
               category: TElementCategoryBlock;
           };
@@ -93,7 +93,7 @@ function _addInstance(
         case 'Data':
             _elementMap[instanceID] = {
                 instance: instance as _ElementDataCover,
-                name: elementName as TElementDataName,
+                name: elementName as TElementNameData,
                 type: type as 'Data',
                 kind: 'Argument',
                 category: category as TElementCategoryData,
@@ -102,7 +102,7 @@ function _addInstance(
         case 'Expression':
             _elementMap[instanceID] = {
                 instance: instance as _ElementExpressionCover,
-                name: elementName as TElementExpressionName,
+                name: elementName as TElementNameExpression,
                 type: type as 'Expression',
                 kind: 'Argument',
                 category: category as TElementCategoryExpression,
@@ -111,7 +111,7 @@ function _addInstance(
         case 'Statement':
             _elementMap[instanceID] = {
                 instance: instance as ElementStatement,
-                name: elementName as TElementStatementName,
+                name: elementName as TElementNameStatement,
                 type: type as 'Statement',
                 kind: 'Instruction',
                 category: category as TElementCategoryStatement,
@@ -120,7 +120,7 @@ function _addInstance(
         case 'Block':
             _elementMap[instanceID] = {
                 instance: instance as ElementBlock,
-                name: elementName as TElementBlockName,
+                name: elementName as TElementNameBlock,
                 type: type as 'Block',
                 kind: 'Instruction',
                 category: category as TElementCategoryBlock,
@@ -190,28 +190,28 @@ export function addInstance(elementName: TElementName): string {
 
     switch (type) {
         case 'Data':
-            instance = (prototype as (name: TElementDataName, label: string) => _ElementDataCover)(
-                elementName as TElementDataName,
+            instance = (prototype as (name: TElementNameData, label: string) => _ElementDataCover)(
+                elementName as TElementNameData,
                 label
             );
             break;
         case 'Expression':
             instance = (
                 prototype as (
-                    name: TElementExpressionName,
+                    name: TElementNameExpression,
                     label: string
                 ) => _ElementExpressionCover
-            )(elementName as TElementExpressionName, label);
+            )(elementName as TElementNameExpression, label);
             break;
         case 'Statement':
             instance = (
-                prototype as (name: TElementStatementName, label: string) => ElementStatement
-            )(elementName as TElementStatementName, label);
+                prototype as (name: TElementNameStatement, label: string) => ElementStatement
+            )(elementName as TElementNameStatement, label);
             break;
         case 'Block':
         default:
-            instance = (prototype as (name: TElementBlockName, label: string) => ElementBlock)(
-                elementName as TElementBlockName,
+            instance = (prototype as (name: TElementNameBlock, label: string) => ElementBlock)(
+                elementName as TElementNameBlock,
                 label
             );
     }

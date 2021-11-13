@@ -1,8 +1,8 @@
 import {
-    TElementDataName,
-    TElementExpressionName,
-    TElementStatementName,
-    TElementBlockName,
+    TElementNameData,
+    TElementNameExpression,
+    TElementNameStatement,
+    TElementNameBlock,
     TElementName,
 } from '@/@types/specification';
 import {
@@ -36,7 +36,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementDataName,
+                    name: TElementNameData,
                     label: string
                 ) => ElementDataCover;
                 const elementInstance = prototype('value-boolean', dataElementEntry.label);
@@ -57,7 +57,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementExpressionName,
+                    name: TElementNameExpression,
                     label: string
                 ) => ElementExpressionCover;
                 const elementInstance = prototype('operator-math-plus', dataElementEntry.label);
@@ -78,7 +78,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementStatementName,
+                    name: TElementNameStatement,
                     label: string
                 ) => ElementStatement;
                 const elementInstance = prototype('box-generic', dataElementEntry.label);
@@ -99,7 +99,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementBlockName,
+                    name: TElementNameBlock,
                     label: string
                 ) => ElementBlock;
                 const elementInstance = prototype('process', dataElementEntry.label);
@@ -170,10 +170,10 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry.prototype as (
-                        name: TElementBlockName,
+                        name: TElementNameBlock,
                         label: string
                     ) => ElementBlock
-                )('dummy0' as TElementBlockName, 'dummy0') instanceof DummyElementBlock
+                )('dummy0' as TElementNameBlock, 'dummy0') instanceof DummyElementBlock
             ).toBe(true);
         });
 
@@ -216,10 +216,10 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry1.prototype as (
-                        name: TElementDataName,
+                        name: TElementNameData,
                         label: string
                     ) => ElementDataCover
-                )('dummy1' as TElementDataName, 'dummy1') instanceof DummyElementData
+                )('dummy1' as TElementNameData, 'dummy1') instanceof DummyElementData
             ).toBe(true);
 
             expect(elementEntry2.label).toBe('dummy2');
@@ -228,10 +228,10 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry2.prototype as (
-                        name: TElementExpressionName,
+                        name: TElementNameExpression,
                         label: string
                     ) => ElementExpressionCover
-                )('dummy2' as TElementExpressionName, 'dummy2') instanceof DummyElementExpression
+                )('dummy2' as TElementNameExpression, 'dummy2') instanceof DummyElementExpression
             ).toBe(true);
 
             expect(elementEntry3.label).toBe('dummy3');
@@ -240,10 +240,10 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry3.prototype as (
-                        name: TElementStatementName,
+                        name: TElementNameStatement,
                         label: string
                     ) => ElementStatement
-                )('dummy3' as TElementStatementName, 'dummy3') instanceof DummyElementStatement
+                )('dummy3' as TElementNameStatement, 'dummy3') instanceof DummyElementStatement
             ).toBe(true);
 
             expect(elementEntry4.label).toBe('dummy4');
@@ -252,10 +252,10 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry4.prototype as (
-                        name: TElementBlockName,
+                        name: TElementNameBlock,
                         label: string
                     ) => ElementBlock
-                )('dummy4' as TElementBlockName, 'dummy4') instanceof DummyElementBlock
+                )('dummy4' as TElementNameBlock, 'dummy4') instanceof DummyElementBlock
             ).toBe(true);
         });
 
