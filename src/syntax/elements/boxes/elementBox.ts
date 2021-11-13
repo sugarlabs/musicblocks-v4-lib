@@ -1,7 +1,7 @@
 import { TData, TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
 
-import { ElementStatement } from '../core/elementInstruction';
+import { ElementStatement } from '../elementInstruction';
 import { addGlobalVariable } from '@/execution/symbolTable';
 
 // -------------------------------------------------------------------------------------------------

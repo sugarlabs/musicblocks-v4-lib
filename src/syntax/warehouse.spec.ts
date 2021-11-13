@@ -1,4 +1,4 @@
-import { ElementBlock } from './elements/core/elementInstruction';
+import { ElementBlock } from './elements/elementInstruction';
 import { ElementBoxBoolean } from './elements/boxes/elementBox';
 import { ElementOperatorMathPlus } from './elements/operators/elementOperatorMath';
 import { ElementValueBoolean } from './elements/values/elementValue';

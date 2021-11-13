@@ -1,6 +1,6 @@
 import { TData, TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
-import { ElementExpression } from '../core/elementArgument';
+import { ElementExpression } from '../elementArgument';
 
 // -------------------------------------------------------------------------------------------------
 
