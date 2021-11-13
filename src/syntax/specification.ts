@@ -9,32 +9,32 @@ import {
     TElementStatementName,
 } from '@/@types/specification';
 
-import { ElementBlock } from './elements/elementInstruction';
+import { ElementBlock } from './elements/core/elementInstruction';
 
 import {
     ElementValueBoolean,
     ElementValueNumber,
     ElementValueString,
-} from './elements/values/elementValue';
+} from './elements/elementValue';
 import {
     ElementBoxGeneric,
     ElementBoxBoolean,
     ElementBoxNumber,
     ElementBoxString,
-} from './elements/boxes/elementBox';
+} from './elements/elementBox';
 import {
     ElementBoxIdentifierGeneric,
     ElementBoxIdentifierBoolean,
     ElementBoxIdentifierNumber,
     ElementBoxIdentifierString,
-} from './elements/boxes/elementBoxIdentifier';
+} from './elements/elementBoxIdentifier';
 import {
     ElementOperatorMathPlus,
     ElementOperatorMathMinus,
     ElementOperatorMathTimes,
     ElementOperatorMathDivide,
     ElementOperatorMathModulus,
-} from './elements/operators/elementOperatorMath';
+} from './elements/elementOperatorMath';
 
 class ElementBlockDummy extends ElementBlock {
     constructor(name: TElementBlockName, label: string) {

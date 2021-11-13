@@ -1,7 +1,3 @@
-import { ElementBlock } from './elements/elementInstruction';
-import { ElementBoxBoolean } from './elements/boxes/elementBox';
-import { ElementOperatorMathPlus } from './elements/operators/elementOperatorMath';
-import { ElementValueBoolean } from './elements/values/elementValue';
 import {
     addInstance,
     getInstance,
@@ -16,6 +12,11 @@ import {
     getCategoryCountAll,
     resetWarehouse,
 } from './warehouse';
+
+import { ElementBlock } from './elements/core/elementInstruction';
+import { ElementBoxBoolean } from './elements/elementBox';
+import { ElementOperatorMathPlus } from './elements/elementOperatorMath';
+import { ElementValueBoolean } from './elements/elementValue';
 
 // -------------------------------------------------------------------------------------------------
 
