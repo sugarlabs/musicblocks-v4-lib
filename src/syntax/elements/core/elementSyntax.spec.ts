@@ -1,5 +1,5 @@
-import { TDataName } from '@/@types/syntax/data';
-import { TElementName } from '@/@types/syntax/elementSpecification';
+import { TDataName } from '@/@types/data';
+import { TElementName } from '@/@types/elementSpecification';
 import { ElementSyntax } from './elementSyntax';
 
 class DummyElementSyntax extends ElementSyntax {

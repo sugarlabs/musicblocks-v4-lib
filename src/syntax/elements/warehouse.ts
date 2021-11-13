@@ -13,10 +13,10 @@ import {
     TElementExpressionName,
     TElementStatementName,
     TElementBlockName
-} from '@/@types/syntax/elementSpecification';
+} from '@/@types/elementSpecification';
 import elementSpecification from './specification';
 
-import { TData } from '@/@types/syntax/data';
+import { TData } from '@/@types/data';
 import { ElementSyntax } from './core/elementSyntax';
 import { ElementData, ElementExpression } from './core/elementArgument';
 import { ElementStatement, ElementBlock } from './core/elementInstruction';
@@ -156,6 +156,7 @@ export function addInstance(elementName: TElementName): string {
             )(elementName as TElementStatementName, label);
             break;
         case 'Block':
+        default:
             instance = (prototype as (name: TElementBlockName, label: string) => ElementBlock)(
                 elementName as TElementBlockName,
                 label

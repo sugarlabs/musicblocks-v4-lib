@@ -1,5 +1,5 @@
-import { TData, TDataName } from '@/@types/syntax/data';
-import { TElementName } from '@/@types/syntax/elementSpecification';
+import { TData, TDataName } from '@/@types/data';
+import { TElementName } from '@/@types/elementSpecification';
 import { ElementExpression } from '../../core/elementArgument';
 
 /** Type definition for the operator symbols */
