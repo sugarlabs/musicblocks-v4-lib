@@ -56,6 +56,18 @@ export function registerElementSpecificationEntry(
 }
 
 /**
+ * Returns the names of available syntax elements.
+ * @returns a list of syntax element names.
+ */
+export function getElementNames(): TElementName[] {
+    return Object.keys(_elementSpecification) as TElementName[];
+}
+
+export function getElementCategories(): string[] {
+    return [...new Set(Object.entries(_elementSpecification).map(([_, { category }]) => category))];
+}
+
+/**
  * Returns the element specification for a syntax element.
  * @param name name of the syntax element
  * @returns element specification if exists, else `null`

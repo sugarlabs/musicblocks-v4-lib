@@ -43,7 +43,7 @@ describe('Syntax Element Warehouse', () => {
         });
 
         test('add an instance of a block element', () => {
-            instanceID4 = addInstance('block-dummy');
+            instanceID4 = addInstance('process');
             expect(typeof instanceID4).toBe('string');
         });
     });
@@ -82,10 +82,10 @@ describe('Syntax Element Warehouse', () => {
 
         test('fetch instance of a block element with valid instance ID and verify', () => {
             const { name, kind, type, category, instance } = getInstance(instanceID4)!;
-            expect(name).toBe('block-dummy');
+            expect(name).toBe('process');
             expect(kind).toBe('Instruction');
             expect(type).toBe('Block');
-            expect(category).toBe('block-dummy');
+            expect(category).toBe('program');
             expect(instance instanceof ElementBlock);
         });
     });
@@ -138,7 +138,7 @@ describe('Syntax Element Warehouse', () => {
             expect(getCategoryCount('boxidentifier')).toBe(1);
             expect(getCategoryCount('operator-math')).toBe(2);
             expect(getCategoryCount('box')).toBe(2);
-            expect(getCategoryCount('block-dummy')).toBe(1);
+            expect(getCategoryCount('program')).toBe(1);
         });
 
         test('verify category count all', () => {
@@ -148,7 +148,7 @@ describe('Syntax Element Warehouse', () => {
                     ['boxidentifier', 1],
                     ['operator-math', 2],
                     ['box', 2],
-                    ['block-dummy', 1],
+                    ['program', 1],
                 ])
             );
         });
@@ -169,7 +169,7 @@ describe('Syntax Element Warehouse', () => {
             expect(getCategoryCount('boxidentifier')).toBe(1);
             expect(getCategoryCount('operator-math')).toBe(2);
             expect(getCategoryCount('box')).toBe(2);
-            expect(getCategoryCount('block-dummy')).toBe(1);
+            expect(getCategoryCount('program')).toBe(1);
         });
     });
 
