@@ -12,7 +12,7 @@ import {
     TElementDataName,
     TElementExpressionName,
     TElementStatementName,
-    TElementBlockName
+    TElementBlockName,
 } from '@/@types/specification';
 import elementSpecification from './specification';
 
@@ -90,7 +90,7 @@ function _addInstance(
                 name: elementName as TElementDataName,
                 type: type as 'Data',
                 kind: 'Argument',
-                category: category as TElementCategoryData
+                category: category as TElementCategoryData,
             };
             break;
         case 'Expression':
@@ -99,7 +99,7 @@ function _addInstance(
                 name: elementName as TElementExpressionName,
                 type: type as 'Expression',
                 kind: 'Argument',
-                category: category as TElementCategoryExpression
+                category: category as TElementCategoryExpression,
             };
             break;
         case 'Statement':
@@ -108,7 +108,7 @@ function _addInstance(
                 name: elementName as TElementStatementName,
                 type: type as 'Statement',
                 kind: 'Instruction',
-                category: category as TElementCategoryStatement
+                category: category as TElementCategoryStatement,
             };
             break;
         case 'Block':
@@ -117,7 +117,7 @@ function _addInstance(
                 name: elementName as TElementBlockName,
                 type: type as 'Block',
                 kind: 'Instruction',
-                category: category as TElementCategoryBlock
+                category: category as TElementCategoryBlock,
             };
             break;
     }
@@ -289,7 +289,7 @@ function _resetElementNameCountMap(): void {
 function _resetElementKindCountMap(): void {
     _elementKindCountMap = {
         Argument: 0,
-        Instruction: 0
+        Instruction: 0,
     };
 }
 
@@ -301,7 +301,7 @@ function _resetElementTypeCountMap(): void {
         Data: 0,
         Expression: 0,
         Statement: 0,
-        Block: 0
+        Block: 0,
     };
 }
 
