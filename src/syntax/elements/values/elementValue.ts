@@ -1,6 +1,9 @@
-import { TDataName } from '@/@types/syntax/data';
-import { TElementName } from '@/@types/syntax/elementSpecification';
-import { ElementData } from '../../core/elementArgument';
+import { TDataName } from '@/@types/data';
+import { TElementName } from '@/@types/specification';
+
+import { ElementData } from '../elementArgument';
+
+// -------------------------------------------------------------------------------------------------
 
 /**
  * @virtual

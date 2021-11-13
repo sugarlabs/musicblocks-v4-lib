@@ -3,8 +3,10 @@ import {
     ElementOperatorMathMinus,
     ElementOperatorMathTimes,
     ElementOperatorMathDivide,
-    ElementOperatorMathModulus
+    ElementOperatorMathModulus,
 } from './elementOperatorMath';
+
+// -------------------------------------------------------------------------------------------------
 
 describe('Operator Elements', () => {
     describe('class ElementOperatorPlus', () => {

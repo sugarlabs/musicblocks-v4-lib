@@ -1,4 +1,4 @@
-import { TData, TDataName } from '@/@types/syntax/data';
+import { TData, TDataName } from '@/@types/data';
 
 // -- types ----------------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ let _programTable: { [program: string]: IVariableTable } = {};
 /** Stores the routines' table. */
 let _routineTable: { [routine: string]: IVariableTable } = {};
 
-// -- private function -----------------------------------------------------------------------------
+// -- private functions ----------------------------------------------------------------------------
 
 /**
  * A helper that adds a variable for a program or routine. If already present, overwrites it.

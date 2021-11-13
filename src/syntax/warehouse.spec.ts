@@ -1,7 +1,7 @@
-import { ElementBlock } from './core/elementInstruction';
-import { ElementBoxBoolean } from './program/boxes/elementBox';
-import { ElementOperatorMathPlus } from './program/operators/elementOperatorMath';
-import { ElementValueBoolean } from './program/values/elementValue';
+import { ElementBlock } from './elements/elementInstruction';
+import { ElementBoxBoolean } from './elements/boxes/elementBox';
+import { ElementOperatorMathPlus } from './elements/operators/elementOperatorMath';
+import { ElementValueBoolean } from './elements/values/elementValue';
 import {
     addInstance,
     getInstance,
@@ -14,8 +14,10 @@ import {
     getTypeCountAll,
     getCategoryCount,
     getCategoryCountAll,
-    resetWarehouse
+    resetWarehouse,
 } from './warehouse';
+
+// -------------------------------------------------------------------------------------------------
 
 describe('Syntax Element Warehouse', () => {
     let instanceID1: string;
@@ -107,7 +109,7 @@ describe('Syntax Element Warehouse', () => {
             expect(new Set(Object.entries(getKindCountAll()))).toEqual(
                 new Set([
                     ['Argument', 5],
-                    ['Instruction', 3]
+                    ['Instruction', 3],
                 ])
             );
         });
@@ -125,7 +127,7 @@ describe('Syntax Element Warehouse', () => {
                     ['Data', 3],
                     ['Expression', 2],
                     ['Statement', 2],
-                    ['Block', 1]
+                    ['Block', 1],
                 ])
             );
         });
@@ -145,7 +147,7 @@ describe('Syntax Element Warehouse', () => {
                     ['boxidentifier', 1],
                     ['operator-math', 2],
                     ['box', 2],
-                    ['block-dummy', 1]
+                    ['block-dummy', 1],
                 ])
             );
         });

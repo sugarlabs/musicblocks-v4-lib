@@ -1,5 +1,7 @@
 import { ElementValueBoolean, ElementValueNumber, ElementValueString } from './elementValue';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('class ElementValueBoolean', () => {
     let elementValueBoolean: ElementValueBoolean;
 

@@ -2,9 +2,11 @@ import {
     ElementBoxBoolean,
     ElementBoxNumber,
     ElementBoxString,
-    ElementBoxGeneric
+    ElementBoxGeneric,
 } from './elementBox';
-import { getGlobalVariable } from '../../../symbol-table/symbolTable';
+import { getGlobalVariable } from '@/execution/symbolTable';
+
+// -------------------------------------------------------------------------------------------------
 
 describe('Box Elements', () => {
     test('instantiate and verify instance variables', () => {
@@ -24,7 +26,7 @@ describe('Box Elements', () => {
             elementBoxBoolean.onVisit({ name: 'booleanBox', value: true });
             expect(getGlobalVariable('booleanBox')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
     });
@@ -36,7 +38,7 @@ describe('Box Elements', () => {
             elementBoxNumber.onVisit({ name: 'numberBox', value: 5 });
             expect(getGlobalVariable('numberBox')).toEqual({
                 dataType: 'number',
-                value: 5
+                value: 5,
             });
         });
     });
@@ -48,7 +50,7 @@ describe('Box Elements', () => {
             elementBoxString.onVisit({ name: 'stringBox', value: 'foo' });
             expect(getGlobalVariable('stringBox')).toEqual({
                 dataType: 'string',
-                value: 'foo'
+                value: 'foo',
             });
         });
     });
@@ -59,7 +61,7 @@ describe('Box Elements', () => {
             elementBoxGeneric.onVisit({ name: 'genericBox', value: true });
             expect(getGlobalVariable('genericBox')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
 
@@ -68,7 +70,7 @@ describe('Box Elements', () => {
             elementBoxGeneric.onVisit({ name: 'genericBox', value: 5 });
             expect(getGlobalVariable('genericBox')).toEqual({
                 dataType: 'number',
-                value: 5
+                value: 5,
             });
         });
 
@@ -77,7 +79,7 @@ describe('Box Elements', () => {
             elementBoxGeneric.onVisit({ name: 'genericBox', value: 'foo' });
             expect(getGlobalVariable('genericBox')).toEqual({
                 dataType: 'string',
-                value: 'foo'
+                value: 'foo',
             });
         });
     });

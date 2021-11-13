@@ -1,6 +1,8 @@
-import { TDataName } from '@/@types/syntax/data';
-import { TElementName } from '@/@types/syntax/elementSpecification';
+import { TDataName } from '@/@types/data';
+import { TElementName } from '@/@types/specification';
 import { ElementSyntax } from './elementSyntax';
+
+// -------------------------------------------------------------------------------------------------
 
 class DummyElementSyntax extends ElementSyntax {
     constructor(
@@ -83,7 +85,7 @@ describe('class ElementSyntax', () => {
                 {
                     arg1: ['number'],
                     arg2: ['string', 'number'],
-                    arg3: ['boolean']
+                    arg3: ['boolean'],
                 }
             );
             expect(dummyElementSyntax.name).toBe('dummy');
@@ -95,7 +97,7 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.argMap).toEqual({
                 arg1: ['number'],
                 arg2: ['string', 'number'],
-                arg3: ['boolean']
+                arg3: ['boolean'],
             });
         });
     });

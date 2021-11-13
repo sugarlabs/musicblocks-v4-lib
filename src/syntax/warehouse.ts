@@ -12,17 +12,21 @@ import {
     TElementDataName,
     TElementExpressionName,
     TElementStatementName,
-    TElementBlockName
-} from '@/@types/syntax/elementSpecification';
+    TElementBlockName,
+} from '@/@types/specification';
 import elementSpecification from './specification';
 
-import { TData } from '@/@types/syntax/data';
-import { ElementSyntax } from './core/elementSyntax';
-import { ElementData, ElementExpression } from './core/elementArgument';
-import { ElementStatement, ElementBlock } from './core/elementInstruction';
+import { TData } from '@/@types/data';
+import { ElementSyntax } from './elements/elementSyntax';
+import { ElementData, ElementExpression } from './elements/elementArgument';
+import { ElementStatement, ElementBlock } from './elements/elementInstruction';
 
-abstract class ElementDataCover extends ElementData<TData> {}
-abstract class ElementExpressionCover extends ElementExpression<TData> {}
+// -- private variables ----------------------------------------------------------------------------
+
+/** A non-generic wrapper for class `ElementData`. */
+abstract class _ElementDataCover extends ElementData<TData> {}
+/** A non-generic wrapper for class `ElementExpression`. */
+abstract class _ElementExpressionCover extends ElementExpression<TData> {}
 
 /** Stores the count of element name. */
 let _elementNameCountMap: { [elementName: string]: number } = {};
@@ -37,14 +41,14 @@ let _elementCategoryCountMap: { [elementKind: string]: number } = {};
 let _elementMap: {
     [elementID: string]:
         | {
-              instance: ElementDataCover;
+              instance: _ElementDataCover;
               type: 'Data';
               name: TElementDataName;
               kind: 'Argument';
               category: TElementCategoryData;
           }
         | {
-              instance: ElementExpressionCover;
+              instance: _ElementExpressionCover;
               type: 'Expression';
               name: TElementExpressionName;
               kind: 'Argument';
@@ -66,6 +70,8 @@ let _elementMap: {
           };
 } = {};
 
+// -- private functions ----------------------------------------------------------------------------
+
 /**
  * Helper function that creates a new instance, adds to element table, and updates count tables.
  * @param elementName - name of the element
@@ -86,20 +92,20 @@ function _addInstance(
     switch (type) {
         case 'Data':
             _elementMap[instanceID] = {
-                instance: instance as ElementDataCover,
+                instance: instance as _ElementDataCover,
                 name: elementName as TElementDataName,
                 type: type as 'Data',
                 kind: 'Argument',
-                category: category as TElementCategoryData
+                category: category as TElementCategoryData,
             };
             break;
         case 'Expression':
             _elementMap[instanceID] = {
-                instance: instance as ElementExpressionCover,
+                instance: instance as _ElementExpressionCover,
                 name: elementName as TElementExpressionName,
                 type: type as 'Expression',
                 kind: 'Argument',
-                category: category as TElementCategoryExpression
+                category: category as TElementCategoryExpression,
             };
             break;
         case 'Statement':
@@ -108,7 +114,7 @@ function _addInstance(
                 name: elementName as TElementStatementName,
                 type: type as 'Statement',
                 kind: 'Instruction',
-                category: category as TElementCategoryStatement
+                category: category as TElementCategoryStatement,
             };
             break;
         case 'Block':
@@ -117,7 +123,7 @@ function _addInstance(
                 name: elementName as TElementBlockName,
                 type: type as 'Block',
                 kind: 'Instruction',
-                category: category as TElementCategoryBlock
+                category: category as TElementCategoryBlock,
             };
             break;
     }
@@ -127,6 +133,50 @@ function _addInstance(
     _elementTypeCountMap[type]++;
     _elementCategoryCountMap[category]++;
 }
+
+/**
+ * Helper that resets the element name count table.
+ */
+function _resetElementNameCountMap(): void {
+    _elementNameCountMap = {};
+    (Object.keys(elementSpecification) as TElementName[]).forEach(
+        (elementName) => (_elementNameCountMap[elementName] = 0)
+    );
+}
+
+/**
+ * Helper that resets the element kind count table.
+ */
+function _resetElementKindCountMap(): void {
+    _elementKindCountMap = {
+        Argument: 0,
+        Instruction: 0,
+    };
+}
+
+/**
+ * Helper that resets the element type count table.
+ */
+function _resetElementTypeCountMap(): void {
+    _elementTypeCountMap = {
+        Data: 0,
+        Expression: 0,
+        Statement: 0,
+        Block: 0,
+    };
+}
+
+/**
+ * Helper that resets the element category count table.
+ */
+function _resetElementCategoryCountMap(): void {
+    _elementCategoryCountMap = {};
+    const categorySet = new Set<TElementCategory>();
+    Object.entries(elementSpecification).forEach(([_, { category }]) => categorySet.add(category));
+    [...categorySet].forEach((category) => (_elementCategoryCountMap[category] = 0));
+}
+
+// -- public functions -----------------------------------------------------------------------------
 
 /**
  * Creates a new instance, adds to element table, and updates count tables.
@@ -140,14 +190,17 @@ export function addInstance(elementName: TElementName): string {
 
     switch (type) {
         case 'Data':
-            instance = (prototype as (name: TElementDataName, label: string) => ElementDataCover)(
+            instance = (prototype as (name: TElementDataName, label: string) => _ElementDataCover)(
                 elementName as TElementDataName,
                 label
             );
             break;
         case 'Expression':
             instance = (
-                prototype as (name: TElementExpressionName, label: string) => ElementExpressionCover
+                prototype as (
+                    name: TElementExpressionName,
+                    label: string
+                ) => _ElementExpressionCover
             )(elementName as TElementExpressionName, label);
             break;
         case 'Statement':
@@ -156,6 +209,7 @@ export function addInstance(elementName: TElementName): string {
             )(elementName as TElementStatementName, label);
             break;
         case 'Block':
+        default:
             instance = (prototype as (name: TElementBlockName, label: string) => ElementBlock)(
                 elementName as TElementBlockName,
                 label
@@ -270,48 +324,6 @@ export function getCategoryCount(category: TElementCategory): number {
  */
 export function getCategoryCountAll(): { [category: string]: number } {
     return { ..._elementCategoryCountMap };
-}
-
-/**
- * Helper that resets the element name count table.
- */
-function _resetElementNameCountMap(): void {
-    _elementNameCountMap = {};
-    (Object.keys(elementSpecification) as TElementName[]).forEach(
-        (elementName) => (_elementNameCountMap[elementName] = 0)
-    );
-}
-
-/**
- * Helper that resets the element kind count table.
- */
-function _resetElementKindCountMap(): void {
-    _elementKindCountMap = {
-        Argument: 0,
-        Instruction: 0
-    };
-}
-
-/**
- * Helper that resets the element type count table.
- */
-function _resetElementTypeCountMap(): void {
-    _elementTypeCountMap = {
-        Data: 0,
-        Expression: 0,
-        Statement: 0,
-        Block: 0
-    };
-}
-
-/**
- * Helper that resets the element category count table.
- */
-function _resetElementCategoryCountMap(): void {
-    _elementCategoryCountMap = {};
-    const categorySet = new Set<TElementCategory>();
-    Object.entries(elementSpecification).forEach(([_, { category }]) => categorySet.add(category));
-    [...categorySet].forEach((category) => (_elementCategoryCountMap[category] = 0));
 }
 
 /**

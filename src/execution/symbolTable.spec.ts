@@ -1,12 +1,14 @@
 import * as symbolTable from './symbolTable';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('Symbol Table', () => {
     describe('global variables', () => {
         test('add a new number variable and verify entry by fetching the entry for the variable', () => {
             symbolTable.addGlobalVariable('myVar1', 'number', 5);
             expect(symbolTable.getGlobalVariable('myVar1')).toEqual({
                 dataType: 'number',
-                value: 5
+                value: 5,
             });
         });
 
@@ -14,7 +16,7 @@ describe('Symbol Table', () => {
             symbolTable.addGlobalVariable('myVar2', 'string', 'foo');
             expect(symbolTable.getGlobalVariable('myVar2')).toEqual({
                 dataType: 'string',
-                value: 'foo'
+                value: 'foo',
             });
         });
 
@@ -22,7 +24,7 @@ describe('Symbol Table', () => {
             symbolTable.addGlobalVariable('myVar3', 'boolean', true);
             expect(symbolTable.getGlobalVariable('myVar3')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
 
@@ -30,7 +32,7 @@ describe('Symbol Table', () => {
             symbolTable.addGlobalVariable('myVar1', 'boolean', true);
             expect(symbolTable.getGlobalVariable('myVar1')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
 
@@ -42,7 +44,7 @@ describe('Symbol Table', () => {
             symbolTable.addGlobalVariable('myVarx', 'number', 0);
             expect(symbolTable.getGlobalVariable('myVarx')).toEqual({
                 dataType: 'number',
-                value: 0
+                value: 0,
             });
             symbolTable.removeGlobalVariable('myVarx');
             expect(symbolTable.getGlobalVariable('myVarx')).toBe(null);
@@ -54,7 +56,7 @@ describe('Symbol Table', () => {
             symbolTable.addProgramVariable('myVar1', 'number', 5, 'myProgram1');
             expect(symbolTable.getProgramVariable('myVar1', 'myProgram1')).toEqual({
                 dataType: 'number',
-                value: 5
+                value: 5,
             });
         });
 
@@ -62,7 +64,7 @@ describe('Symbol Table', () => {
             symbolTable.addProgramVariable('myVar2', 'string', 'foo', 'myProgram1');
             expect(symbolTable.getProgramVariable('myVar2', 'myProgram1')).toEqual({
                 dataType: 'string',
-                value: 'foo'
+                value: 'foo',
             });
         });
 
@@ -70,7 +72,7 @@ describe('Symbol Table', () => {
             symbolTable.addProgramVariable('myVar1', 'boolean', true, 'myProgram2');
             expect(symbolTable.getProgramVariable('myVar1', 'myProgram2')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
 
@@ -78,7 +80,7 @@ describe('Symbol Table', () => {
             symbolTable.addProgramVariable('myVar1', 'string', 'bar', 'myProgram2');
             expect(symbolTable.getProgramVariable('myVar1', 'myProgram2')).toEqual({
                 dataType: 'string',
-                value: 'bar'
+                value: 'bar',
             });
         });
 
@@ -100,7 +102,7 @@ describe('Symbol Table', () => {
             symbolTable.addRoutineVariable('myVar1', 'number', 5, 'myRoutine1');
             expect(symbolTable.getRoutineVariable('myVar1', 'myRoutine1')).toEqual({
                 dataType: 'number',
-                value: 5
+                value: 5,
             });
         });
 
@@ -108,7 +110,7 @@ describe('Symbol Table', () => {
             symbolTable.addRoutineVariable('myVar2', 'string', 'foo', 'myRoutine1');
             expect(symbolTable.getRoutineVariable('myVar2', 'myRoutine1')).toEqual({
                 dataType: 'string',
-                value: 'foo'
+                value: 'foo',
             });
         });
 
@@ -116,7 +118,7 @@ describe('Symbol Table', () => {
             symbolTable.addRoutineVariable('myVar1', 'boolean', true, 'myRoutine2');
             expect(symbolTable.getRoutineVariable('myVar1', 'myRoutine2')).toEqual({
                 dataType: 'boolean',
-                value: true
+                value: true,
             });
         });
 
@@ -124,7 +126,7 @@ describe('Symbol Table', () => {
             symbolTable.addRoutineVariable('myVar1', 'string', 'bar', 'myRoutine2');
             expect(symbolTable.getRoutineVariable('myVar1', 'myRoutine2')).toEqual({
                 dataType: 'string',
-                value: 'bar'
+                value: 'bar',
             });
         });
 
@@ -153,7 +155,7 @@ describe('Symbol Table', () => {
                 new Set([
                     ['myVar1', 'boolean'],
                     ['myVar2', 'string'],
-                    ['myVar3', 'boolean']
+                    ['myVar3', 'boolean'],
                 ])
             );
         });
@@ -170,7 +172,7 @@ describe('Symbol Table', () => {
             ).toEqual(
                 new Set([
                     ['myVar1', 'number'],
-                    ['myVar2', 'string']
+                    ['myVar2', 'string'],
                 ])
             );
         });
@@ -192,7 +194,7 @@ describe('Symbol Table', () => {
             expect(new Set(Object.entries(variables['myProgram1']))).toEqual(
                 new Set([
                     ['myVar1', 'number'],
-                    ['myVar2', 'string']
+                    ['myVar2', 'string'],
                 ])
             );
             expect(new Set(Object.entries(variables['myProgram2']))).toEqual(
@@ -212,7 +214,7 @@ describe('Symbol Table', () => {
             ).toEqual(
                 new Set([
                     ['myVar1', 'number'],
-                    ['myVar2', 'string']
+                    ['myVar2', 'string'],
                 ])
             );
         });
@@ -234,7 +236,7 @@ describe('Symbol Table', () => {
             expect(new Set(Object.entries(variables['myRoutine1']))).toEqual(
                 new Set([
                     ['myVar1', 'number'],
-                    ['myVar2', 'string']
+                    ['myVar2', 'string'],
                 ])
             );
             expect(new Set(Object.entries(variables['myRoutine2']))).toEqual(

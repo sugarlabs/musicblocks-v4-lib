@@ -1,11 +1,10 @@
-import {
-    IElementBlock,
-    IElementInstruction,
-    IElementStatement
-} from '@/@types/syntax/elementsCore';
-import { TData, TDataName } from '@/@types/syntax/data';
+import { TData, TDataName } from '@/@types/data';
+import { TElementName } from '@/@types/specification';
+import { IElementBlock, IElementInstruction, IElementStatement } from '@/@types/elements';
+
 import { ElementSyntax } from './elementSyntax';
-import { TElementName } from '@/@types/syntax/elementSpecification';
+
+// -------------------------------------------------------------------------------------------------
 
 /**
  * @virtual
