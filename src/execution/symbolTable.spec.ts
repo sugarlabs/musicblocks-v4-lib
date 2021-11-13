@@ -1,5 +1,7 @@
 import * as symbolTable from './symbolTable';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('Symbol Table', () => {
     describe('global variables', () => {
         test('add a new number variable and verify entry by fetching the entry for the variable', () => {

@@ -2,6 +2,8 @@ import { TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
 import { IElementSyntax } from '@/@types/elementsCore';
 
+// -------------------------------------------------------------------------------------------------
+
 /**
  * @virtual
  * @class

@@ -1,7 +1,10 @@
 import { TData, TDataName } from '@/@types/data';
-import { addGlobalVariable } from '@/execution/symbolTable';
-import { ElementStatement } from '../core/elementInstruction';
 import { TElementName } from '@/@types/specification';
+
+import { ElementStatement } from '../core/elementInstruction';
+import { addGlobalVariable } from '@/execution/symbolTable';
+
+// -------------------------------------------------------------------------------------------------
 
 /**
  * @virtual

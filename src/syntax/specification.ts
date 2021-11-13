@@ -58,6 +58,9 @@ class ElementBlockDummy extends ElementBlock {
     }
 }
 
+// -------------------------------------------------------------------------------------------------
+
+/** Stores the specifications for each element as a key-value pair of name: specification. */
 const elementSpecification: {
     [identifier: string]:
         | IElementDataSpecification

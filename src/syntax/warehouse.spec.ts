@@ -17,6 +17,8 @@ import {
     resetWarehouse,
 } from './warehouse';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('Syntax Element Warehouse', () => {
     let instanceID1: string;
     let instanceID2: string;

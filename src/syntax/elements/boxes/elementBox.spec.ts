@@ -6,6 +6,8 @@ import {
 } from './elementBox';
 import { getGlobalVariable } from '@/execution/symbolTable';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('Box Elements', () => {
     test('instantiate and verify instance variables', () => {
         const elementBox = new ElementBoxGeneric('box-generic', 'Box');
