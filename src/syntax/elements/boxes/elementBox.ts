@@ -1,7 +1,7 @@
 import { TData, TDataName } from '@/@types/data';
-import { ElementStatement } from '../../core/elementInstruction';
-import { addGlobalVariable } from '../../../symbol-table/symbolTable';
-import { TElementName } from '@/@types/elementSpecification';
+import { addGlobalVariable } from '@/execution/symbolTable';
+import { ElementStatement } from '../core/elementInstruction';
+import { TElementName } from '@/@types/specification';
 
 /**
  * @virtual
@@ -15,7 +15,7 @@ abstract class ElementBox extends ElementStatement {
     constructor(name: TElementName, label: string, types: TDataName[]) {
         super(name, label, {
             name: ['string'],
-            value: types
+            value: types,
         });
     }
 

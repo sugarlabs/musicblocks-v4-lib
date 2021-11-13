@@ -1,7 +1,7 @@
-import { ElementBlock } from './core/elementInstruction';
-import { ElementBoxBoolean } from './program/boxes/elementBox';
-import { ElementOperatorMathPlus } from './program/operators/elementOperatorMath';
-import { ElementValueBoolean } from './program/values/elementValue';
+import { ElementBlock } from './elements/core/elementInstruction';
+import { ElementBoxBoolean } from './elements/boxes/elementBox';
+import { ElementOperatorMathPlus } from './elements/operators/elementOperatorMath';
+import { ElementValueBoolean } from './elements/values/elementValue';
 import {
     addInstance,
     getInstance,

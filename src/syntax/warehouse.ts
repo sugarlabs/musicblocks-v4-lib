@@ -13,13 +13,13 @@ import {
     TElementExpressionName,
     TElementStatementName,
     TElementBlockName
-} from '@/@types/elementSpecification';
+} from '@/@types/specification';
 import elementSpecification from './specification';
 
 import { TData } from '@/@types/data';
-import { ElementSyntax } from './core/elementSyntax';
-import { ElementData, ElementExpression } from './core/elementArgument';
-import { ElementStatement, ElementBlock } from './core/elementInstruction';
+import { ElementSyntax } from './elements/core/elementSyntax';
+import { ElementData, ElementExpression } from './elements/core/elementArgument';
+import { ElementStatement, ElementBlock } from './elements/core/elementInstruction';
 
 abstract class ElementDataCover extends ElementData<TData> {}
 abstract class ElementExpressionCover extends ElementExpression<TData> {}
