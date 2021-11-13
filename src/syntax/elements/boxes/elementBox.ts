@@ -2,7 +2,7 @@ import { TData, TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
 
 import { ElementStatement } from '../elementInstruction';
-import { addGlobalVariable } from '@/execution/symbolTable';
+import { declareVariable } from '@/execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -26,13 +26,13 @@ abstract class ElementBox extends ElementStatement {
     public onVisit(params: { name: string; value: TData }): void {
         switch (typeof params.value) {
             case 'boolean':
-                addGlobalVariable(params.name, 'boolean', params.value);
+                declareVariable(params.name, 'boolean', params.value);
                 break;
             case 'number':
-                addGlobalVariable(params.name, 'number', params.value);
+                declareVariable(params.name, 'number', params.value);
                 break;
             case 'string':
-                addGlobalVariable(params.name, 'string', params.value);
+                declareVariable(params.name, 'string', params.value);
                 break;
             default:
                 throw Error('Trespassing access: This should never be reached');

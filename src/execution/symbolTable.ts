@@ -1,12 +1,7 @@
 import { TData, TDataName } from '@/@types/data';
+import { IVariable } from '@/@types/execution';
 
 // -- types ----------------------------------------------------------------------------------------
-
-/** Type describing a variable entry. */
-type IVariable = {
-    dataType: TDataName;
-    value: TData;
-};
 
 /** Type describing a set of variables. */
 type IVariableTable = {
@@ -168,9 +163,6 @@ function _flushTableVariables(selector: string, tableName: 'program' | 'routine'
  * @param dataType - data type of the variable
  * @param value - value of the variable
  */
-export function addGlobalVariable(variable: string, dataType: 'number', value: number): void;
-export function addGlobalVariable(variable: string, dataType: 'string', value: string): void;
-export function addGlobalVariable(variable: string, dataType: 'boolean', value: boolean): void;
 export function addGlobalVariable(variable: string, dataType: TDataName, value: TData): void {
     _globalTable[variable] = { dataType, value };
 }
@@ -221,24 +213,6 @@ export function removeGlobalVariable(variable: string): void {
  * @param value - value of the variable
  * @param program - ID of the program
  */
-export function addProgramVariable(
-    variable: string,
-    dataType: 'number',
-    value: number,
-    program: string
-): void;
-export function addProgramVariable(
-    variable: string,
-    dataType: 'string',
-    value: string,
-    program: string
-): void;
-export function addProgramVariable(
-    variable: string,
-    dataType: 'boolean',
-    value: boolean,
-    program: string
-): void;
 export function addProgramVariable(
     variable: string,
     dataType: TDataName,
@@ -314,24 +288,6 @@ export function removeProgramVariable(variable: string, program: string): void {
  * @param value - value of the variable
  * @param routine - ID of the routine
  */
-export function addRoutineVariable(
-    variable: string,
-    dataType: 'number',
-    value: number,
-    routine: string
-): void;
-export function addRoutineVariable(
-    variable: string,
-    dataType: 'string',
-    value: string,
-    routine: string
-): void;
-export function addRoutineVariable(
-    variable: string,
-    dataType: 'boolean',
-    value: boolean,
-    routine: string
-): void;
 export function addRoutineVariable(
     variable: string,
     dataType: TDataName,
