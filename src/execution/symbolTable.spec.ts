@@ -51,49 +51,49 @@ describe('Symbol Table', () => {
         });
     });
 
-    describe('program variables', () => {
-        test('add a new variable to a new program and verify entry by fetching the entry for the variable', () => {
-            symbolTable.addProgramVariable('myVar1', 'number', 5, 'myProgram1');
-            expect(symbolTable.getProgramVariable('myVar1', 'myProgram1')).toEqual({
+    describe('process variables', () => {
+        test('add a new variable to a new process and verify entry by fetching the entry for the variable', () => {
+            symbolTable.addProcessVariable('myVar1', 'number', 5, 'myProcess1');
+            expect(symbolTable.getProcessVariable('myVar1', 'myProcess1')).toEqual({
                 dataType: 'number',
                 value: 5,
             });
         });
 
-        test('add a new variable to an existing program and verify entry by fetching the entry for the variable', () => {
-            symbolTable.addProgramVariable('myVar2', 'string', 'foo', 'myProgram1');
-            expect(symbolTable.getProgramVariable('myVar2', 'myProgram1')).toEqual({
+        test('add a new variable to an existing process and verify entry by fetching the entry for the variable', () => {
+            symbolTable.addProcessVariable('myVar2', 'string', 'foo', 'myProcess1');
+            expect(symbolTable.getProcessVariable('myVar2', 'myProcess1')).toEqual({
                 dataType: 'string',
                 value: 'foo',
             });
         });
 
-        test('add an existing variable to a new program and verify entry by fetching the entry for the variable', () => {
-            symbolTable.addProgramVariable('myVar1', 'boolean', true, 'myProgram2');
-            expect(symbolTable.getProgramVariable('myVar1', 'myProgram2')).toEqual({
+        test('add an existing variable to a new process and verify entry by fetching the entry for the variable', () => {
+            symbolTable.addProcessVariable('myVar1', 'boolean', true, 'myProcess2');
+            expect(symbolTable.getProcessVariable('myVar1', 'myProcess2')).toEqual({
                 dataType: 'boolean',
                 value: true,
             });
         });
 
-        test('add an existing variable-program pair and verify rewrite by fetching the entry for the variable', () => {
-            symbolTable.addProgramVariable('myVar1', 'string', 'bar', 'myProgram2');
-            expect(symbolTable.getProgramVariable('myVar1', 'myProgram2')).toEqual({
+        test('add an existing variable-process pair and verify rewrite by fetching the entry for the variable', () => {
+            symbolTable.addProcessVariable('myVar1', 'string', 'bar', 'myProcess2');
+            expect(symbolTable.getProcessVariable('myVar1', 'myProcess2')).toEqual({
                 dataType: 'string',
                 value: 'bar',
             });
         });
 
-        test('fetch a non-existing variable in an existing program and expect null', () => {
-            expect(symbolTable.getProgramVariable('noVar', 'myProgram1')).toBe(null);
+        test('fetch a non-existing variable in an existing process and expect null', () => {
+            expect(symbolTable.getProcessVariable('noVar', 'myProcess1')).toBe(null);
         });
 
-        test('fetch an existing variable in a non-existing program and expect null', () => {
-            expect(symbolTable.getProgramVariable('myVar1', 'myProgram')).toBe(null);
+        test('fetch an existing variable in a non-existing process and expect null', () => {
+            expect(symbolTable.getProcessVariable('myVar1', 'myProcess')).toBe(null);
         });
 
-        test('fetch an existing variable in an existing program but with no overlap and expect null', () => {
-            expect(symbolTable.getProgramVariable('myVar2', 'myProgram2')).toBe(null);
+        test('fetch an existing variable in an existing process but with no overlap and expect null', () => {
+            expect(symbolTable.getProcessVariable('myVar2', 'myProcess2')).toBe(null);
         });
     });
 
@@ -160,15 +160,15 @@ describe('Symbol Table', () => {
             );
         });
 
-        test('verify program variable names for an existing program', () => {
-            expect(new Set(symbolTable.getProgramVariableNames('myProgram1'))).toEqual(
+        test('verify process variable names for an existing process', () => {
+            expect(new Set(symbolTable.getProcessVariableNames('myProcess1'))).toEqual(
                 new Set(['myVar1', 'myVar2'])
             );
         });
 
-        test('verify program variable names with types for an existing program', () => {
+        test('verify process variable names with types for an existing process', () => {
             expect(
-                new Set(Object.entries(symbolTable.getProgramVariableNamesWithTypes('myProgram1')))
+                new Set(Object.entries(symbolTable.getProcessVariableNamesWithTypes('myProcess1')))
             ).toEqual(
                 new Set([
                     ['myVar1', 'number'],
@@ -177,38 +177,38 @@ describe('Symbol Table', () => {
             );
         });
 
-        test('fetch program variable names for a non-existing program and expect empty list', () => {
-            expect(new Set(symbolTable.getProgramVariableNames('myProgram'))).toEqual(new Set([]));
+        test('fetch process variable names for a non-existing process and expect empty list', () => {
+            expect(new Set(symbolTable.getProcessVariableNames('myProcess'))).toEqual(new Set([]));
         });
 
-        test('verify all program variable names', () => {
-            const variables = symbolTable.getProgramVariableNamesAll();
-            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProgram1', 'myProgram2']));
-            expect(new Set(variables['myProgram1'])).toEqual(new Set(['myVar1', 'myVar2']));
-            expect(new Set(variables['myProgram2'])).toEqual(new Set(['myVar1']));
+        test('verify all process variable names', () => {
+            const variables = symbolTable.getProcessVariableNamesAll();
+            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProcess1', 'myProcess2']));
+            expect(new Set(variables['myProcess1'])).toEqual(new Set(['myVar1', 'myVar2']));
+            expect(new Set(variables['myProcess2'])).toEqual(new Set(['myVar1']));
         });
 
-        test('verify all program variable names with types', () => {
-            const variables = symbolTable.getProgramVariableNamesWithTypesAll();
-            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProgram1', 'myProgram2']));
-            expect(new Set(Object.entries(variables['myProgram1']))).toEqual(
+        test('verify all process variable names with types', () => {
+            const variables = symbolTable.getProcessVariableNamesWithTypesAll();
+            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProcess1', 'myProcess2']));
+            expect(new Set(Object.entries(variables['myProcess1']))).toEqual(
                 new Set([
                     ['myVar1', 'number'],
                     ['myVar2', 'string'],
                 ])
             );
-            expect(new Set(Object.entries(variables['myProgram2']))).toEqual(
+            expect(new Set(Object.entries(variables['myProcess2']))).toEqual(
                 new Set([['myVar1', 'string']])
             );
         });
 
-        test('verify routine variable names for an existing program', () => {
+        test('verify routine variable names for an existing process', () => {
             expect(new Set(symbolTable.getRoutineVariableNames('myRoutine1'))).toEqual(
                 new Set(['myVar1', 'myVar2'])
             );
         });
 
-        test('verify routine variable names with types for an existing program', () => {
+        test('verify routine variable names with types for an existing process', () => {
             expect(
                 new Set(Object.entries(symbolTable.getRoutineVariableNamesWithTypes('myRoutine1')))
             ).toEqual(
@@ -219,7 +219,7 @@ describe('Symbol Table', () => {
             );
         });
 
-        test('fetch routine variable names for a non-existing program and expect empty list', () => {
+        test('fetch routine variable names for a non-existing process and expect empty list', () => {
             expect(new Set(symbolTable.getRoutineVariableNames('myRoutine'))).toEqual(new Set([]));
         });
 
@@ -251,18 +251,18 @@ describe('Symbol Table', () => {
             expect(symbolTable.getGlobalVariableNames()).toEqual([]);
         });
 
-        test('flush variables of an existing program and verify by checking listing', () => {
-            symbolTable.flushProgramVariables('myProgram1');
-            const variables = symbolTable.getProgramVariableNamesWithTypesAll();
-            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProgram2']));
-            expect(new Set(Object.entries(variables['myProgram2']))).toEqual(
+        test('flush variables of an existing process and verify by checking listing', () => {
+            symbolTable.flushProcessVariables('myProcess1');
+            const variables = symbolTable.getProcessVariableNamesWithTypesAll();
+            expect(new Set(Object.keys(variables))).toEqual(new Set(['myProcess2']));
+            expect(new Set(Object.entries(variables['myProcess2']))).toEqual(
                 new Set([['myVar1', 'string']])
             );
         });
 
-        test('flush all program variables and verify by checking listing', () => {
-            symbolTable.flushProgramVariablesAll();
-            expect(symbolTable.getProgramVariableNamesAll()).toEqual({});
+        test('flush all process variables and verify by checking listing', () => {
+            symbolTable.flushProcessVariablesAll();
+            expect(symbolTable.getProcessVariableNamesAll()).toEqual({});
         });
 
         test('flush variables of an existing routine and verify by checking listing', () => {
@@ -281,18 +281,18 @@ describe('Symbol Table', () => {
 
         test('flush all variables and verify', () => {
             symbolTable.addGlobalVariable('myVar1', 'number', 0);
-            symbolTable.addProgramVariable('myVar2', 'number', 0, 'myProgram');
+            symbolTable.addProcessVariable('myVar2', 'number', 0, 'myProcess');
             symbolTable.addRoutineVariable('myVar3', 'number', 0, 'myRoutine');
             expect(new Set(symbolTable.getGlobalVariableNames())).toEqual(new Set(['myVar1']));
-            expect(new Set(Object.entries(symbolTable.getProgramVariableNamesAll()))).toEqual(
-                new Set([['myProgram', ['myVar2']]])
+            expect(new Set(Object.entries(symbolTable.getProcessVariableNamesAll()))).toEqual(
+                new Set([['myProcess', ['myVar2']]])
             );
             expect(new Set(Object.entries(symbolTable.getRoutineVariableNamesAll()))).toEqual(
                 new Set([['myRoutine', ['myVar3']]])
             );
             symbolTable.flushAllVariables();
             expect(symbolTable.getGlobalVariableNames()).toEqual([]);
-            expect(symbolTable.getProgramVariableNamesAll()).toEqual({});
+            expect(symbolTable.getProcessVariableNamesAll()).toEqual({});
             expect(symbolTable.getRoutineVariableNamesAll()).toEqual({});
         });
     });
