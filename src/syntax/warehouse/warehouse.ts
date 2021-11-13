@@ -13,12 +13,12 @@ import {
     getElementNames,
     getElementCategories,
     queryElementSpecification,
-} from './specification/specification';
+} from '../specification/specification';
 
 import { TData } from '@/@types/data';
-import { ElementSyntax } from './elements/core/elementSyntax';
-import { ElementData, ElementExpression } from './elements/core/elementArgument';
-import { ElementStatement, ElementBlock } from './elements/core/elementInstruction';
+import { ElementSyntax } from '../elements/core/elementSyntax';
+import { ElementData, ElementExpression } from '../elements/core/elementArgument';
+import { ElementStatement, ElementBlock } from '../elements/core/elementInstruction';
 
 // -- private variables ----------------------------------------------------------------------------
 
