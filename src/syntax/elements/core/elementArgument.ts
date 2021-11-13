@@ -1,7 +1,7 @@
-import { IElementArgument, IElementExpression, IElementData } from '@/@types/syntax/elementsCore';
-import { TData, TDataName } from '@/@types/syntax/data';
+import { TData, TDataName } from '@/@types/data';
 import { ElementSyntax } from './elementSyntax';
-import { TElementName } from '@/@types/syntax/elementSpecification';
+import { TElementName } from '@/@types/elementSpecification';
+import { IElementArgument, IElementExpression, IElementData } from '@/@types/elementsCore';
 
 /**
  * @virtual

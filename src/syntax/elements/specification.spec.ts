@@ -3,10 +3,10 @@ import {
     TElementDataName,
     TElementExpressionName,
     TElementStatementName
-} from '@/@types/syntax/elementSpecification';
+} from '@/@types/elementSpecification';
 import specification from './specification';
 
-import { TData } from '@/@types/syntax/data';
+import { TData } from '@/@types/data';
 import { ElementData, ElementExpression } from './core/elementArgument';
 import { ElementStatement, ElementBlock } from './core/elementInstruction';
 

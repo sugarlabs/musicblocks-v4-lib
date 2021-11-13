@@ -1,4 +1,4 @@
-import { TData, TDataName } from '@/@types/syntax/data';
+import { TData, TDataName } from '@/@types/data';
 
 // -- types ----------------------------------------------------------------------------------------
 
