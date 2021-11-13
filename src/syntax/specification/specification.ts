@@ -1,8 +1,8 @@
 import {
-    IElementDataSpecification,
-    IElementExpressionSpecification,
-    IElementStatementSpecification,
-    IElementBlockSpecification,
+    IElementSpecificationData,
+    IElementSpecificationExpression,
+    IElementSpecificationStatement,
+    IElementSpecificationBlock,
     IElementSpecification,
     TElementName,
 } from '@/@types/specification';
@@ -14,10 +14,10 @@ import elementSpecificationEntries from './specificationEntries';
 /** Stores the specifications for each element as a key-value pair of name: specification. */
 let _elementSpecification: {
     [identifier: string]:
-        | IElementDataSpecification
-        | IElementExpressionSpecification
-        | IElementStatementSpecification
-        | IElementBlockSpecification;
+        | IElementSpecificationData
+        | IElementSpecificationExpression
+        | IElementSpecificationStatement
+        | IElementSpecificationBlock;
 } = {};
 
 // -- public functions -----------------------------------------------------------------------------
@@ -49,10 +49,10 @@ export function registerElementSpecificationEntry(
     });
 
     _elementSpecification[name] = specificationTableEntry as unknown as
-        | IElementDataSpecification
-        | IElementExpressionSpecification
-        | IElementStatementSpecification
-        | IElementBlockSpecification;
+        | IElementSpecificationData
+        | IElementSpecificationExpression
+        | IElementSpecificationStatement
+        | IElementSpecificationBlock;
 }
 
 /**
@@ -63,10 +63,10 @@ export function registerElementSpecificationEntry(
 export function queryElementSpecification(
     name: TElementName
 ):
-    | IElementDataSpecification
-    | IElementExpressionSpecification
-    | IElementStatementSpecification
-    | IElementBlockSpecification
+    | IElementSpecificationData
+    | IElementSpecificationExpression
+    | IElementSpecificationStatement
+    | IElementSpecificationBlock
     | null {
     return name in _elementSpecification ? { ..._elementSpecification[name] } : null;
 }

@@ -1,8 +1,8 @@
-import { TElementBlockName } from '@/@types/specification';
+import { TElementNameBlock } from '@/@types/specification';
 import { ElementBlock } from './core/elementInstruction';
 
 export class ElementProcess extends ElementBlock {
-    constructor(name: TElementBlockName, label: string) {
+    constructor(name: TElementNameBlock, label: string) {
         super(name, label, {});
     }
 
@@ -24,7 +24,7 @@ export class ElementProcess extends ElementBlock {
 }
 
 export class ElementRoutine extends ElementBlock {
-    constructor(name: TElementBlockName, label: string) {
+    constructor(name: TElementNameBlock, label: string) {
         super(name, label, { name: ['string'] });
     }
 
