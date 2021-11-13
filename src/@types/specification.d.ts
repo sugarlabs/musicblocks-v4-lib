@@ -1,5 +1,11 @@
 import { TData } from './data';
-import { IElementData, IElementExpression, IElementStatement, IElementBlock } from './elements';
+import {
+    IElementData,
+    IElementExpression,
+    IElementStatement,
+    IElementBlock,
+    IElementSyntax,
+} from './elements';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -7,17 +13,6 @@ import { IElementData, IElementExpression, IElementStatement, IElementBlock } fr
 export type TElementKind = 'Argument' | 'Instruction';
 /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
 export type TElementType = 'Data' | 'Expression' | 'Statement' | 'Block';
-
-export type TElementCategoryData = 'value' | 'boxidentifier';
-export type TElementCategoryExpression = 'operator-math';
-export type TElementCategoryStatement = 'box';
-export type TElementCategoryBlock = 'block-dummy';
-
-export type TElementCategory =
-    | TElementCategoryData
-    | TElementCategoryExpression
-    | TElementCategoryStatement
-    | TElementCategoryBlock;
 
 export type TElementDataName =
     // value elements
@@ -42,10 +37,9 @@ export type TElementStatementName =
     // box elements
     'box-generic' | 'box-boolean' | 'box-number' | 'box-string';
 
-export type TElementBlockName = 'block-dummy';
+export type TElementBlockName = 'process' | 'routine';
 
 export type TElementName =
-    | 'dummy'
     | TElementDataName
     | TElementExpressionName
     | TElementStatementName
@@ -54,15 +48,29 @@ export type TElementName =
 export interface IElementDataSpecification {
     label: string;
     type: 'Data';
-    category: TElementCategoryData;
+    category: string;
     prototype: (name: TElementDataName, label: string) => IElementData<TData>;
+}
+
+export interface IElementSpecificationEntryData extends IElementDataSpecification {
+    label: string;
+    type: 'Data';
+    category: string;
+    prototype: typeof IElementData;
 }
 
 export interface IElementExpressionSpecification {
     label: string;
     type: 'Expression';
-    category: TElementCategoryExpression;
+    category: string;
     prototype: (name: TElementExpressionName, label: string) => IElementExpression<TData>;
+}
+
+export interface IElementSpecificationEntryExpression extends IElementExpressionSpecification {
+    label: string;
+    type: 'Expression';
+    category: string;
+    prototype: typeof IElementExpression;
 }
 
 interface IElementInstructionSpecification {
@@ -78,15 +86,47 @@ interface IElementInstructionSpecification {
 export type IElementStatementSpecification = IElementInstructionSpecification & {
     label: string;
     type: 'Statement';
-    category: TElementCategoryStatement;
+    category: string;
     prototype: (name: TElementStatementName, label: string) => IElementStatement;
+};
+
+export type IElementSpecificationEntryStatement = IElementInstructionSpecification & {
+    label: string;
+    type: 'Statement';
+    category: string;
+    prototype: typeof IElementStatement;
 };
 
 export type IElementBlockSpecification = IElementInstructionSpecification & {
     label: string;
     type: 'Block';
-    category: TElementCategoryBlock;
+    category: string;
     prototype: (name: TElementBlockName, label: string) => IElementBlock;
     allowNestInside?: TElementBlockName[] | boolean;
     forbidNestInside?: TElementBlockName[] | boolean;
 };
+
+export type IElementSpecificationEntryBlock = IElementInstructionSpecification & {
+    label: string;
+    type: 'Block';
+    category: string;
+    prototype: typeof IElementBlock;
+    allowNestInside?: TElementBlockName[] | boolean;
+    forbidNestInside?: TElementBlockName[] | boolean;
+};
+
+export interface IElementSpecification {
+    label: string;
+    type: TElementType;
+    category: string;
+    prototype: new (name: TElementName, label: string) => IElementSyntax;
+    allowAbove?: TElementName[] | boolean;
+    allowBelow?: TElementName[] | boolean;
+    forbidAbove?: TElementName[] | boolean;
+    forbidBelow?: TElementName[] | boolean;
+    allowedNestLevel?: number[] | 'any';
+    allowedNestInside?: TElementBlockName[] | boolean;
+    forbiddenNestInside?: TElementBlockName[] | boolean;
+    allowNestInside?: TElementBlockName[] | boolean;
+    forbidNestInside?: TElementBlockName[] | boolean;
+}
