@@ -2,7 +2,7 @@ import {
     TElementBlockName,
     TElementDataName,
     TElementExpressionName,
-    TElementStatementName
+    TElementStatementName,
 } from '@/@types/specification';
 import specification from './specification';
 

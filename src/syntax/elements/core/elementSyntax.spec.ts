@@ -83,7 +83,7 @@ describe('class ElementSyntax', () => {
                 {
                     arg1: ['number'],
                     arg2: ['string', 'number'],
-                    arg3: ['boolean']
+                    arg3: ['boolean'],
                 }
             );
             expect(dummyElementSyntax.name).toBe('dummy');
@@ -95,7 +95,7 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.argMap).toEqual({
                 arg1: ['number'],
                 arg2: ['string', 'number'],
-                arg3: ['boolean']
+                arg3: ['boolean'],
             });
         });
     });
