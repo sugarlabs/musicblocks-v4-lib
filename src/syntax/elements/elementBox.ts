@@ -1,7 +1,7 @@
 import { TData, TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
 
-import { ElementStatement } from '../elementInstruction';
+import { ElementStatement } from './core/elementInstruction';
 import { declareVariable } from '@/execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
