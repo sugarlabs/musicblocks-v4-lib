@@ -2,7 +2,7 @@ import { TData, TDataName } from '@/@types/data';
 import { TElementName } from '@/@types/specification';
 
 import { ElementData } from '../elementArgument';
-import { getGlobalVariable } from '@/execution/symbolTable';
+import { queryVariable } from '@/execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
         const expectedType = typeof this._value as TDataName;
 
         try {
-            const { dataType, value } = getGlobalVariable(this.label)!;
+            const { dataType, value } = queryVariable(this.label)!;
             if (this.returnType.length > 1) {
                 this._value = value as unknown as T;
             } else if (dataType === expectedType) {
