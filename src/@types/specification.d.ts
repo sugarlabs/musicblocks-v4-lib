@@ -1,6 +1,8 @@
 import { TData } from './data';
 import { IElementData, IElementExpression, IElementStatement, IElementBlock } from './elementsCore';
 
+// -------------------------------------------------------------------------------------------------
+
 /** Kind (`Argument`, `Instruction`) of the syntax element. */
 export type TElementKind = 'Argument' | 'Instruction';
 /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */

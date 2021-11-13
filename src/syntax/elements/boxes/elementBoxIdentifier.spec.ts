@@ -6,6 +6,8 @@ import {
 } from './elementBoxIdentifier';
 import { addGlobalVariable } from '@/execution/symbolTable';
 
+// -------------------------------------------------------------------------------------------------
+
 addGlobalVariable('myVar1', 'boolean', true);
 addGlobalVariable('myVar2', 'number', 5);
 addGlobalVariable('myVar3', 'string', 'foo');

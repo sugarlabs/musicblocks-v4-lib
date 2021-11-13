@@ -10,6 +10,8 @@ import { TData } from '@/@types/data';
 import { ElementData, ElementExpression } from './elements/core/elementArgument';
 import { ElementStatement, ElementBlock } from './elements/core/elementInstruction';
 
+// -------------------------------------------------------------------------------------------------
+
 abstract class ElementDataCover extends ElementData<TData> {}
 abstract class ElementExpressionCover extends ElementExpression<TData> {}
 

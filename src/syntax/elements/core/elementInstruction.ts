@@ -1,7 +1,10 @@
 import { TData, TDataName } from '@/@types/data';
-import { ElementSyntax } from './elementSyntax';
 import { TElementName } from '@/@types/specification';
 import { IElementBlock, IElementInstruction, IElementStatement } from '@/@types/elementsCore';
+
+import { ElementSyntax } from './elementSyntax';
+
+// -------------------------------------------------------------------------------------------------
 
 /**
  * @virtual

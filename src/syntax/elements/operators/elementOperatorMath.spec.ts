@@ -6,6 +6,8 @@ import {
     ElementOperatorMathModulus,
 } from './elementOperatorMath';
 
+// -------------------------------------------------------------------------------------------------
+
 describe('Operator Elements', () => {
     describe('class ElementOperatorPlus', () => {
         const elementOperatorPlus = new ElementOperatorMathPlus('operator-math-plus', '+');
