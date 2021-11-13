@@ -9,7 +9,7 @@ import {
     TElementStatementName,
 } from '@/@types/specification';
 
-import { ElementBlock } from './elements/core/elementInstruction';
+import { ElementBlock } from './elements/elementInstruction';
 
 import {
     ElementValueBoolean,

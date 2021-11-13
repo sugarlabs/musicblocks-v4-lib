@@ -1,5 +1,5 @@
 import { TData } from './data';
-import { IElementData, IElementExpression, IElementStatement, IElementBlock } from './elementsCore';
+import { IElementData, IElementExpression, IElementStatement, IElementBlock } from './elements';
 
 // -------------------------------------------------------------------------------------------------
 
