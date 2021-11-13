@@ -1,6 +1,6 @@
 import { TData, TDataName } from '@/@types/data';
-import { TElementName } from '@/@types/elementSpecification';
-import { ElementExpression } from '../../core/elementArgument';
+import { TElementName } from '@/@types/specification';
+import { ElementExpression } from '../core/elementArgument';
 
 /** Type definition for the operator symbols */
 type TOperator = '+' | '-' | '*' | '/' | '%';

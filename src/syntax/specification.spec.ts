@@ -3,12 +3,12 @@ import {
     TElementDataName,
     TElementExpressionName,
     TElementStatementName
-} from '@/@types/elementSpecification';
+} from '@/@types/specification';
 import specification from './specification';
 
 import { TData } from '@/@types/data';
-import { ElementData, ElementExpression } from './core/elementArgument';
-import { ElementStatement, ElementBlock } from './core/elementInstruction';
+import { ElementData, ElementExpression } from './elements/core/elementArgument';
+import { ElementStatement, ElementBlock } from './elements/core/elementInstruction';
 
 abstract class ElementDataCover extends ElementData<TData> {}
 abstract class ElementExpressionCover extends ElementExpression<TData> {}

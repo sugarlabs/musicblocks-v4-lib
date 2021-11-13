@@ -2,9 +2,9 @@ import {
     ElementBoxIdentifierGeneric,
     ElementBoxIdentifierBoolean,
     ElementBoxIdentifierNumber,
-    ElementBoxIdentifierString
+    ElementBoxIdentifierString,
 } from './elementBoxIdentifier';
-import { addGlobalVariable } from '../../../symbol-table/symbolTable';
+import { addGlobalVariable } from '@/execution/symbolTable';
 
 addGlobalVariable('myVar1', 'boolean', true);
 addGlobalVariable('myVar2', 'number', 5);
