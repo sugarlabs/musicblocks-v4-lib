@@ -13,10 +13,10 @@ import {
     resetWarehouse,
 } from './warehouse';
 
-import { ElementBlock } from './elements/core/elementInstruction';
-import { ElementBoxBoolean } from './elements/elementBox';
-import { ElementOperatorMathPlus } from './elements/elementOperatorMath';
-import { ElementValueBoolean } from './elements/elementValue';
+import { ElementBlock } from '../elements/core/elementInstruction';
+import { ElementBoxBoolean } from '../elements/elementBox';
+import { ElementOperatorMathPlus } from '../elements/elementOperatorMath';
+import { ElementValueBoolean } from '../elements/elementValue';
 
 // -------------------------------------------------------------------------------------------------
 
