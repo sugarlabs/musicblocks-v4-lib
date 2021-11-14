@@ -1,6 +1,7 @@
-# Core (engine) of musicblocks-v4
+# Programming framework of musicblocks-v4
 
-The core of the new [Music Blocks (v4)](https://github.com/sugarlabs/musicblocks-v4) application.
+This repository contains the source code for the programming framework of the new
+[Music Blocks (v4)](https://github.com/sugarlabs/musicblocks-v4) application.
 
 ## Tech Stack
 
