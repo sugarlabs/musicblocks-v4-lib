@@ -147,12 +147,16 @@ const _elementSpecificationEntries: {
         type: 'Block',
         category: 'program',
         prototype: ElementProcess,
+        allowAbove: false,
+        allowBelow: false,
     },
     'routine': {
         label: 'action',
         type: 'Block',
         category: 'program',
         prototype: ElementRoutine,
+        allowAbove: false,
+        allowBelow: false,
     },
 };
 

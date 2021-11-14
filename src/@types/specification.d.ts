@@ -86,11 +86,11 @@ export interface IElementSpecificationEntryExpression extends IElementSpecificat
 interface IElementSpecificationInstruction {
     allowAbove?: TElementName[] | boolean;
     allowBelow?: TElementName[] | boolean;
-    forbidAbove?: TElementName[] | boolean;
-    forbidBelow?: TElementName[] | boolean;
+    forbidAbove?: TElementName[];
+    forbidBelow?: TElementName[];
     allowedNestLevel?: number[] | 'any';
     allowedNestInside?: TElementNameBlock[] | boolean;
-    forbiddenNestInside?: TElementNameBlock[] | boolean;
+    forbiddenNestInside?: TElementNameBlock[];
 }
 
 /** Type for the specification object for statement elements. */
@@ -115,8 +115,8 @@ export type IElementSpecificationBlock = IElementSpecificationInstruction & {
     type: 'Block';
     category: string;
     prototype: (name: TElementNameBlock, label: string) => IElementBlock;
-    allowNestInside?: TElementNameBlock[] | boolean;
-    forbidNestInside?: TElementNameBlock[] | boolean;
+    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
+    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[];
 };
 
 /** Type for the specification entry object for block elements. */
@@ -125,8 +125,8 @@ export type IElementSpecificationEntryBlock = IElementSpecificationInstruction &
     type: 'Block';
     category: string;
     prototype: typeof IElementBlock;
-    allowNestInside?: TElementNameBlock[] | boolean;
-    forbidNestInside?: TElementNameBlock[] | boolean;
+    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
+    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[];
 };
 
 export interface IElementSpecification {
@@ -136,11 +136,11 @@ export interface IElementSpecification {
     prototype: new (name: TElementName, label: string) => IElementSyntax;
     allowAbove?: TElementName[] | boolean;
     allowBelow?: TElementName[] | boolean;
-    forbidAbove?: TElementName[] | boolean;
-    forbidBelow?: TElementName[] | boolean;
+    forbidAbove?: TElementName[];
+    forbidBelow?: TElementName[];
     allowedNestLevel?: number[] | 'any';
     allowedNestInside?: TElementNameBlock[] | boolean;
-    forbiddenNestInside?: TElementNameBlock[] | boolean;
-    allowNestInside?: TElementNameBlock[] | boolean;
-    forbidNestInside?: TElementNameBlock[] | boolean;
+    forbiddenNestInside?: TElementNameBlock[];
+    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
+    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
 }
