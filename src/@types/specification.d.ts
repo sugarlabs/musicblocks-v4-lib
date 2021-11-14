@@ -45,6 +45,7 @@ export type TElementNameBlock = 'process' | 'routine';
 
 /** Names of factory list of syntax elements. */
 export type TElementName =
+    | 'dummy'
     | TElementNameData
     | TElementNameExpression
     | TElementNameStatement
