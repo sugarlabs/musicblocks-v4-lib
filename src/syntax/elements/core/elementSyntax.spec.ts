@@ -21,17 +21,22 @@ describe('class ElementSyntax', () => {
         test('instantiate class that extends ElementSyntax with 0 arguments and validate API', () => {
             let dummyElementSyntax: DummyElementSyntax;
 
-            dummyElementSyntax = new DummyElementSyntax('dummy', 'dummy', 'Argument', 'Data', {});
+            dummyElementSyntax = new DummyElementSyntax(
+                'dummy' as TElementName,
+                'dummy',
+                'Argument',
+                'Data',
+                {}
+            );
             expect(dummyElementSyntax.name).toBe('dummy');
             expect(dummyElementSyntax.label).toBe('dummy');
             expect(dummyElementSyntax.kind).toBe('Argument');
             expect(dummyElementSyntax.type).toBe('Data');
             expect(dummyElementSyntax.argCount).toBe(0);
             expect(dummyElementSyntax.argLabels).toEqual([]);
-            expect(dummyElementSyntax.argMap).toEqual({});
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy',
+                'dummy' as TElementName,
                 'dummy',
                 'Argument',
                 'Expression',
@@ -43,10 +48,9 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.type).toBe('Expression');
             expect(dummyElementSyntax.argCount).toBe(0);
             expect(dummyElementSyntax.argLabels).toEqual([]);
-            expect(dummyElementSyntax.argMap).toEqual({});
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy',
+                'dummy' as TElementName,
                 'dummy',
                 'Instruction',
                 'Statement',
@@ -58,10 +62,9 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.type).toBe('Statement');
             expect(dummyElementSyntax.argCount).toBe(0);
             expect(dummyElementSyntax.argLabels).toEqual([]);
-            expect(dummyElementSyntax.argMap).toEqual({});
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy',
+                'dummy' as TElementName,
                 'dummy',
                 'Instruction',
                 'Block',
@@ -73,12 +76,11 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.type).toBe('Block');
             expect(dummyElementSyntax.argCount).toBe(0);
             expect(dummyElementSyntax.argLabels).toEqual([]);
-            expect(dummyElementSyntax.argMap).toEqual({});
         });
 
         test('instantiate class that extends ElementSyntax with 3 arguments and validate API', () => {
             const dummyElementSyntax = new DummyElementSyntax(
-                'dummy',
+                'dummy' as TElementName,
                 'dummy',
                 'Instruction',
                 'Block',
@@ -94,16 +96,20 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.type).toBe('Block');
             expect(dummyElementSyntax.argCount).toBe(3);
             expect(dummyElementSyntax.argLabels).toEqual(['arg1', 'arg2', 'arg3']);
-            expect(dummyElementSyntax.argMap).toEqual({
-                arg1: ['number'],
-                arg2: ['string', 'number'],
-                arg3: ['boolean'],
-            });
+            expect(dummyElementSyntax.getArgType('arg1')).toEqual(['number']);
+            expect(dummyElementSyntax.getArgType('arg2')).toEqual(['string', 'number']);
+            expect(dummyElementSyntax.getArgType('arg3')).toEqual(['boolean']);
         });
     });
 
     test('update label and verify', () => {
-        const dummyElementSyntax = new DummyElementSyntax('dummy', 'dummy', 'Argument', 'Data', {});
+        const dummyElementSyntax = new DummyElementSyntax(
+            'dummy' as TElementName,
+            'dummy',
+            'Argument',
+            'Data',
+            {}
+        );
         expect(dummyElementSyntax.label).toBe('dummy');
         dummyElementSyntax.updateLabel('dummyElement');
         expect(dummyElementSyntax.label).toBe('dummyElement');
