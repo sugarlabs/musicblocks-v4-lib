@@ -12,29 +12,29 @@ type IVariableTable = {
 
 /** Stores the global table. */
 let _globalTable: IVariableTable = {};
-/** Stores the programs' tables. */
-let _programTable: { [program: string]: IVariableTable } = {};
+/** Stores the processes' tables. */
+let _processTable: { [process: string]: IVariableTable } = {};
 /** Stores the routines' table. */
 let _routineTable: { [routine: string]: IVariableTable } = {};
 
 // -- private functions ----------------------------------------------------------------------------
 
 /**
- * A helper that adds a variable for a program or routine. If already present, overwrites it.
+ * A helper that adds a variable for a process or routine. If already present, overwrites it.
  * @param variable - name of the variable
  * @param dataType - data type of the variable
  * @param value - value of the variable
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
+ * @param tableName - `process` or `routine`
  */
 function _addTableVariable(
     variable: string,
     dataType: TDataName,
     value: TData,
     selector: string,
-    tableName: 'program' | 'routine'
+    tableName: 'process' | 'routine'
 ): void {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     if (!(selector in table)) {
         table[selector] = {};
     }
@@ -42,42 +42,42 @@ function _addTableVariable(
 }
 
 /**
- * A helper that fetches a variable for a program or routine.
+ * A helper that fetches a variable for a process or routine.
  * @param variable - name of the variable
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
+ * @param tableName - `process` or `routine`
  * @returns the variable entry if present, else `null`
  */
 function _getTableVariable(
     variable: string,
     selector: string,
-    tableName: 'program' | 'routine'
+    tableName: 'process' | 'routine'
 ): IVariable | null {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     return selector in table && variable in table[selector] ? table[selector][variable] : null;
 }
 
 /**
- * A helper that returns names of all variables for a program or routine.
+ * A helper that returns names of all variables for a process or routine.
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
- * @returns a list of all variable names for a program or routine
+ * @param tableName - `process` or `routine`
+ * @returns a list of all variable names for a process or routine
  */
-function _getTableVariableNames(selector: string, tableName: 'program' | 'routine'): string[] {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+function _getTableVariableNames(selector: string, tableName: 'process' | 'routine'): string[] {
+    const table = tableName === 'process' ? _processTable : _routineTable;
     return selector in table ? Object.keys(table[selector]) : [];
 }
 /**
- * A helper that returns names of all variables for a program or routine with their data types.
+ * A helper that returns names of all variables for a process or routine with their data types.
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
+ * @param tableName - `process` or `routine`
  * @returns an object with key-value pairs of variable names and corresponding data type
  */
 function _getTableVariableNamesWithTypes(
     selector: string,
-    tableName: 'program' | 'routine'
+    tableName: 'process' | 'routine'
 ): { [variable: string]: TDataName } {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     if (!(selector in table)) {
         return {};
     }
@@ -90,15 +90,15 @@ function _getTableVariableNamesWithTypes(
 }
 
 /**
- * A helper that returns names of all program or routine variables.
- * @param tableName - `program` or `routine`
- * @returns an object with key-value pairs of program or routine names and corresponding list of
+ * A helper that returns names of all process or routine variables.
+ * @param tableName - `process` or `routine`
+ * @returns an object with key-value pairs of process or routine names and corresponding list of
  * variable names
  */
-function _getTableVariableNamesAll(tableName: 'program' | 'routine'): {
+function _getTableVariableNamesAll(tableName: 'process' | 'routine'): {
     [key: string]: string[];
 } {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     const res: { [key: string]: string[] } = {};
     Object.entries(table).forEach(([key, variables]) => {
         res[key] = Object.keys(variables);
@@ -107,15 +107,15 @@ function _getTableVariableNamesAll(tableName: 'program' | 'routine'): {
 }
 
 /**
- * A helper that returns names and types of all program or routine variables.
- * @param tableName - `program` or `routine`
- * @returns an object with key-value pairs of program or routine names and corresponding object with
+ * A helper that returns names and types of all process or routine variables.
+ * @param tableName - `process` or `routine`
+ * @returns an object with key-value pairs of process or routine names and corresponding object with
  * key-value pairs of variable names and data types.
  */
-function _getTableVariableNamesWithTypesAll(tableName: 'program' | 'routine'): {
+function _getTableVariableNamesWithTypesAll(tableName: 'process' | 'routine'): {
     [key: string]: { [variable: string]: TDataName };
 } {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     const res: { [key: string]: { [variable: string]: TDataName } } = {};
     Object.entries(table).forEach(([key, variables]) => {
         res[key] = {};
@@ -127,29 +127,29 @@ function _getTableVariableNamesWithTypesAll(tableName: 'program' | 'routine'): {
 }
 
 /**
- * Removes a variable for a program or routine if present.
+ * Removes a variable for a process or routine if present.
  * @param variable - name of the variable
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
+ * @param tableName - `process` or `routine`
  */
 function _removeTableVariable(
     variable: string,
     selector: string,
-    tableName: 'program' | 'routine'
+    tableName: 'process' | 'routine'
 ): void {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+    const table = tableName === 'process' ? _processTable : _routineTable;
     if (selector in table && variable in table[selector]) {
         delete table[selector][variable];
     }
 }
 
 /**
- * A helper that clears all variables for a program or routine.
+ * A helper that clears all variables for a process or routine.
  * @param selector - the key to be used for selection (project ID or routine ID)
- * @param tableName - `program` or `routine`
+ * @param tableName - `process` or `routine`
  */
-function _flushTableVariables(selector: string, tableName: 'program' | 'routine'): void {
-    const table = tableName === 'program' ? _programTable : _routineTable;
+function _flushTableVariables(selector: string, tableName: 'process' | 'routine'): void {
+    const table = tableName === 'process' ? _processTable : _routineTable;
     if (selector in table) {
         delete table[selector];
     }
@@ -207,78 +207,78 @@ export function removeGlobalVariable(variable: string): void {
 }
 
 /**
- * Adds a variable for a program. If already present, overwrites it.
+ * Adds a variable for a process. If already present, overwrites it.
  * @param variable - name of the variable
  * @param dataType - data type of the variable
  * @param value - value of the variable
- * @param program - ID of the program
+ * @param process - ID of the process
  */
-export function addProgramVariable(
+export function addProcessVariable(
     variable: string,
     dataType: TDataName,
     value: TData,
-    program: string
+    process: string
 ): void {
-    _addTableVariable(variable, dataType, value, program, 'program');
+    _addTableVariable(variable, dataType, value, process, 'process');
 }
 
 /**
- * Fetches a variable for a program.
+ * Fetches a variable for a process.
  * @param variable - name of the variable
- * @param program - ID of the program
+ * @param process - ID of the process
  * @returns the variable entry if present, else `null`
  */
-export function getProgramVariable(variable: string, program: string): IVariable | null {
-    return _getTableVariable(variable, program, 'program');
+export function getProcessVariable(variable: string, process: string): IVariable | null {
+    return _getTableVariable(variable, process, 'process');
 }
 
 /**
- * Returns names of all variables for a program.
- * @param program - ID of the program
- * @returns a list of all variable names for a program
+ * Returns names of all variables for a process.
+ * @param process - ID of the process
+ * @returns a list of all variable names for a process
  */
-export function getProgramVariableNames(program: string): string[] {
-    return _getTableVariableNames(program, 'program');
+export function getProcessVariableNames(process: string): string[] {
+    return _getTableVariableNames(process, 'process');
 }
 
 /**
- * Returns names of all variables for a program with their data types.
- * @param program - ID of the program
+ * Returns names of all variables for a process with their data types.
+ * @param process - ID of the process
  * @returns an object with key-value pairs of variable names and corresponding data type
  */
-export function getProgramVariableNamesWithTypes(program: string): {
+export function getProcessVariableNamesWithTypes(process: string): {
     [variable: string]: TDataName;
 } {
-    return _getTableVariableNamesWithTypes(program, 'program');
+    return _getTableVariableNamesWithTypes(process, 'process');
 }
 
 /**
- * Returns names of all program variables.
- * @returns an object with key-value pairs of program names and corresponding list of variable
+ * Returns names of all process variables.
+ * @returns an object with key-value pairs of process names and corresponding list of variable
  * names
  */
-export function getProgramVariableNamesAll(): { [program: string]: string[] } {
-    return _getTableVariableNamesAll('program');
+export function getProcessVariableNamesAll(): { [process: string]: string[] } {
+    return _getTableVariableNamesAll('process');
 }
 
 /**
- * Returns names and types of all program variables.
- * @returns an object with key-value pairs of program names and corresponding object with key-value
+ * Returns names and types of all process variables.
+ * @returns an object with key-value pairs of process names and corresponding object with key-value
  * pairs of variable names and data types.
  */
-export function getProgramVariableNamesWithTypesAll(): {
-    [program: string]: { [variable: string]: TDataName };
+export function getProcessVariableNamesWithTypesAll(): {
+    [process: string]: { [variable: string]: TDataName };
 } {
-    return _getTableVariableNamesWithTypesAll('program');
+    return _getTableVariableNamesWithTypesAll('process');
 }
 
 /**
- * Removes a variable for a program if present.
+ * Removes a variable for a process if present.
  * @param variable - name of the variable
- * @param program - ID of the program
+ * @param process - ID of the process
  */
-export function removeProgramVariable(variable: string, program: string): void {
-    _removeTableVariable(variable, program, 'program');
+export function removeProcessVariable(variable: string, process: string): void {
+    _removeTableVariable(variable, process, 'process');
 }
 
 /**
@@ -364,18 +364,18 @@ export function flushGlobalVariables(): void {
 }
 
 /**
- * Clears all variables for a program.
- * @param program - 0 ID of the program
+ * Clears all variables for a process.
+ * @param process - 0 ID of the process
  */
-export function flushProgramVariables(program: string): void {
-    _flushTableVariables(program, 'program');
+export function flushProcessVariables(process: string): void {
+    _flushTableVariables(process, 'process');
 }
 
 /**
- * Clears all program variables.
+ * Clears all process variables.
  */
-export function flushProgramVariablesAll(): void {
-    _programTable = {};
+export function flushProcessVariablesAll(): void {
+    _processTable = {};
 }
 
 /**
@@ -398,6 +398,6 @@ export function flushRoutineVariablesAll(): void {
  */
 export function flushAllVariables(): void {
     flushGlobalVariables();
-    flushProgramVariablesAll();
+    flushProcessVariablesAll();
     flushRoutineVariablesAll();
 }

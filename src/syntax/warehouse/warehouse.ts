@@ -4,22 +4,21 @@ import {
     TElementName,
     TElementKind,
     TElementType,
-    TElementCategory,
-    TElementCategoryData,
-    TElementCategoryExpression,
-    TElementCategoryStatement,
-    TElementCategoryBlock,
-    TElementDataName,
-    TElementExpressionName,
-    TElementStatementName,
-    TElementBlockName,
+    TElementNameData,
+    TElementNameExpression,
+    TElementNameStatement,
+    TElementNameBlock,
 } from '@/@types/specification';
-import elementSpecification from './specification';
+import {
+    getElementNames,
+    getElementCategories,
+    queryElementSpecification,
+} from '../specification/specification';
 
 import { TData } from '@/@types/data';
-import { ElementSyntax } from './elements/core/elementSyntax';
-import { ElementData, ElementExpression } from './elements/core/elementArgument';
-import { ElementStatement, ElementBlock } from './elements/core/elementInstruction';
+import { ElementSyntax } from '../elements/core/elementSyntax';
+import { ElementData, ElementExpression } from '../elements/core/elementArgument';
+import { ElementStatement, ElementBlock } from '../elements/core/elementInstruction';
 
 // -- private variables ----------------------------------------------------------------------------
 
@@ -43,30 +42,30 @@ let _elementMap: {
         | {
               instance: _ElementDataCover;
               type: 'Data';
-              name: TElementDataName;
+              name: TElementNameData;
               kind: 'Argument';
-              category: TElementCategoryData;
+              category: string;
           }
         | {
               instance: _ElementExpressionCover;
               type: 'Expression';
-              name: TElementExpressionName;
+              name: TElementNameExpression;
               kind: 'Argument';
-              category: TElementCategoryExpression;
+              category: string;
           }
         | {
               instance: ElementStatement;
               type: 'Statement';
-              name: TElementStatementName;
+              name: TElementNameStatement;
               kind: 'Instruction';
-              category: TElementCategoryStatement;
+              category: string;
           }
         | {
               instance: ElementBlock;
               type: 'Block';
-              name: TElementBlockName;
+              name: TElementNameBlock;
               kind: 'Instruction';
-              category: TElementCategoryBlock;
+              category: string;
           };
 } = {};
 
@@ -85,7 +84,7 @@ function _addInstance(
     instanceID: string,
     instance: ElementSyntax,
     type: TElementType,
-    category: TElementCategory
+    category: string
 ): void {
     const kind = type === 'Data' || type === 'Expression' ? 'Argument' : 'Instruction';
 
@@ -93,37 +92,37 @@ function _addInstance(
         case 'Data':
             _elementMap[instanceID] = {
                 instance: instance as _ElementDataCover,
-                name: elementName as TElementDataName,
+                name: elementName as TElementNameData,
                 type: type as 'Data',
                 kind: 'Argument',
-                category: category as TElementCategoryData,
+                category: category as string,
             };
             break;
         case 'Expression':
             _elementMap[instanceID] = {
                 instance: instance as _ElementExpressionCover,
-                name: elementName as TElementExpressionName,
+                name: elementName as TElementNameExpression,
                 type: type as 'Expression',
                 kind: 'Argument',
-                category: category as TElementCategoryExpression,
+                category: category as string,
             };
             break;
         case 'Statement':
             _elementMap[instanceID] = {
                 instance: instance as ElementStatement,
-                name: elementName as TElementStatementName,
+                name: elementName as TElementNameStatement,
                 type: type as 'Statement',
                 kind: 'Instruction',
-                category: category as TElementCategoryStatement,
+                category: category as string,
             };
             break;
         case 'Block':
             _elementMap[instanceID] = {
                 instance: instance as ElementBlock,
-                name: elementName as TElementBlockName,
+                name: elementName as TElementNameBlock,
                 type: type as 'Block',
                 kind: 'Instruction',
-                category: category as TElementCategoryBlock,
+                category: category as string,
             };
             break;
     }
@@ -139,9 +138,7 @@ function _addInstance(
  */
 function _resetElementNameCountMap(): void {
     _elementNameCountMap = {};
-    (Object.keys(elementSpecification) as TElementName[]).forEach(
-        (elementName) => (_elementNameCountMap[elementName] = 0)
-    );
+    getElementNames().forEach((elementName) => (_elementNameCountMap[elementName] = 0));
 }
 
 /**
@@ -171,9 +168,7 @@ function _resetElementTypeCountMap(): void {
  */
 function _resetElementCategoryCountMap(): void {
     _elementCategoryCountMap = {};
-    const categorySet = new Set<TElementCategory>();
-    Object.entries(elementSpecification).forEach(([_, { category }]) => categorySet.add(category));
-    [...categorySet].forEach((category) => (_elementCategoryCountMap[category] = 0));
+    getElementCategories().forEach((category) => (_elementCategoryCountMap[category] = 0));
 }
 
 // -- public functions -----------------------------------------------------------------------------
@@ -184,34 +179,40 @@ function _resetElementCategoryCountMap(): void {
  * @returns - unique instance ID for the element instance
  */
 export function addInstance(elementName: TElementName): string {
-    const { label, type, category, prototype } = elementSpecification[elementName];
+    const elementSpecification = queryElementSpecification(elementName);
+
+    if (elementSpecification === null) {
+        throw Error(`InvalidAccessError: element with name "${elementName}" does not exist`);
+    }
+
+    const { label, type, category, prototype } = elementSpecification;
 
     let instance: ElementSyntax;
 
     switch (type) {
         case 'Data':
-            instance = (prototype as (name: TElementDataName, label: string) => _ElementDataCover)(
-                elementName as TElementDataName,
+            instance = (prototype as (name: TElementNameData, label: string) => _ElementDataCover)(
+                elementName as TElementNameData,
                 label
             );
             break;
         case 'Expression':
             instance = (
                 prototype as (
-                    name: TElementExpressionName,
+                    name: TElementNameExpression,
                     label: string
                 ) => _ElementExpressionCover
-            )(elementName as TElementExpressionName, label);
+            )(elementName as TElementNameExpression, label);
             break;
         case 'Statement':
             instance = (
-                prototype as (name: TElementStatementName, label: string) => ElementStatement
-            )(elementName as TElementStatementName, label);
+                prototype as (name: TElementNameStatement, label: string) => ElementStatement
+            )(elementName as TElementNameStatement, label);
             break;
         case 'Block':
         default:
-            instance = (prototype as (name: TElementBlockName, label: string) => ElementBlock)(
-                elementName as TElementBlockName,
+            instance = (prototype as (name: TElementNameBlock, label: string) => ElementBlock)(
+                elementName as TElementNameBlock,
                 label
             );
     }
@@ -235,7 +236,7 @@ export function getInstance(instanceID: string): {
     name: TElementName;
     kind: TElementKind;
     type: TElementType;
-    category: TElementCategory;
+    category: string;
     instance: ElementSyntax;
 } | null {
     return instanceID in _elementMap ? { ..._elementMap[instanceID] } : null;
@@ -314,7 +315,7 @@ export function getTypeCountAll(): { [type: string]: number } {
  * @param category - category of the element
  * @returns count of the element instances for the element category
  */
-export function getCategoryCount(category: TElementCategory): number {
+export function getCategoryCount(category: string): number {
     return _elementCategoryCountMap[category];
 }
 

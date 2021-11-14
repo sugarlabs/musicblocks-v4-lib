@@ -17,8 +17,12 @@ export interface IElementSyntax {
     argCount: number;
     /** Names of the arguments the syntax element registers. */
     argLabels: string[];
-    /** An object describing the type specification of each argument as a `argName: type[]` pair. */
-    argMap: { [key: string]: TDataName[] };
+    /**
+     * Returns the data type an argument accepts.
+     * @param argName - name of the argument
+     * @returns list of data types
+     */
+    getArgType(argName: string): TDataName[];
     /**
      * Updates the label of the syntax element.
      * @param value - new label value

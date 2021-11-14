@@ -74,8 +74,8 @@ export abstract class ElementSyntax implements IElementSyntax {
         return this._argLabels;
     }
 
-    public get argMap(): { [key: string]: TDataName[] } {
-        return this._argMap;
+    public getArgType(argName: string): TDataName[] {
+        return this._argMap[argName];
     }
 
     public updateLabel(value: string): void {

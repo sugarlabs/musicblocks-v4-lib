@@ -10,6 +10,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
@@ -23,7 +24,7 @@
       }
     ],
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
+    "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
     "quotes": [
       "warn",
       "single",
