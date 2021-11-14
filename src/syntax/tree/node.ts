@@ -152,6 +152,8 @@ export class TreeNodeExpression extends TreeNodeArgument implements ITreeNodeExp
         };
     }
 
+    public argConnections = this._argConnections;
+
     public attachArg = super._attachArg;
     public detachArg = super._detachArg;
 }
@@ -162,6 +164,7 @@ export class TreeNodeExpression extends TreeNodeArgument implements ITreeNodeExp
  * Defines a generic syntax tree instruction element node.
  */
 abstract class TreeNodeInstruction extends TreeNode implements ITreeNodeInstruction {
+    public argConnections = this._argConnections;
     public attachArg = super._attachArg;
     public detachArg = super._detachArg;
 
