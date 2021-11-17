@@ -30,6 +30,7 @@
   "scripts": {
     "build": "rm -rf dist/* && tsc -p .",
     "test": "jest --passWithNoTests --verbose src/syntax src/execution",
+    "check": "tsc --noEmit",
     "lint": "eslint src/**/*.ts",
     "prettify": "prettier --write src/@types src/syntax src/execution"
   }
