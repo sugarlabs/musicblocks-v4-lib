@@ -813,6 +813,71 @@ describe('Parser', () => {
                     );
                 });
 
+                test('verify __goinnerfirst__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'box-boolean',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'boxidentifier-boolean',
+                                            },
+                                            value: {
+                                                elementName: 'value-boolean',
+                                            },
+                                        },
+                                    },
+                                    {
+                                        elementName: 'box-number',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'boxidentifier-number',
+                                            },
+                                            value: {
+                                                elementName: 'value-number',
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    setPCOverride('__goinnerfirst__');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    next = getNextElement();
+                    expect(next).toBe(null);
+                });
+
                 test('verify __goinnerlast__ signal', () => {
                     resetSyntaxTree();
                     generateFromSnapshot({
