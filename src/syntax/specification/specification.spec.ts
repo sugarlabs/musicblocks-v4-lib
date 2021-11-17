@@ -14,6 +14,8 @@ import {
     resetElementSpecificationTable,
 } from './specification';
 
+import elementSpecificationEntries from './specificationEntries';
+
 import { TData } from '@/@types/data';
 import { ElementData, ElementExpression } from '../elements/core/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/core/elementInstruction';
@@ -22,6 +24,8 @@ import { ElementStatement, ElementBlock } from '../elements/core/elementInstruct
 
 abstract class ElementDataCover extends ElementData<TData> {}
 abstract class ElementExpressionCover extends ElementExpression<TData> {}
+
+registerElementSpecificationEntries(elementSpecificationEntries);
 
 describe('Syntax Element Specification', () => {
     describe('element specifications', () => {
@@ -277,7 +281,6 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
             expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('value-boolean')).not.toBe(null);
         });
     });
 });
