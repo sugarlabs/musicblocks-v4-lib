@@ -87,6 +87,8 @@ export interface ITreeNodeExpression extends ITreeNodeArgument {
     elementName: TElementNameExpression;
     /** Returns a snapshot of the syntax tree expression node. */
     snapshot: ITreeSnapshotExpression;
+    /** Object with key-value pairs of argument names and corresponding argument nodes. */
+    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null } = {};
     /**
      * Adds an argument connection.
      * @param argName - name of the argument
@@ -102,6 +104,8 @@ export interface ITreeNodeExpression extends ITreeNodeArgument {
 
 /** Type definition for a generic syntax tree instruction node. */
 export interface ITreeNodeInstruction extends ITreeNode {
+    /** Object with key-value pairs of argument names and corresponding argument nodes. */
+    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null } = {};
     /**
      * Adds an argument connection.
      * @param argName - name of the argument

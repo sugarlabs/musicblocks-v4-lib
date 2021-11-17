@@ -94,6 +94,27 @@ function _attachInstructionCheck(connectorNodeID: string, connectingNodeID: stri
 // -- public functions -----------------------------------------------------------------------------
 
 /**
+ * @returns the list of process element nodes.
+ */
+export function getProcessNodes(): TreeNodeBlock[] {
+    return _syntaxTree['process'];
+}
+
+/**
+ * @returns the list of routine element nodes.
+ */
+export function getRoutineNodes(): TreeNodeBlock[] {
+    return _syntaxTree['routine'];
+}
+
+/**
+ * @returns the list of top instruction element nodes of crumb stacks.
+ */
+export function getCrumbs(): TreeNode[] {
+    return _syntaxTree['crumbs'];
+}
+
+/**
  * Adds a new element to the syntax tree.
  * @param name - name of the syntax element
  * @returns node ID of the syntax tree node
