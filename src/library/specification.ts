@@ -9,27 +9,27 @@ import {
     ElementValueBoolean,
     ElementValueNumber,
     ElementValueString,
-} from '../elements/elementValue';
+} from './elements/elementValue';
 import {
     ElementBoxGeneric,
     ElementBoxBoolean,
     ElementBoxNumber,
     ElementBoxString,
-} from '../elements/elementBox';
+} from './elements/elementBox';
 import {
     ElementBoxIdentifierGeneric,
     ElementBoxIdentifierBoolean,
     ElementBoxIdentifierNumber,
     ElementBoxIdentifierString,
-} from '../elements/elementBoxIdentifier';
+} from './elements/elementBoxIdentifier';
 import {
     ElementOperatorMathPlus,
     ElementOperatorMathMinus,
     ElementOperatorMathTimes,
     ElementOperatorMathDivide,
     ElementOperatorMathModulus,
-} from '../elements/elementOperatorMath';
-import { ElementProcess, ElementRoutine } from '../elements/elementProgram';
+} from './elements/elementOperatorMath';
+import { ElementProcess, ElementRoutine } from './elements/elementProgram';
 
 // -------------------------------------------------------------------------------------------------
 
