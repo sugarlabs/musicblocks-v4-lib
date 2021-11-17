@@ -5,18 +5,29 @@ export type IVariable = {
 };
 
 /** Type definition of the parsed argument element entry returned on fetching next element. */
-type IParsedElementArgument = {
+export type IParsedElementArgument = {
     instance: ElementData<TData> | ElementExpression<TData>;
     type: 'Argument';
     marker: string | null;
 };
 
 /** Type definition of the parsed instruction element entry returned on fetching next element. */
-type IParsedElementInstruction = {
+export type IParsedElementInstruction = {
     instance: ElementStatement | ElementBlock;
     type: 'Instruction';
     marker: string | null;
 };
 
 /** Type definition of the parsed element entry returned on fetching next element. */
-type IParsedElement = IParsedElementArgument | IParsedElementInstruction;
+export type IParsedElement = IParsedElementArgument | IParsedElementInstruction;
+
+/* Type definition for program counter override signals. */
+export type TPCOverride =
+    | '__rollback__'
+    | '__rollback__i'
+    | '__skip__'
+    | '__skipscope__'
+    | '__goinnerlast__'
+    | '__goup__'
+    | '__repeat__'
+    | null;
