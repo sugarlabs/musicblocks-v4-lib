@@ -8,36 +8,81 @@ import {
 
 // -- snapshots ------------------------------------------------------------------------------------
 
-/** Type definition for the snapshot of a data element. */
-export interface ITreeSnapshotData {
+/** Type definition for the snapshot input of a data element. */
+export interface ITreeSnapshotDataInput {
     /** Name of the data element. */
     elementName: TElementNameData;
 }
 
-/** Type definition for the snapshot of an expression element. */
-export interface ITreeSnapshotExpression {
+/** Type definition for the snapshot of a data element. */
+export interface ITreeSnapshotData extends ITreeSnapshotDataInput {
+    /** Node ID of the syntax tree node instance. */
+    nodeID: string;
+}
+
+/** Type definition for the snapshot input of an expression element. */
+export interface ITreeSnapshotExpressionInput {
     /** Name of the expression element. */
     elementName: TElementNameExpression;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
-    argMap: { [argName: string]: ITreeSnapshotData | ITreeSnapshotExpression | null } | null;
+    argMap: {
+        [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
+    } | null;
 }
 
-/** Type definition for the snapshot of a statement element. */
-export interface ITreeSnapshotStatement {
+/** Type definition for the snapshot of an expression element. */
+export interface ITreeSnapshotExpression extends ITreeSnapshotExpressionInput {
+    /** Node ID of the syntax tree node instance. */
+    nodeID: string;
+}
+
+/** Type definition for the snapshot input of a statement element. */
+export interface ITreeSnapshotStatementInput {
     /** Name of the statement element. */
     elementName: TElementNameStatement;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
-    argMap: { [argName: string]: ITreeSnapshotData | ITreeSnapshotExpression | null } | null;
+    argMap: {
+        [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
+    } | null;
 }
 
-/** Type definition for the snapshot of a block element. */
-export interface ITreeSnapshotBlock {
+/** Type definition for the snapshot of a statement element. */
+export interface ITreeSnapshotStatement extends ITreeSnapshotStatementInput {
+    /** Node ID of the syntax tree node instance. */
+    nodeID: string;
+}
+
+/** Type definition for the snapshot input of a block element. */
+export interface ITreeSnapshotBlockInput {
     /** Name of the block element. */
     elementName: TElementNameBlock;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
-    argMap: { [argName: string]: ITreeSnapshotData | ITreeSnapshotExpression | null } | null;
+    argMap: {
+        [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
+    } | null;
     /** List of snaphots of the elements nested in the block. */
-    scope: (ITreeSnapshotStatement | ITreeSnapshotBlock)[];
+    scope: (ITreeSnapshotStatementInput | ITreeSnapshotBlockInput)[];
+}
+
+/** Type definition for the snapshot of a block element. */
+export interface ITreeSnapshotBlock extends ITreeSnapshotBlockInput {
+    /** Node ID of the syntax tree node instance. */
+    nodeID: string;
+}
+
+/** Type definition for the snapshot input of the entire syntax tree. */
+export interface ITreeSnapshotInput {
+    /** List of snapshot inputs of all process elements. */
+    process: ITreeSnapshotBlockInput[];
+    /** List of snapshot inputs of all routine elements. */
+    routine: ITreeSnapshotBlockInput[];
+    /** List of snapshot input lists of all non-process and non-routine element stacks. */
+    crumbs: (
+        | ITreeSnapshotDataInput
+        | ITreeSnapshotExpressionInput
+        | ITreeSnapshotStatementInput
+        | ITreeSnapshotBlockInput
+    )[][];
 }
 
 /** Type definition for the snapshot of the entire syntax tree. */
