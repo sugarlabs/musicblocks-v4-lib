@@ -1,4 +1,4 @@
-import { IParsedElement } from '@/@types/execution';
+import { IParsedElement, TPCOverride } from '@/@types/execution';
 
 import {
     TreeNode,
@@ -40,17 +40,6 @@ interface IFrame {
           }[]
         | null;
 }
-
-/* Type definition for program counter override signals. */
-type TPCOverride =
-    | '__rollback__'
-    | '__rollback__i'
-    | '__skip__'
-    | '__skipscope__'
-    | '__goinnerlast__'
-    | '__goup__'
-    | '__repeat__'
-    | null;
 
 /** Type definition for each root element's parsing state table. */
 type TProgramMapEntry = {

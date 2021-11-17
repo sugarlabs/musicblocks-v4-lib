@@ -1,7 +1,8 @@
 import { TData, TDataName } from '@/@types/data';
-import { IVariable } from '@/@types/execution';
+import { IVariable, TPCOverride } from '@/@types/execution';
 
 import { addGlobalVariable, getGlobalVariable } from './symbolTable';
+import { setPCOverride, clearPCOverride } from './parser';
 
 // -- public functions -----------------------------------------------------------------------------
 
@@ -25,4 +26,19 @@ export function declareVariable(variable: string, dataType: TDataName, value: TD
  */
 export function queryVariable(variable: string): IVariable | null {
     return getGlobalVariable(variable);
+}
+
+/**
+ * Sets a program counter override signal for the current execution item.
+ * @param signal - program counter override signal
+ */
+export function overrideProgramCounter(signal: TPCOverride): void {
+    setPCOverride(signal);
+}
+
+/**
+ * Clears any program counter override signal for the current execution item.
+ */
+export function releaseProgramCounter(): void {
+    clearPCOverride();
 }
