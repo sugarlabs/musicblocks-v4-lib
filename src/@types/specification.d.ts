@@ -41,7 +41,7 @@ export type TElementNameStatement =
     'box-generic' | 'box-boolean' | 'box-number' | 'box-string';
 
 /** Names of factory list of block elements. */
-export type TElementNameBlock = 'process' | 'routine';
+export type TElementNameBlock = 'process' | 'routine' | 'repeat';
 
 /** Names of factory list of syntax elements. */
 export type TElementName =
