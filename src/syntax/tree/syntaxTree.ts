@@ -18,7 +18,7 @@ import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse
 import { queryElementSpecification } from '../specification/specification';
 
 import { TData } from '@/@types/data';
-import { ElementArgument } from '../elements/core/elementArgument';
+import { ElementArgument } from '../elements/elementArgument';
 import {
     ITreeSnapshot,
     ITreeSnapshotInput,

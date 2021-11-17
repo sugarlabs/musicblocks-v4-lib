@@ -14,11 +14,11 @@ import {
     resetElementSpecificationTable,
 } from './specification';
 
-import elementSpecificationEntries from './specificationEntries';
+import elementSpecificationEntries from '@/library/specification';
 
 import { TData } from '@/@types/data';
-import { ElementData, ElementExpression } from '../elements/core/elementArgument';
-import { ElementStatement, ElementBlock } from '../elements/core/elementInstruction';
+import { ElementData, ElementExpression } from '../elements/elementArgument';
+import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
 
 // -------------------------------------------------------------------------------------------------
 

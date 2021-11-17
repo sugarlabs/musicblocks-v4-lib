@@ -29,9 +29,9 @@
   },
   "scripts": {
     "build": "rm -rf dist/* && tsc -p .",
-    "test": "jest --passWithNoTests --verbose src/syntax src/execution",
+    "test": "jest --passWithNoTests --verbose src/syntax src/library src/execution src/library",
     "check": "tsc --noEmit",
     "lint": "eslint src/**/*.ts",
-    "prettify": "prettier --write src/@types src/syntax src/execution"
+    "prettify": "prettier --write src/@types src/syntax src/execution src/library"
   }
 }
