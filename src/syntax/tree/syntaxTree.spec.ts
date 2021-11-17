@@ -24,7 +24,12 @@ import { ElementBoxBoolean } from '../elements/elementBox';
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
 import { ITreeSnapshotInput } from '@/@types/syntaxTree';
 
+import { registerElementSpecificationEntries } from '../specification/specification';
+import elementSpecificationEntries from '../specification/specificationEntries';
+
 // -------------------------------------------------------------------------------------------------
+
+registerElementSpecificationEntries(elementSpecificationEntries);
 
 describe('Syntax Tree', () => {
     let process: string;

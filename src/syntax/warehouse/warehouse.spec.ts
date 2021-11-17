@@ -18,7 +18,13 @@ import { ElementBoxBoolean } from '../elements/elementBox';
 import { ElementOperatorMathPlus } from '../elements/elementOperatorMath';
 import { ElementValueBoolean } from '../elements/elementValue';
 
+import { registerElementSpecificationEntries } from '../specification/specification';
+import elementSpecificationEntries from '../specification/specificationEntries';
+
 // -------------------------------------------------------------------------------------------------
+
+registerElementSpecificationEntries(elementSpecificationEntries);
+resetWarehouse();
 
 describe('Syntax Element Warehouse', () => {
     let instanceID1: string;

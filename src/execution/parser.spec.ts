@@ -21,7 +21,12 @@ import {
 } from '@/syntax/tree/syntaxTree';
 import { TreeNodeStatement } from '@/syntax/tree/node';
 
+import { registerElementSpecificationEntries } from '@/syntax/specification/specification';
+import elementSpecificationEntries from '@/syntax/specification/specificationEntries';
+
 // -------------------------------------------------------------------------------------------------
+
+registerElementSpecificationEntries(elementSpecificationEntries);
 
 describe('Parser', () => {
     describe('static argument parsing', () => {
