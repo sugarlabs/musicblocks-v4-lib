@@ -132,6 +132,7 @@ export class TreeNodeData extends TreeNodeArgument implements ITreeNodeData {
     public get snapshot(): ITreeSnapshotData {
         return {
             elementName: this._elementName as TElementNameData,
+            nodeID: this._nodeID,
         };
     }
 }
@@ -148,6 +149,7 @@ export class TreeNodeExpression extends TreeNodeArgument implements ITreeNodeExp
     public get snapshot(): ITreeSnapshotExpression {
         return {
             elementName: this._elementName as TElementNameExpression,
+            nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
         };
     }
@@ -186,6 +188,7 @@ export class TreeNodeStatement extends TreeNodeInstruction implements ITreeNodeS
     public get snapshot(): ITreeSnapshotStatement {
         return {
             elementName: this._elementName as TElementNameStatement,
+            nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
         };
     }
@@ -211,6 +214,7 @@ export class TreeNodeBlock extends TreeNodeInstruction implements ITreeNodeBlock
 
         return {
             elementName: this._elementName as TElementNameBlock,
+            nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
             scope,
         };

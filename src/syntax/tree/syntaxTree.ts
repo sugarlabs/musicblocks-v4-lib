@@ -21,10 +21,13 @@ import { TData } from '@/@types/data';
 import { ElementArgument } from '../elements/core/elementArgument';
 import {
     ITreeSnapshot,
-    ITreeSnapshotBlock,
-    ITreeSnapshotData,
-    ITreeSnapshotExpression,
+    ITreeSnapshotInput,
+    ITreeSnapshotDataInput,
+    ITreeSnapshotExpressionInput,
     ITreeSnapshotStatement,
+    ITreeSnapshotStatementInput,
+    ITreeSnapshotBlock,
+    ITreeSnapshotBlockInput,
 } from '@/@types/syntaxTree';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -563,15 +566,15 @@ export function generateSnapshot(): ITreeSnapshot {
  * Generates the syntax tree from a snapshot.
  * @param snapshot - syntax tree snapshot
  */
-export function generateFromSnapshot(snapshot: ITreeSnapshot): void {
+export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     resetSyntaxTree();
 
     function __generateSnapshotList(
         snapshotList: (
-            | ITreeSnapshotData
-            | ITreeSnapshotExpression
-            | ITreeSnapshotStatement
-            | ITreeSnapshotBlock
+            | ITreeSnapshotDataInput
+            | ITreeSnapshotExpressionInput
+            | ITreeSnapshotStatementInput
+            | ITreeSnapshotBlockInput
         )[]
     ): string | null {
         if (snapshotList.length === 0) {
@@ -583,17 +586,21 @@ export function generateFromSnapshot(snapshot: ITreeSnapshot): void {
             let nodeID: string;
             switch (specification!.type) {
                 case 'Data':
-                    nodeID = __generateFromSnapshotData(snapshot as ITreeSnapshotData);
+                    nodeID = __generateFromSnapshotData(snapshot as ITreeSnapshotDataInput);
                     break;
                 case 'Expression':
-                    nodeID = __generateFromSnapshotExpression(snapshot as ITreeSnapshotExpression);
+                    nodeID = __generateFromSnapshotExpression(
+                        snapshot as ITreeSnapshotExpressionInput
+                    );
                     break;
                 case 'Statement':
-                    nodeID = __generateFromSnapshotStatement(snapshot as ITreeSnapshotStatement);
+                    nodeID = __generateFromSnapshotStatement(
+                        snapshot as ITreeSnapshotStatementInput
+                    );
                     break;
                 case 'Block':
                 default:
-                    nodeID = __generateFromSnapshotBlock(snapshot as ITreeSnapshotBlock);
+                    nodeID = __generateFromSnapshotBlock(snapshot as ITreeSnapshotBlockInput);
             }
             return nodeID;
         });
@@ -610,7 +617,7 @@ export function generateFromSnapshot(snapshot: ITreeSnapshot): void {
     function __generateFromSnapshotArg(
         nodeID: string,
         snapshot: {
-            [argName: string]: ITreeSnapshotData | ITreeSnapshotExpression | null;
+            [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
         } | null
     ): void {
         if (snapshot === null) {
@@ -625,33 +632,35 @@ export function generateFromSnapshot(snapshot: ITreeSnapshot): void {
             let argNodeID: string;
             const specification = queryElementSpecification(snapshot.elementName)!;
             if (specification.type === 'Data') {
-                argNodeID = __generateFromSnapshotData(snapshot as ITreeSnapshotData);
+                argNodeID = __generateFromSnapshotData(snapshot as ITreeSnapshotDataInput);
             } else {
-                argNodeID = __generateFromSnapshotExpression(snapshot as ITreeSnapshotExpression);
+                argNodeID = __generateFromSnapshotExpression(
+                    snapshot as ITreeSnapshotExpressionInput
+                );
             }
 
             attachArgument(nodeID, argNodeID, argName);
         });
     }
 
-    function __generateFromSnapshotData(snapshot: ITreeSnapshotData): string {
+    function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
         const nodeID = addNode(snapshot.elementName);
         return nodeID;
     }
 
-    function __generateFromSnapshotExpression(snapshot: ITreeSnapshotExpression): string {
-        const nodeID = addNode(snapshot.elementName);
-        __generateFromSnapshotArg(nodeID, snapshot.argMap);
-        return nodeID;
-    }
-
-    function __generateFromSnapshotStatement(snapshot: ITreeSnapshotStatement): string {
+    function __generateFromSnapshotExpression(snapshot: ITreeSnapshotExpressionInput): string {
         const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
-    function __generateFromSnapshotBlock(snapshot: ITreeSnapshotBlock): string {
+    function __generateFromSnapshotStatement(snapshot: ITreeSnapshotStatementInput): string {
+        const nodeID = addNode(snapshot.elementName);
+        __generateFromSnapshotArg(nodeID, snapshot.argMap);
+        return nodeID;
+    }
+
+    function __generateFromSnapshotBlock(snapshot: ITreeSnapshotBlockInput): string {
         const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         const innerNodeID = __generateSnapshotList(snapshot.scope);

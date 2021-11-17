@@ -22,7 +22,7 @@ import { ElementValueBoolean } from '../elements/elementValue';
 import { ElementOperatorMathPlus } from '../elements/elementOperatorMath';
 import { ElementBoxBoolean } from '../elements/elementBox';
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
-import { ITreeSnapshot } from '@/@types/syntaxTree';
+import { ITreeSnapshotInput } from '@/@types/syntaxTree';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -242,7 +242,7 @@ describe('Syntax Tree', () => {
 
     describe('tree generation from snapshot', () => {
         test('validate tree generation', () => {
-            const snapshotInput: ITreeSnapshot = {
+            const snapshotInput: ITreeSnapshotInput = {
                 process: [
                     {
                         elementName: 'process',
@@ -367,7 +367,43 @@ describe('Syntax Tree', () => {
             };
             generateFromSnapshot(snapshotInput);
             const snapshotOutput = generateSnapshot();
-            expect(snapshotOutput).toEqual(snapshotInput);
+
+            /* eslint-disable-next-line */
+            function __check(object1: object, object2: object): void {
+                if (object1 === null || object1 === undefined) {
+                    expect(object1).toBe(object2);
+                    return;
+                }
+
+                for (const key of Object.keys(object1)) {
+                    if (key === 'nodeID') {
+                        continue;
+                    }
+
+                    // @ts-ignore
+                    if (typeof object1[key] !== 'object') {
+                        // @ts-ignore
+                        expect(object1[key]).toEqual(object2[key]);
+                    } else {
+                        // @ts-ignore
+                        __check(object1[key], object2[key]);
+                    }
+                }
+            }
+
+            for (const i in snapshotInput.process) {
+                __check(snapshotInput.process[i], snapshotOutput.process[i]);
+            }
+
+            for (const i in snapshotInput.routine) {
+                __check(snapshotInput.routine[i], snapshotOutput.routine[i]);
+            }
+
+            for (const i in snapshotInput.crumbs) {
+                for (const j in snapshotInput.crumbs[i]) {
+                    __check(snapshotInput.crumbs[i][j], snapshotOutput.crumbs[i][j]);
+                }
+            }
         });
     });
 });
