@@ -15,6 +15,7 @@ import { getInstance } from '@/syntax/warehouse/warehouse';
 import { TData } from '@/@types/data';
 import { ElementData, ElementExpression } from '@/syntax/elements/core/elementArgument';
 import { ElementBlock, ElementStatement } from '@/syntax/elements/core/elementInstruction';
+import { TElementName } from '@/@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
 
@@ -318,7 +319,12 @@ export function getNextElement(): IParsedElement | null {
              * ERROR: Missing argument
              */
 
-            return null;
+            const frame = frames[frames.length - 2];
+            throw Error(
+                `Invalid access: "${frame.pages![frame.pages!.length - 1].marker}" of "${
+                    frame.node.elementName
+                }" (node ID: "${frame.node.nodeID}")`
+            );
         }
     }
 
@@ -521,6 +527,45 @@ export function getNextElement(): IParsedElement | null {
             marker: result.marker,
         };
     }
+}
+
+/**
+ * Returns the execution call frame stack of the current execution item.
+ * @returns a list of execution call frames if execution item is set, else `null`
+ */
+export function stackTrace():
+    | {
+          elementName: TElementName | null;
+          nodeID: string | null;
+          pages:
+              | { elementName: TElementName | null; nodeID: string | null; marker: string | null }[]
+              | null;
+      }[]
+    | null {
+    if (_executionItem === null) {
+        return null;
+    }
+
+    const executionItemEntry = _programMap[_executionItem.bucket][_executionItem.node.nodeID];
+    const currentNode = executionItemEntry.pc;
+    return [
+        ...executionItemEntry.frames.map(({ node, pages }) => ({
+            elementName: node ? node.elementName : null,
+            nodeID: node ? node.nodeID : null,
+            pages: pages
+                ? pages.map(({ node, marker }) => ({
+                      elementName: node ? node.elementName : null,
+                      nodeID: node ? node.nodeID : null,
+                      marker,
+                  }))
+                : null,
+        })),
+        {
+            elementName: currentNode ? currentNode.elementName : null,
+            nodeID: currentNode ? currentNode.nodeID : null,
+            pages: null,
+        },
+    ].reverse();
 }
 
 _reset();
