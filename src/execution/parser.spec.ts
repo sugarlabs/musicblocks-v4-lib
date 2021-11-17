@@ -6,6 +6,7 @@ import {
     getNextElement,
     setPCOverride,
     clearPCOverride,
+    stackTrace,
 } from './parser';
 
 import { IParsedElementArgument, IParsedElementInstruction } from '@/@types/execution';
@@ -1000,6 +1001,92 @@ describe('Parser', () => {
                     next = getNextElement();
                     expect(next).toBe(null);
                     clearPCOverride();
+                });
+            });
+
+            describe('execution call frame stack trace', () => {
+                test('verify stack trace', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'routine',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'value-string',
+                                            },
+                                        },
+                                        scope: [
+                                            {
+                                                elementName: 'box-boolean',
+                                                argMap: {
+                                                    name: {
+                                                        elementName: 'boxidentifier-boolean',
+                                                    },
+                                                    value: {
+                                                        elementName: 'value-boolean',
+                                                    },
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe(
+                        'boxidentifier-boolean'
+                    );
+                    expect(stackTrace()!.map(({ elementName }) => elementName)).toEqual([
+                        'boxidentifier-boolean',
+                        'box-boolean',
+                        'routine',
+                        'process',
+                    ]);
+                });
+
+                test('verify call stack for missing argument case', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'routine',
+                                        argMap: {
+                                            name: null,
+                                        },
+                                        scope: [],
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    const next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect(() => {
+                        getNextElement();
+                    }).toThrowError('Invalid access');
                 });
             });
         });
