@@ -27,32 +27,55 @@ let _crumbNodes: TreeNode[] = [];
 
 /** Type definition for an execution call stack frame. */
 interface IFrame {
+    /** Syntax tree node instance. */
     node: TreeNode;
-    pages: { node: TreeNode; marker: string }[] | null;
+    /** List of one level down syntax tree nodes to parse. */
+    pages:
+        | {
+              /** Syntax tree node instance. */
+              node: TreeNode;
+              /** An identifier attached to it (usually argument name for argument nodes). */
+              marker: string;
+          }[]
+        | null;
 }
 
-/** Maintains the parsing state. */
+/* Type definition for program counter override signals. */
+type TPCOverride =
+    | '__rollback__'
+    | '__rollback__i'
+    | '__skip__'
+    | '__skipscope__'
+    | '__goinnerlast__'
+    | '__goup__'
+    | '__repeat__'
+    | null;
+
+/** Type definition for each root element's parsing state table. */
+type TProgramMapEntry = {
+    /** Execution call frame stack. */
+    frames: IFrame[];
+    /** Program counter. */
+    pc: TreeNode | null;
+    /** Handler to update program counter. */
+    pcHandler: (() => void) | null;
+    /** Signal to override program counter's normal sequence. */
+    pcOverride: TPCOverride;
+};
+
+/** Maintains the parsing state tables. */
 let _programMap: {
+    /** Parsing state table for process elements. */
     process: {
-        [nodeID: string]: {
-            node: TreeNodeStatement | TreeNodeBlock;
-            frames: IFrame[];
-            pc: TreeNode | null;
-        };
+        [nodeID: string]: TProgramMapEntry;
     };
+    /** Parsing state table for routine elements. */
     routine: {
-        [nodeID: string]: {
-            node: TreeNodeStatement | TreeNodeBlock;
-            frames: IFrame[];
-            pc: TreeNode | null;
-        };
+        [nodeID: string]: TProgramMapEntry;
     };
+    /** Parsing state table for crumb (hanging) element stacks. */
     crumbs: {
-        [nodeID: string]: {
-            node: TreeNode;
-            frames: IFrame[];
-            pc: TreeNode | null;
-        };
+        [nodeID: string]: TProgramMapEntry;
     };
 } = {
     process: {},
@@ -81,25 +104,28 @@ function _reset(): void {
 
     for (const processNode of _processNodes) {
         _programMap['process'][processNode.nodeID] = {
-            node: processNode,
             frames: [],
             pc: null,
+            pcHandler: null,
+            pcOverride: null,
         };
     }
 
     for (const routineNode of _routineNodes) {
         _programMap['routine'][routineNode.nodeID] = {
-            node: routineNode,
             frames: [],
             pc: null,
+            pcHandler: null,
+            pcOverride: null,
         };
     }
 
     for (const crumbNode of _crumbNodes) {
         _programMap['crumbs'][crumbNode.nodeID] = {
-            node: crumbNode,
             frames: [],
             pc: null,
+            pcHandler: null,
+            pcOverride: null,
         };
     }
 
@@ -191,18 +217,12 @@ export function generateArgumentSequence(
 export function setExecutionItem(nodeID: string): void {
     _reset();
 
-    let executionItemEntry:
-        | {
-              node: TreeNode;
-              frames: IFrame[];
-              pc: TreeNode | null;
-          }
-        | undefined = undefined;
+    let executionItemEntry: TProgramMapEntry | undefined = undefined;
 
     for (const processNode of _processNodes) {
         if (processNode.nodeID === nodeID) {
             _executionItem = { node: processNode, bucket: 'process' };
-            executionItemEntry = _programMap['process'][_executionItem.node.nodeID];
+            executionItemEntry = _programMap['process'][nodeID];
             break;
         }
     }
@@ -210,7 +230,7 @@ export function setExecutionItem(nodeID: string): void {
     for (const routineNode of _routineNodes) {
         if (routineNode.nodeID === nodeID) {
             _executionItem = { node: routineNode, bucket: 'routine' };
-            executionItemEntry = _programMap['routine'][_executionItem.node.nodeID];
+            executionItemEntry = _programMap['routine'][nodeID];
             break;
         }
     }
@@ -218,7 +238,7 @@ export function setExecutionItem(nodeID: string): void {
     for (const crumbNode of _crumbNodes) {
         if (crumbNode.nodeID === nodeID) {
             _executionItem = { node: crumbNode, bucket: 'crumbs' };
-            executionItemEntry = _programMap['crumbs'][_executionItem.node.nodeID];
+            executionItemEntry = _programMap['crumbs'][nodeID];
             break;
         }
     }
@@ -241,6 +261,29 @@ export function getExecutionItem(): string | null {
 }
 
 /**
+ * Sets a program counter override signal for the current execution item.
+ * @param signal - program counter override signal
+ */
+export function setPCOverride(signal: TPCOverride): void {
+    if (_executionItem === null) {
+        return;
+    }
+
+    _programMap[_executionItem.bucket][_executionItem.node.nodeID].pcOverride = signal;
+}
+
+/**
+ * Clears any program counter override signal for the current execution item.
+ */
+export function clearPCOverride(): void {
+    if (_executionItem === null) {
+        return;
+    }
+
+    _programMap[_executionItem.bucket][_executionItem.node.nodeID].pcOverride = null;
+}
+
+/**
  * Returns the next node in execution sequence.
  * @returns - element entry if present, else `null`
  */
@@ -254,10 +297,15 @@ export function getNextElement(): IParsedElement | null {
 
     const executionItemEntry = _programMap[_executionItem.bucket][_executionItem.node.nodeID];
 
-    const nextNode = executionItemEntry.pc;
+    if (executionItemEntry.pcHandler !== null) {
+        executionItemEntry.pcHandler();
+        executionItemEntry.pcHandler = null;
+    }
+
+    const currentNode = executionItemEntry.pc;
     const frames = executionItemEntry.frames;
 
-    if (nextNode === null) {
+    if (currentNode === null) {
         if (frames.length === 0) {
             /*
              * Successful end of execution
@@ -274,7 +322,7 @@ export function getNextElement(): IParsedElement | null {
         }
     }
 
-    const instance = getInstance(nextNode.instanceID)!.instance;
+    const instance = getInstance(currentNode.instanceID)!.instance;
 
     function __handlePages(): { element: IParsedElement } | { marker: string | null } {
         const frame = frames[frames.length - 1];
@@ -283,7 +331,8 @@ export function getNextElement(): IParsedElement | null {
             frame.pages = [];
 
             Object.entries(
-                (nextNode as TreeNodeExpression | TreeNodeStatement | TreeNodeBlock).argConnections
+                (currentNode as TreeNodeExpression | TreeNodeStatement | TreeNodeBlock)
+                    .argConnections
             ).forEach(([argName, argNode]) =>
                 frame.pages!.push({
                     node: argNode!,
@@ -295,37 +344,34 @@ export function getNextElement(): IParsedElement | null {
         }
 
         if (frame.pages.length !== 0) {
-            if (frame.pages[0].marker === 'rollback__this__') {
+            if (frame.pages[0].marker === '__rollback__') {
                 frames.pop();
 
-                return { marker: 'rollback__this__' };
+                return { marker: '__rollback__' };
             }
 
             const upcomingNode = frame.pages[frame.pages.length - 1].node;
 
-            frames.push({
-                node: upcomingNode,
-                pages: null,
-            });
-
-            executionItemEntry.pc = upcomingNode;
-
-            return { element: getNextElement()! };
-        } else {
-            if (nextNode instanceof TreeNodeBlock) {
-                frame.pages = [
-                    {
-                        node: nextNode as TreeNode,
-                        marker: 'rollback__this__',
-                    },
-                ];
-
+            executionItemEntry.pcHandler = () => {
                 frames.push({
-                    node: nextNode.innerConnection as TreeNode,
+                    node: upcomingNode,
                     pages: null,
                 });
 
-                executionItemEntry.pc = nextNode.innerConnection;
+                executionItemEntry.pc = upcomingNode;
+            };
+
+            return { element: getNextElement()! };
+        } else {
+            if (currentNode instanceof TreeNodeBlock) {
+                frame.pages = [
+                    {
+                        node: currentNode as TreeNode,
+                        marker: '__rollback__',
+                    },
+                ];
+
+                __handleInstructionFall(true);
 
                 return {
                     element: {
@@ -340,7 +386,7 @@ export function getNextElement(): IParsedElement | null {
 
             let marker: string | null = null;
 
-            if (nextNode instanceof TreeNodeExpression && frames.length !== 0) {
+            if (currentNode instanceof TreeNodeExpression && frames.length !== 0) {
                 const topFramePages = frames[frames.length - 1].pages!;
                 marker = topFramePages[topFramePages.length - 1].marker;
                 frames[frames.length - 1].pages!.pop();
@@ -350,7 +396,76 @@ export function getNextElement(): IParsedElement | null {
         }
     }
 
-    if (nextNode instanceof TreeNodeData) {
+    function __handleInstructionFall(goInner?: boolean): void {
+        executionItemEntry.pcHandler = () => {
+            let nextNode = (currentNode as TreeNodeStatement | TreeNodeBlock).afterConnection;
+
+            if (currentNode instanceof TreeNodeBlock && goInner) {
+                nextNode = currentNode.innerConnection;
+            }
+
+            if (currentNode instanceof TreeNodeBlock) {
+                if (executionItemEntry.pcOverride === '__goinnerlast__') {
+                    nextNode = currentNode.innerConnection;
+                    while (nextNode !== null && nextNode.afterConnection !== null) {
+                        nextNode = nextNode.afterConnection;
+                    }
+                } else if (executionItemEntry.pcOverride === '__skipscope__') {
+                    frames[frames.length - 1].pages = [
+                        {
+                            node: currentNode as TreeNode,
+                            marker: '__rollback__',
+                        },
+                    ];
+                    nextNode = null;
+                }
+            }
+
+            if (executionItemEntry.pcOverride === '__goup__') {
+                nextNode = (currentNode as TreeNodeStatement | TreeNodeBlock).beforeConnection;
+            } else if (executionItemEntry.pcOverride === '__skip__') {
+                nextNode = (currentNode as TreeNodeStatement | TreeNodeBlock).afterConnection;
+                if (nextNode !== null) {
+                    nextNode = nextNode.afterConnection;
+                }
+            } else if (executionItemEntry.pcOverride === '__repeat__') {
+                nextNode = currentNode as TreeNodeStatement | TreeNodeBlock;
+            } else if (
+                executionItemEntry.pcOverride === '__rollback__' ||
+                executionItemEntry.pcOverride === '__rollback__i'
+            ) {
+                if (frames.length > 0) {
+                    frames[frames.length - 1].pages = [
+                        {
+                            node: currentNode as TreeNode,
+                            marker: '__rollback__',
+                        },
+                    ];
+                }
+                nextNode = null;
+            }
+
+            if (executionItemEntry.pcOverride !== '__rollback__i') {
+                executionItemEntry.pcOverride = null;
+            }
+
+            if (nextNode === null) {
+                if (frames.length !== 0) {
+                    executionItemEntry.pc = frames[frames.length - 1].node;
+                } else {
+                    executionItemEntry.pc = nextNode;
+                }
+            } else {
+                frames.push({
+                    node: nextNode as TreeNodeStatement | TreeNodeBlock,
+                    pages: null,
+                });
+                executionItemEntry.pc = nextNode;
+            }
+        };
+    }
+
+    if (currentNode instanceof TreeNodeData) {
         frames.pop();
 
         let marker: string | null = null;
@@ -367,10 +482,12 @@ export function getNextElement(): IParsedElement | null {
             marker,
         };
 
-        executionItemEntry.pc = nextNode.connectedTo;
+        executionItemEntry.pcHandler = () => {
+            executionItemEntry.pc = currentNode.connectedTo;
+        };
 
         return element;
-    } else if (nextNode instanceof TreeNodeExpression) {
+    } else if (currentNode instanceof TreeNodeExpression) {
         const result = __handlePages();
         if ('element' in result) {
             return result.element;
@@ -382,59 +499,25 @@ export function getNextElement(): IParsedElement | null {
             marker: result.marker,
         };
 
-        executionItemEntry.pc = nextNode.connectedTo;
+        executionItemEntry.pcHandler = () => {
+            executionItemEntry.pc = currentNode.connectedTo;
+        };
 
         return element;
-    } else if (nextNode instanceof TreeNodeStatement) {
+    } /* currentNode instanceof TreeNodeStatement || currentNode instanceof TreeNodeBlock */ else {
         const result = __handlePages();
         if ('element' in result) {
             return result.element;
         }
 
-        if (nextNode.afterConnection === null) {
-            if (frames.length !== 0) {
-                executionItemEntry.pc = frames[frames.length - 1].node;
-            } else {
-                executionItemEntry.pc = nextNode.afterConnection;
-            }
-        } else {
-            frames.push({
-                node: nextNode.afterConnection as TreeNodeStatement | TreeNodeBlock,
-                pages: null,
-            });
-            executionItemEntry.pc = nextNode.afterConnection;
-        }
+        __handleInstructionFall();
 
         return {
             type: 'Instruction',
-            instance: instance as ElementStatement,
-            marker: null,
-        };
-    } /* nextNode instanceOf TreeNodeBlock */ else {
-        const result = __handlePages();
-        if ('element' in result) {
-            return result.element;
-        }
-
-        if ((nextNode as TreeNodeBlock).afterConnection === null) {
-            if (frames.length !== 0) {
-                executionItemEntry.pc = frames[frames.length - 1].node;
-            } else {
-                executionItemEntry.pc = (nextNode as TreeNodeBlock).afterConnection;
-            }
-        } else {
-            frames.push({
-                node: (nextNode as TreeNodeBlock).afterConnection as
-                    | TreeNodeStatement
-                    | TreeNodeBlock,
-                pages: null,
-            });
-            executionItemEntry.pc = (nextNode as TreeNodeBlock).afterConnection;
-        }
-
-        return {
-            type: 'Instruction',
-            instance: instance as ElementBlock,
+            instance:
+                currentNode instanceof TreeNodeStatement
+                    ? (instance as ElementStatement)
+                    : (instance as ElementBlock),
             marker: result.marker,
         };
     }

@@ -4,6 +4,8 @@ import {
     setExecutionItem,
     getExecutionItem,
     getNextElement,
+    setPCOverride,
+    clearPCOverride,
 } from './parser';
 
 import { IParsedElementArgument, IParsedElementInstruction } from '@/@types/execution';
@@ -309,6 +311,36 @@ describe('Parser', () => {
                 expect(next).toBe(null);
             });
 
+            test('validate parsing an empty block', () => {
+                resetSyntaxTree();
+                generateFromSnapshot({
+                    process: [
+                        {
+                            elementName: 'process',
+                            argMap: null,
+                            scope: [],
+                        },
+                    ],
+                    routine: [],
+                    crumbs: [],
+                });
+                const node = getProcessNodes()[0].nodeID;
+                setExecutionItem(node);
+                expect(getExecutionItem()).toBe(node);
+                let next = getNextElement();
+                expect(next).not.toBe(null);
+                expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                expect((next as IParsedElementInstruction).type).toBe('Instruction');
+                expect((next as IParsedElementInstruction).marker).toBe(null);
+                next = getNextElement();
+                expect(next).not.toBe(null);
+                expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                expect((next as IParsedElementInstruction).type).toBe('Instruction');
+                expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                next = getNextElement();
+                expect(next).toBe(null);
+            });
+
             test('validate parsing a process element', () => {
                 resetSyntaxTree();
                 generateFromSnapshot({
@@ -359,7 +391,7 @@ describe('Parser', () => {
                 expect(next).not.toBe(null);
                 expect((next as IParsedElementInstruction).instance.name).toBe('process');
                 expect((next as IParsedElementInstruction).type).toBe('Instruction');
-                expect((next as IParsedElementInstruction).marker).toBe('rollback__this__');
+                expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
                 next = getNextElement();
                 expect(next).toBe(null);
             });
@@ -508,9 +540,467 @@ describe('Parser', () => {
                     ['value-string', 'name'],
                     ['value-boolean', 'value'],
                     ['box-boolean', null],
-                    ['process', 'rollback__this__'],
-                    ['routine', 'rollback__this__'],
+                    ['process', '__rollback__'],
+                    ['routine', '__rollback__'],
                 ]);
+            });
+
+            describe('program counter override', () => {
+                test('verify __skip__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [],
+                        routine: [],
+                        crumbs: [
+                            [
+                                {
+                                    elementName: 'box-boolean',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-boolean',
+                                        },
+                                        value: {
+                                            elementName: 'value-boolean',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-number',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-number',
+                                        },
+                                        value: {
+                                            elementName: 'value-number',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-string',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-string',
+                                        },
+                                        value: {
+                                            elementName: 'value-string',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-boolean',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-boolean',
+                                        },
+                                        value: {
+                                            elementName: 'value-boolean',
+                                        },
+                                    },
+                                },
+                            ],
+                        ],
+                    });
+
+                    const node = getCrumbs()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    setPCOverride('__skip__');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe(
+                        'boxidentifier-string'
+                    );
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-string');
+                    setPCOverride('__skip__');
+                    next = getNextElement();
+                    expect(next).toBe(null);
+                });
+
+                test('verify __goup__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [],
+                        routine: [],
+                        crumbs: [
+                            [
+                                {
+                                    elementName: 'box-boolean',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-boolean',
+                                        },
+                                        value: {
+                                            elementName: 'value-boolean',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-number',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-number',
+                                        },
+                                        value: {
+                                            elementName: 'value-number',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-string',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-string',
+                                        },
+                                        value: {
+                                            elementName: 'value-string',
+                                        },
+                                    },
+                                },
+                            ],
+                        ],
+                    });
+
+                    const node = getCrumbs()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-number');
+                    setPCOverride('__goup__');
+                    next = getNextElement();
+                    expect((next as IParsedElementArgument).instance.name).toBe(
+                        'boxidentifier-boolean'
+                    );
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    setPCOverride('__goup__');
+                    next = getNextElement();
+                    expect(next).toBe(null);
+                });
+
+                test('verify __repeat__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [],
+                        routine: [],
+                        crumbs: [
+                            [
+                                {
+                                    elementName: 'box-boolean',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-boolean',
+                                        },
+                                        value: {
+                                            elementName: 'value-boolean',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'box-number',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-number',
+                                        },
+                                        value: {
+                                            elementName: 'value-number',
+                                        },
+                                    },
+                                },
+                            ],
+                        ],
+                    });
+
+                    const node = getCrumbs()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    setPCOverride('__repeat__');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    next = getNextElement();
+                    expect((next as IParsedElementArgument).instance.name).toBe(
+                        'boxidentifier-number'
+                    );
+                });
+
+                test('verify __skipscope__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [],
+                        routine: [],
+                        crumbs: [
+                            [
+                                {
+                                    elementName: 'box-boolean',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'value-string',
+                                        },
+                                        value: {
+                                            elementName: 'value-boolean',
+                                        },
+                                    },
+                                },
+                                {
+                                    elementName: 'process',
+                                    argMap: null,
+                                    scope: [
+                                        {
+                                            elementName: 'box-number',
+                                            argMap: {
+                                                name: {
+                                                    elementName: 'value-string',
+                                                },
+                                                value: {
+                                                    elementName: 'value-number',
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                                {
+                                    elementName: 'box-string',
+                                    argMap: {
+                                        name: {
+                                            elementName: 'boxidentifier-string',
+                                        },
+                                        value: {
+                                            elementName: 'value-string',
+                                        },
+                                    },
+                                },
+                            ],
+                        ],
+                    });
+
+                    const node = getCrumbs()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    expect((next as IParsedElementInstruction).marker).toBe(null);
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe(null);
+                    setPCOverride('__skipscope__');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    next = getNextElement();
+                    expect((next as IParsedElementArgument).instance.name).toBe(
+                        'boxidentifier-string'
+                    );
+                });
+
+                test('verify __goinnerlast__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'box-boolean',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'boxidentifier-boolean',
+                                            },
+                                            value: {
+                                                elementName: 'value-boolean',
+                                            },
+                                        },
+                                    },
+                                    {
+                                        elementName: 'box-number',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'boxidentifier-number',
+                                            },
+                                            value: {
+                                                elementName: 'value-number',
+                                            },
+                                        },
+                                    },
+                                    {
+                                        elementName: 'box-string',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'boxidentifier-string',
+                                            },
+                                            value: {
+                                                elementName: 'value-string',
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    setPCOverride('__goinnerlast__');
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-string');
+                });
+
+                test('verify __rollback__ signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'process',
+                                        argMap: null,
+                                        scope: [
+                                            {
+                                                elementName: 'box-boolean',
+                                                argMap: {
+                                                    name: {
+                                                        elementName: 'boxidentifier-boolean',
+                                                    },
+                                                    value: {
+                                                        elementName: 'value-boolean',
+                                                    },
+                                                },
+                                            },
+                                            {
+                                                elementName: 'box-number',
+                                                argMap: {
+                                                    name: {
+                                                        elementName: 'boxidentifier-number',
+                                                    },
+                                                    value: {
+                                                        elementName: 'value-number',
+                                                    },
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    setPCOverride('__rollback__');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                });
+
+                test('verify __rollback__i signal', () => {
+                    resetSyntaxTree();
+                    generateFromSnapshot({
+                        process: [
+                            {
+                                elementName: 'process',
+                                argMap: null,
+                                scope: [
+                                    {
+                                        elementName: 'routine',
+                                        argMap: {
+                                            name: {
+                                                elementName: 'value-string',
+                                            },
+                                        },
+                                        scope: [
+                                            {
+                                                elementName: 'process',
+                                                argMap: null,
+                                                scope: [
+                                                    {
+                                                        elementName: 'box-boolean',
+                                                        argMap: {
+                                                            name: {
+                                                                elementName:
+                                                                    'boxidentifier-boolean',
+                                                            },
+                                                            value: {
+                                                                elementName: 'value-boolean',
+                                                            },
+                                                        },
+                                                    },
+                                                    {
+                                                        elementName: 'box-number',
+                                                        argMap: {
+                                                            name: {
+                                                                elementName: 'boxidentifier-number',
+                                                            },
+                                                            value: {
+                                                                elementName: 'value-number',
+                                                            },
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                        routine: [],
+                        crumbs: [],
+                    });
+
+                    const node = getProcessNodes()[0];
+                    setExecutionItem(node.nodeID);
+                    let next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('box-boolean');
+                    setPCOverride('__rollback__i');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('routine');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    next = getNextElement();
+                    expect((next as IParsedElementInstruction).instance.name).toBe('process');
+                    expect((next as IParsedElementInstruction).marker).toBe('__rollback__');
+                    next = getNextElement();
+                    expect(next).toBe(null);
+                    clearPCOverride();
+                });
             });
         });
     });
