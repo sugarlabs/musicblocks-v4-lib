@@ -7,8 +7,6 @@ import {
     TElementName,
 } from '@/@types/specification';
 
-import elementSpecificationEntries from './specificationEntries';
-
 // -- private variables ----------------------------------------------------------------------------
 
 /** Stores the specifications for each element as a key-value pair of name: specification. */
@@ -118,7 +116,6 @@ export function removeElementSpecificationEntries(names: TElementName[]): void {
  */
 export function resetElementSpecificationTable(): void {
     _elementSpecification = {};
-    registerElementSpecificationEntries(elementSpecificationEntries);
 }
 
 resetElementSpecificationTable();

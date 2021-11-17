@@ -1,5 +1,5 @@
 import { TElementNameBlock } from '@/@types/specification';
-import { ElementBlock } from './core/elementInstruction';
+import { ElementBlock } from '@/syntax/elements/elementInstruction';
 
 export class ElementProcess extends ElementBlock {
     constructor(name: TElementNameBlock, label: string) {

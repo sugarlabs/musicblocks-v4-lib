@@ -16,9 +16,9 @@ import {
 } from '../specification/specification';
 
 import { TData } from '@/@types/data';
-import { ElementSyntax } from '../elements/core/elementSyntax';
-import { ElementData, ElementExpression } from '../elements/core/elementArgument';
-import { ElementStatement, ElementBlock } from '../elements/core/elementInstruction';
+import { ElementSyntax } from '../elements/elementSyntax';
+import { ElementData, ElementExpression } from '../elements/elementArgument';
+import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
 
 // -- private variables ----------------------------------------------------------------------------
 

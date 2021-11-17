@@ -13,8 +13,8 @@ import { getProcessNodes, getRoutineNodes, getCrumbs } from '@/syntax/tree/synta
 import { getInstance } from '@/syntax/warehouse/warehouse';
 
 import { TData } from '@/@types/data';
-import { ElementData, ElementExpression } from '@/syntax/elements/core/elementArgument';
-import { ElementBlock, ElementStatement } from '@/syntax/elements/core/elementInstruction';
+import { ElementData, ElementExpression } from '@/syntax/elements/elementArgument';
+import { ElementBlock, ElementStatement } from '@/syntax/elements/elementInstruction';
 import { TElementName } from '@/@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------

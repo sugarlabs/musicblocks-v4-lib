@@ -13,12 +13,19 @@ import {
     resetWarehouse,
 } from './warehouse';
 
-import { ElementBlock } from '../elements/core/elementInstruction';
-import { ElementBoxBoolean } from '../elements/elementBox';
-import { ElementOperatorMathPlus } from '../elements/elementOperatorMath';
-import { ElementValueBoolean } from '../elements/elementValue';
+import { ElementBlock } from '../elements/elementInstruction';
+
+import { registerElementSpecificationEntries } from '../specification/specification';
+import elementSpecificationEntries from '../../library/specification';
+
+import { ElementBoxBoolean } from '@/library/elements/elementBox';
+import { ElementOperatorMathPlus } from '@/library/elements/elementOperatorMath';
+import { ElementValueBoolean } from '@/library/elements/elementValue';
 
 // -------------------------------------------------------------------------------------------------
+
+registerElementSpecificationEntries(elementSpecificationEntries);
+resetWarehouse();
 
 describe('Syntax Element Warehouse', () => {
     let instanceID1: string;
