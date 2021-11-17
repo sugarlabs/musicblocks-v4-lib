@@ -27,6 +27,7 @@ export type TPCOverride =
     | '__rollback__i'
     | '__skip__'
     | '__skipscope__'
+    | '__goinnerfirst__'
     | '__goinnerlast__'
     | '__goup__'
     | '__repeat__'
