@@ -2,7 +2,12 @@ import { TData, TDataName } from '@/@types/data';
 import { IVariable, TPCOverride } from '@/@types/execution';
 
 import { addGlobalVariable, getGlobalVariable } from './symbolTable';
-import { setPCOverride, clearPCOverride } from './parser';
+import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from './parser';
+
+import { ElementData, ElementExpression } from '@/syntax/elements/elementArgument';
+import { ElementStatement, ElementBlock } from '@/syntax/elements/elementInstruction';
+
+// -- private functions ----------------------------------------------------------------------------
 
 // -- public functions -----------------------------------------------------------------------------
 
@@ -41,4 +46,59 @@ export function overrideProgramCounter(signal: TPCOverride): void {
  */
 export function releaseProgramCounter(): void {
     clearPCOverride();
+}
+
+/**
+ * Runs a process, routine, or crumb stack from start to end.
+ * @param nodeID syntax tree node ID of the starting node
+ */
+export function run(nodeID: string): void {
+    abstract class ElementDataCover extends ElementData<TData> {
+        abstract evaluate(): void;
+    }
+
+    abstract class ElementExpressionCover extends ElementExpression<TData> {
+        abstract evaluate(params: { [key: string]: TData }): void;
+    }
+
+    setExecutionItem(nodeID);
+
+    const memo: { [key: string]: TData } = {};
+
+    function __execute(): void {
+        const element = getNextElement();
+
+        if (element === null) {
+            return;
+        }
+
+        const { instance, type, marker } = element;
+        if (type === 'Argument') {
+            if (instance instanceof ElementDataCover) {
+                instance.evaluate();
+            } /* instance instanceof ElementExpressionCover */ else {
+                (instance as ElementExpressionCover).evaluate(memo);
+            }
+
+            const value = instance.value;
+
+            if (marker !== null) {
+                memo[marker] = value;
+            }
+        } else {
+            if (instance instanceof ElementStatement) {
+                instance.onVisit(memo);
+            } /* instance instanceof ElementBlock */ else {
+                if (marker !== '__rollback__') {
+                    (instance as ElementBlock).onVisit(memo);
+                } else {
+                    (instance as ElementBlock).onExit();
+                }
+            }
+        }
+
+        __execute();
+    }
+
+    __execute();
 }
