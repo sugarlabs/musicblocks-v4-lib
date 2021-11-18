@@ -38,7 +38,12 @@ export type TElementNameExpression =
 /** Names of factory list of statement elements. */
 export type TElementNameStatement =
     // box elements
-    'box-generic' | 'box-boolean' | 'box-number' | 'box-string';
+    | 'box-generic'
+    | 'box-boolean'
+    | 'box-number'
+    | 'box-string'
+    // print element
+    | 'print';
 
 /** Names of factory list of block elements. */
 export type TElementNameBlock = 'process' | 'routine' | 'repeat' | 'if';

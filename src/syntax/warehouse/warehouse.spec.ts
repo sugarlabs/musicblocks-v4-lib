@@ -149,15 +149,14 @@ describe('Syntax Element Warehouse', () => {
         });
 
         test('verify category count all', () => {
-            expect(new Set(Object.entries(getCategoryCountAll()))).toEqual(
-                new Set([
-                    ['value', 2],
-                    ['boxidentifier', 1],
-                    ['operator-math', 2],
-                    ['box', 2],
-                    ['program', 1],
-                ])
-            );
+            const categoryCount = getCategoryCountAll();
+            [
+                ['value', 2],
+                ['boxidentifier', 1],
+                ['operator-math', 2],
+                ['box', 2],
+                ['program', 1],
+            ].forEach(([key, value]) => expect(categoryCount[key]).toBe(value));
         });
     });
 
