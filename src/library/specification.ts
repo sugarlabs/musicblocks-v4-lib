@@ -29,7 +29,10 @@ import {
     ElementOperatorMathDivide,
     ElementOperatorMathModulus,
 } from './elements/elementOperatorMath';
+import { ElementRepeat } from './elements/elementLoop';
+import { ElementIf } from './elements/elementConditional';
 import { ElementProcess, ElementRoutine } from './elements/elementProgram';
+import { ElementPrint } from './elements/elementPrint';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -141,6 +144,20 @@ const _elementSpecificationEntries: {
         category: 'operator-math',
         prototype: ElementOperatorMathModulus,
     },
+    // -- loop elements ----------------------------------------------------------------------------
+    'repeat': {
+        label: 'repeat',
+        type: 'Block',
+        category: 'loop',
+        prototype: ElementRepeat,
+    },
+    // -- conditional elements ---------------------------------------------------------------------
+    'if': {
+        label: 'if',
+        type: 'Block',
+        category: 'loop',
+        prototype: ElementIf,
+    },
     // -- program elements -------------------------------------------------------------------------
     'process': {
         label: 'start',
@@ -157,6 +174,13 @@ const _elementSpecificationEntries: {
         prototype: ElementRoutine,
         allowAbove: false,
         allowBelow: false,
+    },
+    // -- print element ----------------------------------------------------------------------------
+    'print': {
+        label: 'print',
+        type: 'Statement',
+        category: 'print',
+        prototype: ElementPrint,
     },
 };
 
