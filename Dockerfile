@@ -1,25 +1,16 @@
-FROM debian:buster-slim
+FROM alpine:latest 
 
-# install node.js:14.x
-RUN apt update --no-install-recommends -yq \
-    && apt-get install curl gnupg -yq \
-    && curl -sL https://deb.nodesource.com/setup_14.x | bash \
-    && apt-get install nodejs -yq \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk add curl gnupg \
+    && apk add nodejs npm
 
-# update npm
-RUN npm install -g npm
-
-# install typescript compiler
 RUN npm install -g typescript
 
-# install ts-node (to run/debug .ts files without manual transpiling)
 RUN npm install -g ts-node
 
-LABEL org.opencontainers.image.description='An initial development image based on a slimmed Debian \
-10.7 (buster), and further configured with Node.js v14, TypeScript compiler, and ts-node. This \
-does not contain any source files.'
+LABEL org.opencontainers.image.description='An initial development image based on the official \
+    Node.js (on Alpine LTS) image, and further configured with a HTTP server, TypeScript compiler, \
+    and ts-node. This is merely to provide an execution sandbox and does not contain source files.'
 
 WORKDIR /app
 
