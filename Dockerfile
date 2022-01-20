@@ -1,17 +1,20 @@
-FROM alpine:latest 
+# base from official Node (Alpine LTS) image
+FROM node:lts-alpine 
 
-RUN apk update \
-    && apk add curl gnupg \
-    && apk add nodejs npm
+# update npm
+RUN npm install -g npm
 
+# install typescript compiler
 RUN npm install -g typescript
 
+# install ts-node (to run/debug .ts files without manual transpiling)
 RUN npm install -g ts-node
 
 LABEL org.opencontainers.image.description='An initial development image based on the official \
-    Node.js (on Alpine LTS) image, and further configured with a HTTP server, TypeScript compiler, \
-    and ts-node. This is merely to provide an execution sandbox and does not contain source files.'
+    Node.js (on Alpine LTS) image, and further configured with TypeScript compiler and ts-node. \
+    This is merely to provide an execution sandbox (for bind mounting source files) and \ 
+    does not contain source files.'
 
 WORKDIR /app
 
-EXPOSE 5000 9000
+CMD [ "sh" ]
