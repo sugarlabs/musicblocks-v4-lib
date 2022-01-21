@@ -161,15 +161,15 @@ allow the competition of ideas (Sugar Labs is a meritocracy)._
 ### Without Docker
 
 This is a _**TypeScript**_ project that uses _**React**_. You'll need _[**Node.js**](https://nodejs.org/en/)_
-and _**NPM**_ installed on your development machine. You'll need _**tsc**_ (_TypeScript Compiler_)
+and _**YARN**_ installed on your development machine. You'll need _**tsc**_ (_TypeScript Compiler_)
 to manually compile `.ts` files. You'll need _**ts-node**_ (_Node executable for TypeScript_) to manually
 execute `.ts` scripts directly.
 
-Once _**NPM**_ is installed, to install the above, run
+Once _**YARN**_ is installed, to install the above, run
 
 ```bash
-npm i -g typescript
-npm i -g ts-node
+yarn global add typescript
+yarn global add ts-node
 ```
 
 _**Note:**_ Users on _Linux_ and _Mac OS_ are required to add a `sudo` before these commands.
@@ -177,7 +177,7 @@ _**Note:**_ Users on _Linux_ and _Mac OS_ are required to add a `sudo` before th
 Check installation using
 
 ```bash
-node -v && npm -v && tsc -v && ts-node -v
+node -v && yarn -v && tsc -v && ts-node -v
 ```
 
 Output should look like
@@ -248,12 +248,12 @@ Windows) this repository using
 6. The _Linux Debian 10.7_ (_buster_) _shell_ in the _docker container_ named _musicblocks_ is
 spawned and standard input/output is connected to the terminal.
 
-    _**Node**_ (_Node.js Runtime_), _**npm**_ (_Node Package Manager_), _**tsc**_ (_TypeScript
+    _**Node**_ (_Node.js Runtime_), _**yarn**_ (_Node Package Manager_), _**tsc**_ (_TypeScript
     Compiler_), and _**ts-node**_ (_Node executable for TypeScript_) should be installed. Check
     using
 
     ```bash
-    node --version && npm --version && tsc --version && ts-node --version
+    node --version && yarn --version && tsc --version && ts-node --version
     ```
 
     Output should look like
@@ -281,7 +281,7 @@ spawned and standard input/output is connected to the terminal.
 8. To install all the dependencies (in `package.json`), run
 
     ```bash
-    npm ci
+    yarn install --frozen-lockfile
     ```
 
 9. Miscellaneous commands.
@@ -317,37 +317,37 @@ spawned and standard input/output is connected to the terminal.
     - For testing, run
 
         ```bash
-        npm run test
+        yarn run test
         ```
 
         To run a specific path
 
         ```bash
-        npm run test -- "test/path"
+        yarn run test -- "test/path"
         ```
 
         To run in watch mode
 
         ```bash
-        npm run test -- "test/path" --watch
+        yarn run test -- "test/path" --watch
         ```
 
     - For generating a production build, run
 
         ```bash
-        npm run build
+        yarn run build
         ```
 
     - For checking linting problems
 
         ```bash
-        npm run lint
+        yarn run lint
         ```
 
         To autofix fixable problems
 
         ```bash
-        npm run lint -- --fix
+        yarn run lint -- --fix
         ```
 
     _**Note:**_ If you're running using _Docker Desktop_ on _Windows_, you might experience
