@@ -260,7 +260,7 @@ spawned and standard input/output is connected to the terminal.
 
     ```bash
     v14.16.1
-    7.9.0
+    1.22.17
     Version 4.2.4
     v9.1.1
     ```
