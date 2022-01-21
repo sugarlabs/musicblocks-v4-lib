@@ -248,7 +248,7 @@ Windows) this repository using
 6. The _Linux Debian 10.7_ (_buster_) _shell_ in the _docker container_ named _musicblocks_ is
 spawned and standard input/output is connected to the terminal.
 
-    _**Node**_ (_Node.js Runtime_), _**yarn**_ (_Node Package Manager_), _**tsc**_ (_TypeScript
+    _**Node**_ (_Node.js Runtime_), _**yarn**_ (Yarn Package Manager_), _**tsc**_ (_TypeScript
     Compiler_), and _**ts-node**_ (_Node executable for TypeScript_) should be installed. Check
     using
 
