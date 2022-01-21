@@ -168,8 +168,8 @@ execute `.ts` scripts directly.
 Once _**YARN**_ is installed, to install the above, run
 
 ```bash
-yarn global typescript
-yarn global ts-node
+yarn global add typescript
+yarn global add ts-node
 ```
 
 _**Note:**_ Users on _Linux_ and _Mac OS_ are required to add a `sudo` before these commands.
