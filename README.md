@@ -184,7 +184,7 @@ Output should look like
 
 ```bash
 v14.17.0
-6.14.13
+1.22.17
 Version 4.3.2
 v10.0.0
 ```
@@ -260,7 +260,7 @@ spawned and standard input/output is connected to the terminal.
 
     ```bash
     v14.16.1
-    7.9.0
+    1.22.17
     Version 4.2.4
     v9.1.1
     ```
