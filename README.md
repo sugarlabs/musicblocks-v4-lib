@@ -162,8 +162,8 @@ allow the competition of ideas (Sugar Labs is a meritocracy)._
 
 This is a _**TypeScript**_ project that uses _**React**_. You'll need _[**Node.js**](https://nodejs.org/en/)_
 and _**NPM**_ installed on your development machine. You'll need _**tsc**_ (_TypeScript Compiler_)
-to manually compile `.ts` files. You'll need _**ts-node**_ (_Node executable for TypeScript_) to manually
-execute `.ts` scripts directly.
+to manually compile `.ts` files. You'll need _**ts-node**_ (_Node.js executable for TypeScript_) to
+manually execute `.ts` scripts directly.
 
 Once _**NPM**_ is installed, to install the above, run
 
@@ -172,7 +172,7 @@ npm i -g typescript
 npm i -g ts-node
 ```
 
-_**Note:**_ Users on _Linux_ and _Mac OS_ are required to add a `sudo` before these commands.
+_**Note:**_ Users on _Linux_ and _MacOS_ are required to add a `sudo` before these commands.
 
 Check installation using
 
@@ -213,7 +213,7 @@ Windows) this repository using
 4. Build _docker image_ and launch _docker network_.
 
     _**Note:**_ A
-    [built initial development image](https://github.com/orgs/sugarlabs/packages/container/musicblocks/531083)
+    [built initial development image](https://github.com/sugarlabs/musicblocks-v4/pkgs/container/musicblocks/531083)
     has been published to
     [_Sugar Labs GitHub Container Registry_ (_GHCR_)](https://github.com/orgs/sugarlabs/packages?ecosystem=container),
     which can be pulled directly, so you don't have to build it again. Pull using
@@ -286,7 +286,7 @@ spawned and standard input/output is connected to the terminal.
 
 9. Miscellaneous commands.
 
-    - To launch the _Node runtime_, run
+    - To launch the _Node.js runtime_, run
 
         ```bash
         node
@@ -358,7 +358,7 @@ spawned and standard input/output is connected to the terminal.
 
 _All code is just plain text, so it doesn't really matter what you use to edit them._ However,
 using modern, feature-rich IDEs/text-editors like [_**Atom**_](https://atom.io/),
-[_**Brackets**_](http://brackets.io/), [_**WebStorm**_](https://www.jetbrains.com/webstorm/),
+[_**Brackets**_](https://brackets.io/), [_**WebStorm**_](https://www.jetbrains.com/webstorm/),
 [_**Sublime Text**_](https://www.sublimetext.com/),
 [_**Visual Studio Code**_](https://code.visualstudio.com/), etc. makes life way easier. These come
 with a directory-tree explorer, and an integrated terminal, at the very least, while having support
@@ -370,8 +370,8 @@ _keyboard shortcuts_, etc.
 
 _**Visual Studio Code**_ (_**VSCode**_) is currently the most-popular code editor for reasons like
 being _lightweight_, _cleaner_, large marketplace of _extensions_, integrated _Source Control_
-features, _debugger_, _remote explorer_ support, _Regular Expression_ (_regex_) based find/replace,
-etc.
+features, _debugger_, _remote explorer_ support, _Regular Expression_ (_regular expression_) based
+find/replace, etc.
 
 In fact, a workspace configuration file for _vscode_`.vscode/settings.json` has already been added.
 Recommended extensions for this project are `Babel JavaScript`, `Docker`, `ESLint`, `Git Graph`,
