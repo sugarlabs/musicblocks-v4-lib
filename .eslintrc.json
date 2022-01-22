@@ -55,5 +55,10 @@
     "no-duplicate-case": "error",
     "no-irregular-whitespace": "warn"
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:json/recommended-with-comments"
+  ]
 }
