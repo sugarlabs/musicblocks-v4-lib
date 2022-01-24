@@ -1,6 +1,6 @@
 {
   "include": ["./src/**/*"],
-  "exclude": ["./src/archive/*"],
+  "exclude": [],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
