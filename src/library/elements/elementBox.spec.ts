@@ -4,7 +4,7 @@ import {
     ElementBoxString,
     ElementBoxGeneric,
 } from './elementBox';
-import { getGlobalVariable } from '@/execution/symbolTable';
+import { getGlobalVariable } from '../../execution/symbolTable';
 
 // -------------------------------------------------------------------------------------------------
 

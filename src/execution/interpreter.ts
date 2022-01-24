@@ -1,11 +1,11 @@
-import { TData, TDataName } from '@/@types/data';
-import { IVariable, TPCOverride } from '@/@types/execution';
+import { TData, TDataName } from '../@types/data';
+import { IVariable, TPCOverride } from '../@types/execution';
 
 import { addGlobalVariable, getGlobalVariable } from './symbolTable';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from './parser';
 
-import { ElementData, ElementExpression } from '@/syntax/elements/elementArgument';
-import { ElementStatement, ElementBlock } from '@/syntax/elements/elementInstruction';
+import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
+import { ElementStatement, ElementBlock } from '../syntax/elements/elementInstruction';
 
 // -- private functions ----------------------------------------------------------------------------
 

@@ -3,7 +3,7 @@ import {
     IElementSpecificationEntryExpression,
     IElementSpecificationEntryStatement,
     IElementSpecificationEntryBlock,
-} from '@/@types/specification';
+} from '../@types/specification';
 
 import {
     ElementValueBoolean,
