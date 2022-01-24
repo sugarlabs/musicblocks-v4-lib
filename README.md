@@ -160,14 +160,19 @@ allow the competition of ideas (Sugar Labs is a meritocracy)._
 
 ### Without Docker
 
-This is a _**TypeScript**_ project that uses _**React**_. 
+This is a _**TypeScript**_ project. You'll need the following installed on your development machine:
 
-You'll need the following installed on your development machine:
+- _[**Node.js**](https://nodejs.org/en/)_
+- _[**Yarn**](https://yarnpkg.com)_
+- _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files.
+- _**ts-node**_ (_Node.js executable for TypeScript_) to manually execute `.ts` scripts directly.
 
-+ _[**Node.js**](https://nodejs.org/en/)_
-+ _[**Yarn**](https://yarnpkg.com)_ 
-+ _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files. 
-+ _**ts-node**_ (_Node.js executable for TypeScript_) to manually execute `.ts` scripts directly.
+Installing _**Node.js**_ will install _**NPM**_ (_Node.js Package Manager_) by default. Use it to install
+_Yarn_ using
+
+```bash
+npm install -g yarn
+```
 
 Once _**Yarn**_ is installed, to install the above, run
 
