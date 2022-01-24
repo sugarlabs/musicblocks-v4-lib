@@ -10,14 +10,14 @@ import {
     ITreeSnapshotData,
     ITreeSnapshotExpression,
     ITreeSnapshotStatement,
-} from '@/@types/syntaxTree';
+} from '../../@types/syntaxTree';
 import {
     TElementName,
     TElementNameBlock,
     TElementNameData,
     TElementNameExpression,
     TElementNameStatement,
-} from '@/@types/specification';
+} from '../../@types/specification';
 
 import { getInstance } from '../warehouse/warehouse';
 

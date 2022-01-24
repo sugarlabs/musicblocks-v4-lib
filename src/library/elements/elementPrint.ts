@@ -1,6 +1,6 @@
-import { TData } from '@/@types/data';
-import { TElementNameStatement } from '@/@types/specification';
-import { ElementStatement } from '@/syntax/elements/elementInstruction';
+import { TData } from '../../@types/data';
+import { TElementNameStatement } from '../../@types/specification';
+import { ElementStatement } from '../../syntax/elements/elementInstruction';
 
 // -------------------------------------------------------------------------------------------------
 

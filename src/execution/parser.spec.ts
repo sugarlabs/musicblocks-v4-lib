@@ -9,7 +9,7 @@ import {
     stackTrace,
 } from './parser';
 
-import { IParsedElementArgument, IParsedElementInstruction } from '@/@types/execution';
+import { IParsedElementArgument, IParsedElementInstruction } from '../@types/execution';
 
 import {
     generateFromSnapshot,
@@ -18,11 +18,11 @@ import {
     getProcessNodes,
     resetSyntaxTree,
     getRoutineNodes,
-} from '@/syntax/tree/syntaxTree';
-import { TreeNodeStatement } from '@/syntax/tree/node';
+} from '../syntax/tree/syntaxTree';
+import { TreeNodeStatement } from '../syntax/tree/node';
 
-import { registerElementSpecificationEntries } from '@/syntax/specification/specification';
-import elementSpecificationEntries from '@/library/specification';
+import { registerElementSpecificationEntries } from '../syntax/specification/specification';
+import elementSpecificationEntries from '../library/specification';
 
 // -------------------------------------------------------------------------------------------------
 

@@ -5,7 +5,7 @@ import {
     TElementName,
     TElementNameBlock,
     TElementNameStatement,
-} from '@/@types/specification';
+} from '../../@types/specification';
 
 import {
     TreeNode,
@@ -17,7 +17,7 @@ import {
 import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse';
 import { queryElementSpecification } from '../specification/specification';
 
-import { TData } from '@/@types/data';
+import { TData } from '../../@types/data';
 import { ElementArgument } from '../elements/elementArgument';
 import {
     ITreeSnapshot,
@@ -28,7 +28,7 @@ import {
     ITreeSnapshotStatementInput,
     ITreeSnapshotBlock,
     ITreeSnapshotBlockInput,
-} from '@/@types/syntaxTree';
+} from '../../@types/syntaxTree';
 
 // -- private variables ----------------------------------------------------------------------------
 

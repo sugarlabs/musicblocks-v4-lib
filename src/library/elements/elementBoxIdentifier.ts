@@ -1,8 +1,8 @@
-import { TData, TDataName } from '@/@types/data';
-import { TElementName } from '@/@types/specification';
+import { TData, TDataName } from '../../@types/data';
+import { TElementName } from '../../@types/specification';
 
-import { ElementData } from '@/syntax/elements/elementArgument';
-import { queryVariable } from '@/execution/interpreter';
+import { ElementData } from '../../syntax/elements/elementArgument';
+import { queryVariable } from '../../execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 

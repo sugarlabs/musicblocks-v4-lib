@@ -1,4 +1,4 @@
-import { IParsedElement, TPCOverride } from '@/@types/execution';
+import { IParsedElement, TPCOverride } from '../@types/execution';
 
 import {
     TreeNode,
@@ -6,16 +6,16 @@ import {
     TreeNodeExpression,
     TreeNodeStatement,
     TreeNodeBlock,
-} from '@/syntax/tree/node';
+} from '../syntax/tree/node';
 
-import { getProcessNodes, getRoutineNodes, getCrumbs } from '@/syntax/tree/syntaxTree';
+import { getProcessNodes, getRoutineNodes, getCrumbs } from '../syntax/tree/syntaxTree';
 
-import { getInstance } from '@/syntax/warehouse/warehouse';
+import { getInstance } from '../syntax/warehouse/warehouse';
 
-import { TData } from '@/@types/data';
-import { ElementData, ElementExpression } from '@/syntax/elements/elementArgument';
-import { ElementBlock, ElementStatement } from '@/syntax/elements/elementInstruction';
-import { TElementName } from '@/@types/specification';
+import { TData } from '../@types/data';
+import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
+import { ElementBlock, ElementStatement } from '../syntax/elements/elementInstruction';
+import { TElementName } from '../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
 

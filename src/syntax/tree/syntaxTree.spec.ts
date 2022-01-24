@@ -18,15 +18,15 @@ import {
 import { getInstance } from '../warehouse/warehouse';
 
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
-import { ITreeSnapshotInput } from '@/@types/syntaxTree';
+import { ITreeSnapshotInput } from '../../@types/syntaxTree';
 
 import { registerElementSpecificationEntries } from '../specification/specification';
 import elementSpecificationEntries from '../../library/specification';
 
-import { ElementProcess, ElementRoutine } from '@/library/elements/elementProgram';
-import { ElementValueBoolean } from '@/library/elements/elementValue';
-import { ElementOperatorMathPlus } from '@/library/elements/elementOperatorMath';
-import { ElementBoxBoolean } from '@/library/elements/elementBox';
+import { ElementProcess, ElementRoutine } from '../../library/elements/elementProgram';
+import { ElementValueBoolean } from '../../library/elements/elementValue';
+import { ElementOperatorMathPlus } from '../../library/elements/elementOperatorMath';
+import { ElementBoxBoolean } from '../../library/elements/elementBox';
 
 // -------------------------------------------------------------------------------------------------
 
