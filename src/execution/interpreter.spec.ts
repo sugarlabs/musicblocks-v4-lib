@@ -1,10 +1,10 @@
 import { run } from './interpreter';
 
-import { generateFromSnapshot, generateSnapshot, getNode } from '@/syntax/tree/syntaxTree';
+import { generateFromSnapshot, generateSnapshot, getNode } from '../syntax/tree/syntaxTree';
 
-import { registerElementSpecificationEntries } from '@/syntax/specification/specification';
-import elementSpecification from '@/library/specification';
-import { getInstance } from '@/syntax/warehouse/warehouse';
+import { registerElementSpecificationEntries } from '../syntax/specification/specification';
+import elementSpecification from '../library/specification';
+import { getInstance } from '../syntax/warehouse/warehouse';
 
 // -------------------------------------------------------------------------------------------------
 

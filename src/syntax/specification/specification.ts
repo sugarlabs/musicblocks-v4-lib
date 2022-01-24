@@ -5,7 +5,7 @@ import {
     IElementSpecificationBlock,
     IElementSpecification,
     TElementName,
-} from '@/@types/specification';
+} from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
 

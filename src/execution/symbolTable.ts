@@ -1,5 +1,5 @@
-import { TData, TDataName } from '@/@types/data';
-import { IVariable } from '@/@types/execution';
+import { TData, TDataName } from '../@types/data';
+import { IVariable } from '../@types/execution';
 
 // -- types ----------------------------------------------------------------------------------------
 

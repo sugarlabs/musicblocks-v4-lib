@@ -1,6 +1,6 @@
-import { TData, TDataName } from '@/@types/data';
-import { TElementName } from '@/@types/specification';
-import { IElementBlock, IElementInstruction, IElementStatement } from '@/@types/elements';
+import { TData, TDataName } from '../../@types/data';
+import { TElementName } from '../../@types/specification';
+import { IElementBlock, IElementInstruction, IElementStatement } from '../../@types/elements';
 
 import { ElementSyntax } from './elementSyntax';
 

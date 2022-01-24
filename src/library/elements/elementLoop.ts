@@ -1,7 +1,7 @@
-import { TElementNameBlock } from '@/@types/specification';
-import { ElementBlock } from '@/syntax/elements/elementInstruction';
+import { TElementNameBlock } from '../../@types/specification';
+import { ElementBlock } from '../../syntax/elements/elementInstruction';
 
-import { overrideProgramCounter } from '@/execution/interpreter';
+import { overrideProgramCounter } from '../../execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 

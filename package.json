@@ -1,19 +1,21 @@
 {
-  "name": "musicblocks-v4-lib",
+  "name": "@sugarlabs/musicblocks-v4-lib",
   "version": "0.1.0",
   "description": "The core of the new Music Blocks (v4) application",
-  "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meganindya/musicblocks-v4-lib.git"
+    "url": "git+https://github.com/sugarlabs/musicblocks-v4-lib.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "musicblocks"
   ],
   "author": "Anindya Kundu <anindya.k22@outlook.com> (https://github.com/meganindya/)",
   "license": "AGPL-3.0",
-  "main": "dist/index.js",
-  "types": "dist",
+  "main": "index.js",
+  "types": ".",
   "devDependencies": {
     "@types/jest": "^26.0.19",
     "@types/uuid": "^8.3.1",
@@ -29,7 +31,9 @@
     "textlint-rule-no-empty-section": "^1.1.0",
     "textlint-rule-terminology": "^2.1.5",
     "ts-jest": "^26.4.4",
-    "typescript": "4.1.3",
+    "typescript": "4.1.3"
+  },
+  "dependencies": {
     "uuid": "^8.3.2"
   },
   "scripts": {

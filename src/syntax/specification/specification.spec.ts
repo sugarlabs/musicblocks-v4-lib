@@ -4,7 +4,7 @@ import {
     TElementNameStatement,
     TElementNameBlock,
     TElementName,
-} from '@/@types/specification';
+} from '../../@types/specification';
 import {
     registerElementSpecificationEntry,
     registerElementSpecificationEntries,
@@ -14,9 +14,9 @@ import {
     resetElementSpecificationTable,
 } from './specification';
 
-import elementSpecificationEntries from '@/library/specification';
+import elementSpecificationEntries from '../../library/specification';
 
-import { TData } from '@/@types/data';
+import { TData } from '../../@types/data';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
 

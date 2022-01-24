@@ -1,7 +1,7 @@
-import { TDataName } from '@/@types/data';
-import { TElementName } from '@/@types/specification';
+import { TDataName } from '../../@types/data';
+import { TElementName } from '../../@types/specification';
 
-import { ElementData } from '@/syntax/elements/elementArgument';
+import { ElementData } from '../../syntax/elements/elementArgument';
 
 // -------------------------------------------------------------------------------------------------
 

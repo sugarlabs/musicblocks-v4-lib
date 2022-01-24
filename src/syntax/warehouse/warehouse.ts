@@ -8,14 +8,14 @@ import {
     TElementNameExpression,
     TElementNameStatement,
     TElementNameBlock,
-} from '@/@types/specification';
+} from '../../@types/specification';
 import {
     getElementNames,
     getElementCategories,
     queryElementSpecification,
 } from '../specification/specification';
 
-import { TData } from '@/@types/data';
+import { TData } from '../../@types/data';
 import { ElementSyntax } from '../elements/elementSyntax';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
