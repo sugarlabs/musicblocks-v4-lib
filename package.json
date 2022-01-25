@@ -37,7 +37,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "build": "rm -rf dist/* && tsc -p .",
+    "build": "rm -rf dist/* && tsc -p . && cp -R src/@types dist/@types",
     "test": "jest --passWithNoTests --verbose src/syntax src/library src/execution src/library",
     "check": "tsc --noEmit",
     "lint": "eslint src/**/*.ts && textlint --rule terminology --rule no-empty-section --rule no-dead-link README.md",
