@@ -22,8 +22,8 @@ let _elementSpecification: {
 
 /**
  * Registers a syntax element specification from a given specification entry data.
- * @param name - name of the syntax element
- * @param specification - specification entry data
+ * @param name name of the syntax element
+ * @param specification specification entry data
  */
 export function registerElementSpecificationEntry(
     name: string,
@@ -54,36 +54,9 @@ export function registerElementSpecificationEntry(
 }
 
 /**
- * Returns the names of available syntax elements.
- * @returns a list of syntax element names.
- */
-export function getElementNames(): TElementName[] {
-    return Object.keys(_elementSpecification) as TElementName[];
-}
-
-export function getElementCategories(): string[] {
-    return [...new Set(Object.entries(_elementSpecification).map(([_, { category }]) => category))];
-}
-
-/**
- * Returns the element specification for a syntax element.
- * @param name name of the syntax element
- * @returns element specification if exists, else `null`
- */
-export function queryElementSpecification(
-    name: TElementName
-):
-    | IElementSpecificationData
-    | IElementSpecificationExpression
-    | IElementSpecificationStatement
-    | IElementSpecificationBlock
-    | null {
-    return name in _elementSpecification ? { ..._elementSpecification[name] } : null;
-}
-
-/**
  * Registers a syntax element specification from a given specification entry table.
- * @param specification - specification entry table object with key-value pairs of element name and corresponding specification entry data
+ * @param specification specification entry table object with key-value pairs of element name and
+ *  corresponding specification entry data
  */
 export function registerElementSpecificationEntries(specification: {
     [identifier: string]: IElementSpecification;
@@ -95,9 +68,9 @@ export function registerElementSpecificationEntries(specification: {
 
 /**
  * Removes specification for a syntax element.
- * @param name - name of the syntax element
+ * @param name name of the syntax element
  */
-export function removeElementSpecificationEntry(name: TElementName): void {
+export function removeElementSpecificationEntry(name: string): void {
     if (name in _elementSpecification) {
         delete _elementSpecification[name];
     }
@@ -105,10 +78,42 @@ export function removeElementSpecificationEntry(name: TElementName): void {
 
 /**
  * Removes specification for a list of syntax element.
- * @param names - list of names of the syntax element
+ * @param names list of names of the syntax element
  */
-export function removeElementSpecificationEntries(names: TElementName[]): void {
+export function removeElementSpecificationEntries(names: string[]): void {
     names.forEach((name) => removeElementSpecificationEntry(name));
+}
+
+/**
+ * Returns the element specification for a syntax element.
+ * @param name name of the syntax element
+ * @returns element specification if exists, else `null`
+ */
+export function queryElementSpecification(
+    name: string
+):
+    | IElementSpecificationData
+    | IElementSpecificationExpression
+    | IElementSpecificationStatement
+    | IElementSpecificationBlock
+    | null {
+    return name in _elementSpecification ? { ..._elementSpecification[name] } : null;
+}
+
+/**
+ * Returns the names of available syntax elements.
+ * @returns a list of syntax element names.
+ */
+export function getElementNames(): string[] {
+    return Object.keys(_elementSpecification) as TElementName[];
+}
+
+/**
+ * Returns the categories of available syntax elements.
+ * @returns a list of syntax element categories
+ */
+export function getElementCategories(): string[] {
+    return [...new Set(Object.entries(_elementSpecification).map(([_, { category }]) => category))];
 }
 
 /**
