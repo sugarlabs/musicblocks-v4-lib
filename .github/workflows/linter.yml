@@ -1,70 +1,40 @@
 ---
-###########################
-###########################
-## Linter GitHub Actions ##
-###########################
-###########################
+# Documentation:https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
 name: Super-Linter
 
-#
-# Documentation:
-# https://help.github.com/en/articles/workflow-syntax-for-github-actions
-#
-
-#############################
-# Start the job on all push #
-#############################
 on:
   push:
     branches: [develop, main]
   pull_request:
     branches: [develop, main]
 
-###############
-# Set the Job #
-###############
 jobs:
   build:
-    # Name the Job
     name: Lint Code Base
-    # Set the agent to run on
-    runs-on: ubuntu-latest
 
     strategy:
       matrix:
+        os: [ubuntu-latest]
         node-version: [16.x]
 
-    ##################
-    # Load all steps #
-    ##################
+    runs-on: ${{ matrix.os }}
+
     steps:
-      ##########################
-      # Checkout the code base #
-      ##########################
       - name: Checkout the code base
         uses: actions/checkout@v2
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      #################
-      # Setup Node.js #
-      #################
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      ########################
-      # Install dependencies #
-      ########################
       - name: Install dependencies
         run: |
           yarn install --frozen-lockfile
 
-      ####################
-      # Run Super Linter #
-      ####################
       - name: Lint new and edited files
         uses: github/super-linter/slim@v4
         env:
