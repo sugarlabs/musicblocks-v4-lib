@@ -1,69 +1,65 @@
 ---
-#######################
-#######################
-## CI GitHub Actions ##
-#######################
-#######################
+# Documentation:https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
 name: Continuous Integration
 
-#
-# Documentation:
-# https://help.github.com/en/articles/workflow-syntax-for-github-actions
-#
-
-#############################
-# Start the job on all push #
-#############################
 on:
   push:
     branches: [develop, main]
   pull_request:
     branches: [develop, main]
 
-###############
-# Set the Job #
-###############
 jobs:
-  build:
-    # Name the Job
-    name: Continuous Integration
-    # Set the agent to run on
-    runs-on: ubuntu-latest
+  smoke-test:
+    name: Smoke Test
 
     strategy:
       matrix:
+        os: [ubuntu-latest]
         node-version: [16.x]
 
-    ##################
-    # Load all steps #
-    ##################
+    runs-on: ${{ matrix.os }}
+
     steps:
-      ##########################
-      # Checkout the code base #
-      ##########################
       - name: Checkout the code base
         uses: actions/checkout@v2
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      #################
-      # Setup Node.js #
-      #################
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-        ###################
-        # Run yarn scripts #
-        ###################
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Smoke test building the project
+      - name: Build the project
         run: yarn run build
+
+  regression-test:
+    name: Regression Test
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout the code base
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Run unit tests
         run: yarn run test
