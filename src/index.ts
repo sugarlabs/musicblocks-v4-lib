@@ -47,3 +47,61 @@ export const library = {
         elementValue,
     },
 };
+
+// -- types ----------------------------------------------------------------------------------------
+
+export { TData, TDataName } from './@types/data';
+export {
+    IElementSyntax,
+    IElementArgument,
+    IElementData,
+    IElementExpression,
+    IElementInstruction,
+    IElementStatement,
+    IElementBlock,
+} from './@types/elements';
+export {
+    IVariable,
+    IParsedElementArgument,
+    IParsedElementInstruction,
+    IParsedElement,
+    TPCOverride,
+} from './@types/execution';
+export {
+    TElementKind,
+    TElementType,
+    TElementNameData,
+    TElementNameExpression,
+    TElementNameStatement,
+    TElementNameBlock,
+    TElementName,
+    IElementSpecificationData,
+    IElementSpecificationEntryData,
+    IElementSpecificationExpression,
+    IElementSpecificationEntryExpression,
+    IElementSpecificationInstruction,
+    IElementSpecificationStatement,
+    IElementSpecificationEntryStatement,
+    IElementSpecificationBlock,
+    IElementSpecificationEntryBlock,
+    IElementSpecification,
+} from './@types/specification';
+export {
+    ITreeSnapshotDataInput,
+    ITreeSnapshotData,
+    ITreeSnapshotExpressionInput,
+    ITreeSnapshotExpression,
+    ITreeSnapshotStatementInput,
+    ITreeSnapshotStatement,
+    ITreeSnapshotBlockInput,
+    ITreeSnapshotBlock,
+    ITreeSnapshotInput,
+    ITreeSnapshot,
+    ITreeNode,
+    ITreeNodeArgument,
+    ITreeNodeData,
+    ITreeNodeExpression,
+    ITreeNodeInstruction,
+    ITreeNodeStatement,
+    ITreeNodeBlock,
+} from './@types/syntaxTree';
