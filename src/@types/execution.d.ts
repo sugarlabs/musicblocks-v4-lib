@@ -1,3 +1,8 @@
+import { TData, TDataName } from './data';
+import { IElementData, IElementExpression, IElementStatement, IElementBlock } from './elements';
+
+// -------------------------------------------------------------------------------------------------
+
 /** Type describing a variable entry in symbol table. */
 export type IVariable = {
     dataType: TDataName;
@@ -6,14 +11,14 @@ export type IVariable = {
 
 /** Type definition of the parsed argument element entry returned on fetching next element. */
 export type IParsedElementArgument = {
-    instance: ElementData<TData> | ElementExpression<TData>;
+    instance: IElementData<TData> | IElementExpression<TData>;
     type: 'Argument';
     marker: string | null;
 };
 
 /** Type definition of the parsed instruction element entry returned on fetching next element. */
 export type IParsedElementInstruction = {
-    instance: ElementStatement | ElementBlock;
+    instance: IElementStatement | IElementBlock;
     type: 'Instruction';
     marker: string | null;
 };
