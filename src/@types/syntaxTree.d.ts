@@ -11,7 +11,7 @@ import {
 /** Type definition for the snapshot input of a data element. */
 export interface ITreeSnapshotDataInput {
     /** Name of the data element. */
-    elementName: TElementNameData;
+    elementName: string;
 }
 
 /** Type definition for the snapshot of a data element. */
@@ -23,7 +23,7 @@ export interface ITreeSnapshotData extends ITreeSnapshotDataInput {
 /** Type definition for the snapshot input of an expression element. */
 export interface ITreeSnapshotExpressionInput {
     /** Name of the expression element. */
-    elementName: TElementNameExpression;
+    elementName: string;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
     argMap: {
         [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
@@ -39,7 +39,7 @@ export interface ITreeSnapshotExpression extends ITreeSnapshotExpressionInput {
 /** Type definition for the snapshot input of a statement element. */
 export interface ITreeSnapshotStatementInput {
     /** Name of the statement element. */
-    elementName: TElementNameStatement;
+    elementName: string;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
     argMap: {
         [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
@@ -55,7 +55,7 @@ export interface ITreeSnapshotStatement extends ITreeSnapshotStatementInput {
 /** Type definition for the snapshot input of a block element. */
 export interface ITreeSnapshotBlockInput {
     /** Name of the block element. */
-    elementName: TElementNameBlock;
+    elementName: string;
     /** Object with key-value pairs of argument name and snapshot of the corresponding argument. */
     argMap: {
         [argName: string]: ITreeSnapshotDataInput | ITreeSnapshotExpressionInput | null;
