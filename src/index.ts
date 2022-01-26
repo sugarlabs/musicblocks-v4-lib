@@ -1,107 +1,107 @@
-// -- execution ------------------------------------------------------------------------------------
+// == SYNTAX =======================================================================================
 
-import * as interpreter from './execution/interpreter';
-import * as parser from './execution/parser';
-import * as symbolTable from './execution/symbolTable';
-
-export const engine = {
-    interpreter,
-    parser,
-    symbolTable,
-};
-
-// -- syntax ---------------------------------------------------------------------------------------
-
-import * as warehouse from './syntax/warehouse/warehouse';
-import * as syntaxTree from './syntax/tree/syntaxTree';
-import * as specification from './syntax/specification/specification';
-
-export const syntax = {
-    warehouse,
-    specification,
-    tree: syntaxTree,
-};
-
-// -- library --------------------------------------------------------------------------------------
-
-import * as libSpecification from './library/specification';
-import * as elementBox from './library/elements/elementBox';
-import * as elementBoxIdentifier from './library/elements/elementBoxIdentifier';
-import * as elementConditional from './library/elements/elementConditional';
-import * as elementLoop from './library/elements/elementLoop';
-import * as elementOperatorMath from './library/elements/elementOperatorMath';
-import * as elementPrint from './library/elements/elementPrint';
-import * as elementProgram from './library/elements/elementProgram';
-import * as elementValue from './library/elements/elementValue';
-
-export const library = {
-    specification: libSpecification,
-    elements: {
-        elementBox,
-        elementBoxIdentifier,
-        elementConditional,
-        elementLoop,
-        elementOperatorMath,
-        elementPrint,
-        elementProgram,
-        elementValue,
-    },
-};
-
-// -- types ----------------------------------------------------------------------------------------
+// -- elements -------------------------------------------------------------------------------------
 
 export { TData, TDataName } from './@types/data';
+
+export { ElementData, ElementExpression } from './syntax/elements/elementArgument';
+export { ElementStatement, ElementBlock } from './syntax/elements/elementInstruction';
+
+// -- specification --------------------------------------------------------------------------------
+
+export { IElementSpecification } from './@types/specification';
+
 export {
-    IElementSyntax,
-    IElementArgument,
-    IElementData,
-    IElementExpression,
-    IElementInstruction,
-    IElementStatement,
-    IElementBlock,
-} from './@types/elements';
+    registerElementSpecificationEntry,
+    registerElementSpecificationEntries,
+    removeElementSpecificationEntry,
+    removeElementSpecificationEntries,
+    queryElementSpecification,
+    getElementNames,
+    getElementCategories,
+    resetElementSpecificationTable,
+} from './syntax/specification/specification';
+
+// -- syntax tree ----------------------------------------------------------------------------------
+
+export { ITreeSnapshotInput } from './@types/syntaxTree';
+
 export {
-    IVariable,
-    IParsedElementArgument,
-    IParsedElementInstruction,
-    IParsedElement,
-    TPCOverride,
-} from './@types/execution';
+    getProcessNodes,
+    getRoutineNodes,
+    getCrumbs,
+    getNode,
+    generateSnapshot,
+    generateFromSnapshot,
+    resetSyntaxTree,
+} from './syntax/tree/syntaxTree';
+
+// -- warehouse ------------------------------------------------------------------------------------
+
 export {
-    TElementKind,
-    TElementType,
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-    TElementName,
-    IElementSpecificationData,
-    IElementSpecificationEntryData,
-    IElementSpecificationExpression,
-    IElementSpecificationEntryExpression,
-    IElementSpecificationInstruction,
-    IElementSpecificationStatement,
-    IElementSpecificationEntryStatement,
-    IElementSpecificationBlock,
-    IElementSpecificationEntryBlock,
-    IElementSpecification,
-} from './@types/specification';
+    getInstance,
+    getNameCount,
+    getNameCountAll,
+    getTypeCount,
+    getTypeCountAll,
+    getKindCount,
+    getKindCountAll,
+    getCategoryCount,
+    getCategoryCountAll,
+} from './syntax/warehouse/warehouse';
+
+// == EXECUTION ====================================================================================
+
+export { TPCOverride } from './@types/execution';
+
 export {
-    ITreeSnapshotDataInput,
-    ITreeSnapshotData,
-    ITreeSnapshotExpressionInput,
-    ITreeSnapshotExpression,
-    ITreeSnapshotStatementInput,
-    ITreeSnapshotStatement,
-    ITreeSnapshotBlockInput,
-    ITreeSnapshotBlock,
-    ITreeSnapshotInput,
-    ITreeSnapshot,
-    ITreeNode,
-    ITreeNodeArgument,
-    ITreeNodeData,
-    ITreeNodeExpression,
-    ITreeNodeInstruction,
-    ITreeNodeStatement,
-    ITreeNodeBlock,
-} from './@types/syntaxTree';
+    declareVariable,
+    queryVariable,
+    overrideProgramCounter,
+    releaseProgramCounter,
+    run,
+} from './execution/interpreter';
+
+// == LIBRARY ======================================================================================
+
+// -- specification --------------------------------------------------------------------------------
+
+export { default as librarySpecification } from './library/specification';
+
+// -- elements -------------------------------------------------------------------------------------
+
+export {
+    ElementValueBoolean,
+    ElementValueNumber,
+    ElementValueString,
+} from './library/elements/elementValue';
+
+export {
+    ElementBoxGeneric,
+    ElementBoxBoolean,
+    ElementBoxNumber,
+    ElementBoxString,
+} from './library/elements/elementBox';
+
+export {
+    ElementBoxIdentifierGeneric,
+    ElementBoxIdentifierBoolean,
+    ElementBoxIdentifierNumber,
+    ElementBoxIdentifierString,
+} from './library/elements/elementBoxIdentifier';
+
+export {
+    ElementOperatorMathPlus,
+    ElementOperatorMathMinus,
+    ElementOperatorMathTimes,
+    ElementOperatorMathDivide,
+    ElementOperatorMathModulus,
+} from './library/elements/elementOperatorMath';
+
+export { ElementIf } from './library/elements/elementConditional';
+
+export { ElementRepeat } from './library/elements/elementLoop';
+
+export { ElementPrint } from './library/elements/elementPrint';
+
+export { ElementProcess, ElementRoutine } from './library/elements/elementProgram';
