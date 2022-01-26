@@ -10,27 +10,55 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "no-mixed-spaces-and-tabs": "warn",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
     "semi": ["error", "always"],
     "prefer-const": ["warn"],
-    // "no-console": "warn",
+    "no-console": "warn",
     "max-len": [
       "warn",
       {
         "code": 100,
-        "ignoreTrailingComments": true,
-        "ignoreComments": true,
+        "ignoreTrailingComments": false,
+        "ignoreComments": false,
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true
       }
     ],
-    "no-trailing-spaces": ["warn", { "skipBlankLines": true, "ignoreComments": true }],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true,
+        "ignoreComments": true
+      }
+    ],
     "no-duplicate-case": "error",
     "no-irregular-whitespace": "warn"
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:json/recommended-with-comments"
+  ]
 }

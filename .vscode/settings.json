@@ -9,7 +9,8 @@
   "editor.selectionHighlight": true,
   "editor.tabSize": 4,
   "[json]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[html]": {
     "editor.tabSize": 2,
@@ -17,16 +18,6 @@
   },
   "[scss]": {
     "editor.tabSize": 2
-  },
-  "[typescriptreact]": {
-    "editor.tabSize": 2
-  },
-  "[dart]": {
-    "editor.selectionHighlight": false,
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.suggestSelection": "first",
-    "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": false
   },
   "[markdown]": {
     "editor.wordWrap": "on",
