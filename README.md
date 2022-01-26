@@ -1,5 +1,9 @@
 # Programming framework of musicblocks-v4
 
+[![Super Linter](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/lint.yml/badge.svg)](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/lint.yml)
+[![Continuous Integration](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/CI.yml/badge.svg)](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/CI.yml)
+[![Continuous Deployment](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/CD.yml/badge.svg?branch=main)](https://github.com/sugarlabs/musicblocks-v4-lib/actions/workflows/CD.yml)
+
 This repository contains the source code for the programming framework of the new
 [Music Blocks (v4)](https://github.com/sugarlabs/musicblocks-v4) application.
 
