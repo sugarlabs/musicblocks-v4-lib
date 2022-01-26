@@ -34,13 +34,13 @@
     ],
     "semi": ["error", "always"],
     "prefer-const": ["warn"],
-    // "no-console": "warn",
+    "no-console": "warn",
     "max-len": [
       "warn",
       {
         "code": 100,
-        "ignoreTrailingComments": true,
-        "ignoreComments": true,
+        "ignoreTrailingComments": false,
+        "ignoreComments": false,
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true
       }
