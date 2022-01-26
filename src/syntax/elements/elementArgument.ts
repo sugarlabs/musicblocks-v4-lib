@@ -22,18 +22,21 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
     /** Stores the value this is returned by the argument element. */
     protected _value: T;
 
+    /**
+     * @param name name of the argument element
+     * @param label display name of the instruction element
+     * @param type type (`Data`, `Expression`) of the argument element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     * @param returnType return types of the value returned by the argument element
+     * @param initialValue initial return value of the argument
+     */
     constructor(
-        /** Name of the argument element. */
         name: TElementName,
-        /** Display name of the instruction element. */
         label: string,
-        /** Type (`Data`, `Expression`) of the argument element. */
         type: 'Data' | 'Expression',
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
-        /** Return types of the value returned by the argument element. */
         returnType: TDataName[],
-        /** Initial return value of the argument. */
         initialValue: T
     ) {
         super(name, label, 'Argument', type, argMap);
@@ -60,16 +63,19 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
  * Data elements return a stored value.
  */
 export abstract class ElementData<T> extends ElementArgument<T> implements IElementData<T> {
+    /**
+     * @param name - name of the data element
+     * @param label - display name of the instruction element
+     * @param argMap - an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     * @param returnType - return types of the value returned by the argument element
+     * @param initialValue - initial return value of the argument
+     */
     constructor(
-        /** Name of the data element. */
         name: TElementName,
-        /** Display name of the instruction element. */
         label: string,
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
-        /** Return types of the value returned by the argument element. */
         returnType: TDataName[],
-        /** Initial return value of the argument. */
         initialValue: T
     ) {
         super(name, label, 'Data', argMap, returnType, initialValue);
@@ -91,16 +97,19 @@ export abstract class ElementExpression<T>
     extends ElementArgument<T>
     implements IElementExpression<T>
 {
+    /**
+     * @param name name of the expression element
+     * @param label display name of the instruction element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     * @param returnType return types of the value returned by the argument element
+     * @param initialValue initial return value of the argument
+     */
     constructor(
-        /** Name of the expression element. */
         name: TElementName,
-        /** Display name of the instruction element. */
         label: string,
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] },
-        /** Return types of the value returned by the argument element. */
         returnType: TDataName[],
-        /** Initial return value of the argument. */
         initialValue: T
     ) {
         super(name, label, 'Expression', argMap, returnType, initialValue);
