@@ -125,8 +125,8 @@ function _reset(): void {
 // -- public functions -----------------------------------------------------------------------------
 
 /**
- * Recursively validates the argument sequence for a syntax tree instruction node. Checks if there are
- * `null` argument connections.
+ * Recursively validates the argument sequence for a syntax tree instruction node. Checks if there
+ * are `null` argument connections.
  * @param instructionNode - syntax tree instruction node
  * @returns `null` if valid, else an object of the invalid syntax tree non-data node and arg name.
  */
