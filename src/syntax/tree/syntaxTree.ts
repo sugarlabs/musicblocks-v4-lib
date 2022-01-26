@@ -3,8 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import {
     IElementSpecificationInstruction,
     TElementName,
-    TElementNameBlock,
+    TElementNameData,
+    TElementNameExpression,
     TElementNameStatement,
+    TElementNameBlock,
 } from '../../@types/specification';
 
 import {
@@ -69,7 +71,7 @@ function _destroyNode(nodeID: string): void {
  * Helper that checks whether two instruction element nodes can be connected.
  * @param connectorNodeID - node ID of the connector node
  * @param connectingNodeID - node ID of the connecting node
- * @returns - `true` if node connections are valid, else `false`
+ * @returns `true` if node connections are valid, else `false`
  */
 function _attachInstructionCheck(connectorNodeID: string, connectingNodeID: string): boolean {
     if (!(connectorNodeID in _nodeMap) || !(connectingNodeID in _nodeMap)) {
@@ -644,24 +646,24 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     }
 
     function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
-        const nodeID = addNode(snapshot.elementName);
+        const nodeID = addNode(snapshot.elementName as TElementNameData);
         return nodeID;
     }
 
     function __generateFromSnapshotExpression(snapshot: ITreeSnapshotExpressionInput): string {
-        const nodeID = addNode(snapshot.elementName);
+        const nodeID = addNode(snapshot.elementName as TElementNameExpression);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotStatement(snapshot: ITreeSnapshotStatementInput): string {
-        const nodeID = addNode(snapshot.elementName);
+        const nodeID = addNode(snapshot.elementName as TElementNameStatement);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotBlock(snapshot: ITreeSnapshotBlockInput): string {
-        const nodeID = addNode(snapshot.elementName);
+        const nodeID = addNode(snapshot.elementName as TElementNameBlock);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         const innerNodeID = __generateSnapshotList(snapshot.scope);
         if (innerNodeID !== null) {
