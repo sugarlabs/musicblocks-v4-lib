@@ -4,7 +4,11 @@ import { IVariable, TPCOverride } from '../@types/execution';
 import { addGlobalVariable, getGlobalVariable } from './symbolTable';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from './parser';
 
-import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
+import {
+    ElementData,
+    ElementExpression,
+    ElementArgument,
+} from '../syntax/elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../syntax/elements/elementInstruction';
 
 // -- private functions ----------------------------------------------------------------------------
@@ -80,7 +84,7 @@ export function run(nodeID: string): void {
                 (instance as ElementExpressionCover).evaluate(memo);
             }
 
-            const value = instance.value;
+            const value = (instance as unknown as ElementArgument<TData>).value;
 
             if (marker !== null) {
                 memo[marker] = value;
