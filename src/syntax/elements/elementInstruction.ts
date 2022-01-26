@@ -12,18 +12,21 @@ import { ElementSyntax } from './elementSyntax';
  * Defines a generic instruction element.
  *
  * @classdesc
- * Instruction elements execute logic and may operate on the parameters passed. Every statement element
- * and block element needs to extend this class.
+ * Instruction elements execute logic and may operate on the parameters passed. Every statement
+ * element and block element needs to extend this class.
  */
 export abstract class ElementInstruction extends ElementSyntax implements IElementInstruction {
+    /**
+     * @param name name of the instruction element
+     * @param label display name of the instruction element
+     * @param type type (`Statement`, `Block`) of the instruction element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     */
     constructor(
-        /** Name of the instruction element. */
         name: TElementName,
-        /** Display name of the instruction element. */
         label: string,
-        /** Type (`Statement`, `Block`) of the instruction element. */
         type: 'Statement' | 'Block',
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
         super(name, label, 'Instruction', type, argMap);
@@ -41,14 +44,13 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
  * Statement elements execute one single logic.
  */
 export abstract class ElementStatement extends ElementInstruction implements IElementStatement {
-    constructor(
-        /** Name of the statement element. */
-        name: TElementName,
-        /** Display name of the instruction element. */
-        label: string,
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
-        argMap: { [key: string]: TDataName[] }
-    ) {
+    /**
+     * @param name name of the statement element
+     * @param label display name of the instruction element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     */
+    constructor(name: TElementName, label: string, argMap: { [key: string]: TDataName[] }) {
         super(name, label, 'Statement', argMap);
     }
 }
@@ -64,14 +66,13 @@ export abstract class ElementStatement extends ElementInstruction implements IEl
  * visiting the block element is restored.
  */
 export abstract class ElementBlock extends ElementInstruction implements IElementBlock {
-    constructor(
-        /** Name of the block element. */
-        name: TElementName,
-        /** Display name of the instruction element. */
-        label: string,
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
-        argMap: { [key: string]: TDataName[] }
-    ) {
+    /**
+     * @param name name of the block element
+     * @param label display name of the instruction element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     */
+    constructor(name: TElementName, label: string, argMap: { [key: string]: TDataName[] }) {
         super(name, label, 'Block', argMap);
     }
 
