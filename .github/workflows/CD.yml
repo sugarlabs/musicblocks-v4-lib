@@ -113,6 +113,8 @@ jobs:
 
   deploy:
     name: Deploy package to GitHub npm registry
+
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     needs: [lint, smoke-test, regression-test]
 
     strategy:
@@ -132,6 +134,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Deploy to registry
         run: |
