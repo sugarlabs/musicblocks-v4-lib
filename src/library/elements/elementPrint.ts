@@ -10,6 +10,7 @@ export class ElementPrint extends ElementStatement {
     }
 
     onVisit(params: { value: TData }): void {
+        // eslint-disable-next-line no-console
         console.log(params.value);
     }
 }
