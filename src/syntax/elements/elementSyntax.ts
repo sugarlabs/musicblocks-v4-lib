@@ -29,16 +29,20 @@ export abstract class ElementSyntax implements IElementSyntax {
     /** Stores an object describing the type specification of each argument. */
     private _argMap: { [key: string]: TDataName[] };
 
+    /**
+     *
+     * @param name name of the syntax element
+     * @param label display of the syntax element
+     * @param kind kind (`Argument`, `Instruction`) of the syntax element
+     * @param type type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element
+     * @param argMap an object describing the type specification of each argument as a
+     *  `argName: type[]` pair
+     */
     constructor(
-        /** Name of the syntax element. */
         name: TElementName,
-        /** Display of the syntax element. */
         label: string,
-        /** Kind (`Argument`, `Instruction`) of the syntax element. */
         kind: 'Argument' | 'Instruction',
-        /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
         type: 'Data' | 'Expression' | 'Statement' | 'Block',
-        /** An object describing the type specification of each argument as a `argName: type[]` pair. */
         argMap: { [key: string]: TDataName[] }
     ) {
         this._name = name;
