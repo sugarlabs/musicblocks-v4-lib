@@ -160,13 +160,15 @@ describe('Syntax Element Specification', () => {
             }
         }
 
-        test('register element specification entry and verify', () => {
-            registerElementSpecificationEntry('dummy0', {
+        test('register new element specification entry and verify', () => {
+            const status = registerElementSpecificationEntry('dummy0', {
                 label: 'dummy0',
                 type: 'Block',
                 category: 'dummy',
                 prototype: DummyElementBlock,
             });
+            expect(status).toBe(true);
+
             const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
             expect(elementEntry.label).toBe('dummy0');
             expect(elementEntry.type).toBe('Block');
@@ -181,8 +183,18 @@ describe('Syntax Element Specification', () => {
             ).toBe(true);
         });
 
-        test('register element specification entries and verify', () => {
-            registerElementSpecificationEntries({
+        test('register duplicate element specification entry and verify', () => {
+            const status = registerElementSpecificationEntry('dummy0', {
+                label: 'dummy0',
+                type: 'Block',
+                category: 'dummy',
+                prototype: DummyElementBlock,
+            });
+            expect(status).toBe(false);
+        });
+
+        test('register new element specification entries and verify', () => {
+            const status = registerElementSpecificationEntries({
                 dummy1: {
                     label: 'dummy1',
                     type: 'Data',
@@ -208,6 +220,7 @@ describe('Syntax Element Specification', () => {
                     prototype: DummyElementBlock,
                 },
             });
+            expect(status).toEqual([true, true, true, true]);
 
             const elementEntry1 = queryElementSpecification('dummy1' as TElementName)!;
             const elementEntry2 = queryElementSpecification('dummy2' as TElementName)!;
@@ -263,18 +276,78 @@ describe('Syntax Element Specification', () => {
             ).toBe(true);
         });
 
-        test('remove element specification entry and verify', () => {
-            removeElementSpecificationEntry('dummy0' as TElementName);
+        test('register duplicate element specification entries and verify', () => {
+            const status = registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Expression',
+                    category: 'dummy',
+                    prototype: DummyElementExpression,
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Statement',
+                    category: 'dummy',
+                    prototype: DummyElementStatement,
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Block',
+                    category: 'dummy',
+                    prototype: DummyElementBlock,
+                },
+            });
+            expect(status).toEqual([false, false, false, false]);
+        });
+
+        test('remove valid element specification entry and verify', () => {
+            const removeStatus = removeElementSpecificationEntry('dummy0' as TElementName);
             const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+
+            expect(removeStatus).toBe(true);
             expect(elementEntry).toBe(null);
         });
 
-        test('remove element specification entries and verify', () => {
-            removeElementSpecificationEntries(['dummy1' as TElementName, 'dummy2' as TElementName]);
+        test('remove invalid element specification entry and verify', () => {
+            const removeStatus = removeElementSpecificationEntry('dummy0' as TElementName);
+            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+
+            expect(removeStatus).toBe(false);
+            expect(elementEntry).toBe(null);
+        });
+
+        test('remove valid element specification entries and verify', () => {
+            const removeStatus = removeElementSpecificationEntries([
+                'dummy1' as TElementName,
+                'dummy2' as TElementName,
+                'dummy3' as TElementName,
+                'dummy4' as TElementName,
+            ]);
+            expect(removeStatus).toEqual([true, true, true, true]);
             expect(queryElementSpecification('dummy1' as TElementName)!).toBe(null);
             expect(queryElementSpecification('dummy2' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy3' as TElementName)!).not.toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).not.toBe(null);
+            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
+        });
+
+        test('remove invalid element specification entries and verify', () => {
+            const removeStatus = removeElementSpecificationEntries([
+                'dummy1' as TElementName,
+                'dummy2' as TElementName,
+                'dummy3' as TElementName,
+                'dummy4' as TElementName,
+            ]);
+            expect(removeStatus).toEqual([false, false, false, false]);
+            expect(queryElementSpecification('dummy1' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy2' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
         });
 
         test('reset element specification table and verify', () => {
