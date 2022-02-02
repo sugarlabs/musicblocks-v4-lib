@@ -24,11 +24,14 @@ let _elementSpecification: {
  * Registers a syntax element specification from a given specification entry data.
  * @param name name of the syntax element
  * @param specification specification entry data
+ * @returns `false` if element name already exists, else `true`
  */
 export function registerElementSpecificationEntry(
     name: string,
     specification: IElementSpecification
-): void {
+): boolean {
+    if (name in _elementSpecification) return false;
+
     const { label, type, category, prototype } = specification;
 
     const specificationTableEntry: IElementSpecification = {
@@ -51,37 +54,49 @@ export function registerElementSpecificationEntry(
         | IElementSpecificationExpression
         | IElementSpecificationStatement
         | IElementSpecificationBlock;
+
+    return name in _elementSpecification;
 }
 
 /**
  * Registers a syntax element specification from a given specification entry table.
  * @param specification specification entry table object with key-value pairs of element name and
  *  corresponding specification entry data
+ * @returns a list of boolean , `false` if element name already exists else `true`
  */
 export function registerElementSpecificationEntries(specification: {
     [identifier: string]: IElementSpecification;
-}): void {
+}): boolean[] {
+    const registerStatus: boolean[] = [];
     Object.entries(specification).forEach(([identifier, specification]) =>
-        registerElementSpecificationEntry(identifier, specification)
+        registerStatus.push(registerElementSpecificationEntry(identifier, specification))
     );
+    return registerStatus;
 }
 
 /**
  * Removes specification for a syntax element.
  * @param name name of the syntax element
+ * @returns `true` if element is successfully removed, else `false` if element doesn't exist already
  */
-export function removeElementSpecificationEntry(name: string): void {
+export function removeElementSpecificationEntry(name: string): boolean {
     if (name in _elementSpecification) {
         delete _elementSpecification[name];
+        return true;
+    } else {
+        return false;
     }
 }
 
 /**
  * Removes specification for a list of syntax element.
  * @param names list of names of the syntax element
+ * @returns list of boolean, `true` if element is successfully removed, else `false`
  */
-export function removeElementSpecificationEntries(names: string[]): void {
-    names.forEach((name) => removeElementSpecificationEntry(name));
+export function removeElementSpecificationEntries(names: string[]): boolean[] {
+    const removeStatus: boolean[] = [];
+    names.forEach((name) => removeStatus.push(removeElementSpecificationEntry(name)));
+    return removeStatus;
 }
 
 /**
