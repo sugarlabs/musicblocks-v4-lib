@@ -20,6 +20,7 @@ export {
     getElementNames,
     getElementCategories,
     resetElementSpecificationTable,
+    getSpecificationSnapshot,
 } from './syntax/specification/specification';
 
 // -- syntax tree ----------------------------------------------------------------------------------

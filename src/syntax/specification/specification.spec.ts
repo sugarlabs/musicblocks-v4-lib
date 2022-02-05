@@ -5,6 +5,7 @@ import {
     removeElementSpecificationEntry,
     removeElementSpecificationEntries,
     resetElementSpecificationTable,
+    getSpecificationSnapshot,
 } from './specification';
 
 import elementSpecificationEntries from '../../library/specification';
@@ -339,6 +340,41 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             expect(queryElementSpecification('dummy3')!).toBe(null);
             expect(queryElementSpecification('dummy4')!).toBe(null);
+        });
+
+        test('generate snapshot and verify', () => {
+            registerElementSpecificationEntries(elementSpecificationEntries);
+            expect(
+                Object.entries(getSpecificationSnapshot()).map(([key, value]) => [
+                    key,
+                    value.prototypeName,
+                ])
+            ).toEqual([
+                ['value-boolean', 'ElementValueBoolean'],
+                ['value-number', 'ElementValueNumber'],
+                ['value-string', 'ElementValueString'],
+                ['box-generic', 'ElementBoxGeneric'],
+                ['box-boolean', 'ElementBoxBoolean'],
+                ['box-number', 'ElementBoxNumber'],
+                ['box-string', 'ElementBoxString'],
+                ['boxidentifier-generic', 'ElementBoxIdentifierGeneric'],
+                ['boxidentifier-boolean', 'ElementBoxIdentifierBoolean'],
+                ['boxidentifier-number', 'ElementBoxIdentifierNumber'],
+                ['boxidentifier-string', 'ElementBoxIdentifierString'],
+                ['operator-math-plus', 'ElementOperatorMathPlus'],
+                ['operator-math-minus', 'ElementOperatorMathMinus'],
+                ['operator-math-times', 'ElementOperatorMathTimes'],
+                ['operator-math-divide', 'ElementOperatorMathDivide'],
+                ['operator-math-modulus', 'ElementOperatorMathModulus'],
+                ['repeat', 'ElementRepeat'],
+                ['if', 'ElementIf'],
+                ['process', 'ElementProcess'],
+                ['routine', 'ElementRoutine'],
+                ['print', 'ElementPrint'],
+            ]);
+
+            resetElementSpecificationTable();
+            expect(getSpecificationSnapshot()).toEqual({});
         });
     });
 });
