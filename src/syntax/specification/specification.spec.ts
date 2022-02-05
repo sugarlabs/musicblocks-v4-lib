@@ -1,11 +1,4 @@
 import {
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-    TElementName,
-} from '../../@types/specification';
-import {
     registerElementSpecificationEntry,
     registerElementSpecificationEntries,
     queryElementSpecification,
@@ -40,7 +33,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameData,
+                    name: string,
                     label: string
                 ) => ElementDataCover;
                 const elementInstance = prototype('value-boolean', dataElementEntry.label);
@@ -61,7 +54,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameExpression,
+                    name: string,
                     label: string
                 ) => ElementExpressionCover;
                 const elementInstance = prototype('operator-math-plus', dataElementEntry.label);
@@ -82,7 +75,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameStatement,
+                    name: string,
                     label: string
                 ) => ElementStatement;
                 const elementInstance = prototype('box-generic', dataElementEntry.label);
@@ -103,7 +96,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameBlock,
+                    name: string,
                     label: string
                 ) => ElementBlock;
                 const elementInstance = prototype('process', dataElementEntry.label);
@@ -116,7 +109,7 @@ describe('Syntax Element Specification', () => {
 
     describe('functions', () => {
         class DummyElementData extends ElementData<TData> {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {}, ['number'], 0);
             }
             public evaluate(): void {
@@ -125,7 +118,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementExpression extends ElementExpression<TData> {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {}, ['number'], 0);
             }
             public evaluate(): void {
@@ -134,7 +127,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementStatement extends ElementStatement {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {});
             }
             public onVisit(): void {
@@ -143,7 +136,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementBlock extends ElementBlock {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {});
             }
             public onVisit(): void {
@@ -169,17 +162,15 @@ describe('Syntax Element Specification', () => {
             });
             expect(status).toBe(true);
 
-            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+            const elementEntry = queryElementSpecification('dummy0')!;
             expect(elementEntry.label).toBe('dummy0');
             expect(elementEntry.type).toBe('Block');
             expect(elementEntry.category).toBe('dummy');
             expect(
-                (
-                    elementEntry.prototype as (
-                        name: TElementNameBlock,
-                        label: string
-                    ) => ElementBlock
-                )('dummy0' as TElementNameBlock, 'dummy0') instanceof DummyElementBlock
+                (elementEntry.prototype as (name: string, label: string) => ElementBlock)(
+                    'dummy0',
+                    'dummy0'
+                ) instanceof DummyElementBlock
             ).toBe(true);
         });
 
@@ -222,21 +213,19 @@ describe('Syntax Element Specification', () => {
             });
             expect(status).toEqual([true, true, true, true]);
 
-            const elementEntry1 = queryElementSpecification('dummy1' as TElementName)!;
-            const elementEntry2 = queryElementSpecification('dummy2' as TElementName)!;
-            const elementEntry3 = queryElementSpecification('dummy3' as TElementName)!;
-            const elementEntry4 = queryElementSpecification('dummy4' as TElementName)!;
+            const elementEntry1 = queryElementSpecification('dummy1')!;
+            const elementEntry2 = queryElementSpecification('dummy2')!;
+            const elementEntry3 = queryElementSpecification('dummy3')!;
+            const elementEntry4 = queryElementSpecification('dummy4')!;
 
             expect(elementEntry1.label).toBe('dummy1');
             expect(elementEntry1.type).toBe('Data');
             expect(elementEntry1.category).toBe('dummy');
             expect(
-                (
-                    elementEntry1.prototype as (
-                        name: TElementNameData,
-                        label: string
-                    ) => ElementDataCover
-                )('dummy1' as TElementNameData, 'dummy1') instanceof DummyElementData
+                (elementEntry1.prototype as (name: string, label: string) => ElementDataCover)(
+                    'dummy1',
+                    'dummy1'
+                ) instanceof DummyElementData
             ).toBe(true);
 
             expect(elementEntry2.label).toBe('dummy2');
@@ -245,34 +234,30 @@ describe('Syntax Element Specification', () => {
             expect(
                 (
                     elementEntry2.prototype as (
-                        name: TElementNameExpression,
+                        name: string,
                         label: string
                     ) => ElementExpressionCover
-                )('dummy2' as TElementNameExpression, 'dummy2') instanceof DummyElementExpression
+                )('dummy2', 'dummy2') instanceof DummyElementExpression
             ).toBe(true);
 
             expect(elementEntry3.label).toBe('dummy3');
             expect(elementEntry3.type).toBe('Statement');
             expect(elementEntry3.category).toBe('dummy');
             expect(
-                (
-                    elementEntry3.prototype as (
-                        name: TElementNameStatement,
-                        label: string
-                    ) => ElementStatement
-                )('dummy3' as TElementNameStatement, 'dummy3') instanceof DummyElementStatement
+                (elementEntry3.prototype as (name: string, label: string) => ElementStatement)(
+                    'dummy3',
+                    'dummy3'
+                ) instanceof DummyElementStatement
             ).toBe(true);
 
             expect(elementEntry4.label).toBe('dummy4');
             expect(elementEntry4.type).toBe('Block');
             expect(elementEntry4.category).toBe('dummy');
             expect(
-                (
-                    elementEntry4.prototype as (
-                        name: TElementNameBlock,
-                        label: string
-                    ) => ElementBlock
-                )('dummy4' as TElementNameBlock, 'dummy4') instanceof DummyElementBlock
+                (elementEntry4.prototype as (name: string, label: string) => ElementBlock)(
+                    'dummy4',
+                    'dummy4'
+                ) instanceof DummyElementBlock
             ).toBe(true);
         });
 
@@ -307,16 +292,16 @@ describe('Syntax Element Specification', () => {
         });
 
         test('remove valid element specification entry and verify', () => {
-            const removeStatus = removeElementSpecificationEntry('dummy0' as TElementName);
-            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+            const removeStatus = removeElementSpecificationEntry('dummy0');
+            const elementEntry = queryElementSpecification('dummy0')!;
 
             expect(removeStatus).toBe(true);
             expect(elementEntry).toBe(null);
         });
 
         test('remove invalid element specification entry and verify', () => {
-            const removeStatus = removeElementSpecificationEntry('dummy0' as TElementName);
-            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+            const removeStatus = removeElementSpecificationEntry('dummy0');
+            const elementEntry = queryElementSpecification('dummy0')!;
 
             expect(removeStatus).toBe(false);
             expect(elementEntry).toBe(null);
@@ -324,36 +309,36 @@ describe('Syntax Element Specification', () => {
 
         test('remove valid element specification entries and verify', () => {
             const removeStatus = removeElementSpecificationEntries([
-                'dummy1' as TElementName,
-                'dummy2' as TElementName,
-                'dummy3' as TElementName,
-                'dummy4' as TElementName,
+                'dummy1',
+                'dummy2',
+                'dummy3',
+                'dummy4',
             ]);
             expect(removeStatus).toEqual([true, true, true, true]);
-            expect(queryElementSpecification('dummy1' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy2' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy1')!).toBe(null);
+            expect(queryElementSpecification('dummy2')!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
         });
 
         test('remove invalid element specification entries and verify', () => {
             const removeStatus = removeElementSpecificationEntries([
-                'dummy1' as TElementName,
-                'dummy2' as TElementName,
-                'dummy3' as TElementName,
-                'dummy4' as TElementName,
+                'dummy1',
+                'dummy2',
+                'dummy3',
+                'dummy4',
             ]);
             expect(removeStatus).toEqual([false, false, false, false]);
-            expect(queryElementSpecification('dummy1' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy2' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy1')!).toBe(null);
+            expect(queryElementSpecification('dummy2')!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
         });
 
         test('reset element specification table and verify', () => {
             resetElementSpecificationTable();
-            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
         });
     });
 });

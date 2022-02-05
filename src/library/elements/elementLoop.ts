@@ -1,4 +1,3 @@
-import { TElementNameBlock } from '../../@types/specification';
 import { ElementBlock } from '../../syntax/elements/elementInstruction';
 
 import { overrideProgramCounter } from '../../execution/interpreter';
@@ -12,7 +11,7 @@ import { overrideProgramCounter } from '../../execution/interpreter';
  * Repeats the scope as many times as the parameter provided.
  */
 export class ElementRepeat extends ElementBlock {
-    constructor(name: TElementNameBlock, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, { times: ['number'] });
     }
 

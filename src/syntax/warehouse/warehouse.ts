@@ -1,14 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-    TElementName,
-    TElementKind,
-    TElementType,
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-} from '../../@types/specification';
+import { TElementKind, TElementType } from '../../@types/specification';
 import {
     getElementNames,
     getElementCategories,
@@ -42,28 +34,28 @@ let _elementMap: {
         | {
               instance: _ElementDataCover;
               type: 'Data';
-              name: TElementNameData;
+              name: string;
               kind: 'Argument';
               category: string;
           }
         | {
               instance: _ElementExpressionCover;
               type: 'Expression';
-              name: TElementNameExpression;
+              name: string;
               kind: 'Argument';
               category: string;
           }
         | {
               instance: ElementStatement;
               type: 'Statement';
-              name: TElementNameStatement;
+              name: string;
               kind: 'Instruction';
               category: string;
           }
         | {
               instance: ElementBlock;
               type: 'Block';
-              name: TElementNameBlock;
+              name: string;
               kind: 'Instruction';
               category: string;
           };
@@ -80,7 +72,7 @@ let _elementMap: {
  * @param category - category of the element
  */
 function _addInstance(
-    elementName: TElementName,
+    elementName: string,
     instanceID: string,
     instance: ElementSyntax,
     type: TElementType,
@@ -92,7 +84,7 @@ function _addInstance(
         case 'Data':
             _elementMap[instanceID] = {
                 instance: instance as _ElementDataCover,
-                name: elementName as TElementNameData,
+                name: elementName,
                 type: type as 'Data',
                 kind: 'Argument',
                 category: category as string,
@@ -101,7 +93,7 @@ function _addInstance(
         case 'Expression':
             _elementMap[instanceID] = {
                 instance: instance as _ElementExpressionCover,
-                name: elementName as TElementNameExpression,
+                name: elementName,
                 type: type as 'Expression',
                 kind: 'Argument',
                 category: category as string,
@@ -110,7 +102,7 @@ function _addInstance(
         case 'Statement':
             _elementMap[instanceID] = {
                 instance: instance as ElementStatement,
-                name: elementName as TElementNameStatement,
+                name: elementName,
                 type: type as 'Statement',
                 kind: 'Instruction',
                 category: category as string,
@@ -119,7 +111,7 @@ function _addInstance(
         case 'Block':
             _elementMap[instanceID] = {
                 instance: instance as ElementBlock,
-                name: elementName as TElementNameBlock,
+                name: elementName,
                 type: type as 'Block',
                 kind: 'Instruction',
                 category: category as string,
@@ -178,7 +170,7 @@ function _resetElementCategoryCountMap(): void {
  * @param elementName - name of the element
  * @returns - unique instance ID for the element instance
  */
-export function addInstance(elementName: TElementName): string {
+export function addInstance(elementName: string): string {
     const elementSpecification = queryElementSpecification(elementName);
 
     if (elementSpecification === null) {
@@ -191,28 +183,27 @@ export function addInstance(elementName: TElementName): string {
 
     switch (type) {
         case 'Data':
-            instance = (prototype as (name: TElementNameData, label: string) => _ElementDataCover)(
-                elementName as TElementNameData,
+            instance = (prototype as (name: string, label: string) => _ElementDataCover)(
+                elementName,
                 label
             );
             break;
         case 'Expression':
-            instance = (
-                prototype as (
-                    name: TElementNameExpression,
-                    label: string
-                ) => _ElementExpressionCover
-            )(elementName as TElementNameExpression, label);
+            instance = (prototype as (name: string, label: string) => _ElementExpressionCover)(
+                elementName,
+                label
+            );
             break;
         case 'Statement':
-            instance = (
-                prototype as (name: TElementNameStatement, label: string) => ElementStatement
-            )(elementName as TElementNameStatement, label);
+            instance = (prototype as (name: string, label: string) => ElementStatement)(
+                elementName,
+                label
+            );
             break;
         case 'Block':
         default:
-            instance = (prototype as (name: TElementNameBlock, label: string) => ElementBlock)(
-                elementName as TElementNameBlock,
+            instance = (prototype as (name: string, label: string) => ElementBlock)(
+                elementName,
                 label
             );
     }
@@ -233,7 +224,7 @@ export function addInstance(elementName: TElementName): string {
  * @returns element instance with additional properties
  */
 export function getInstance(instanceID: string): {
-    name: TElementName;
+    name: string;
     kind: TElementKind;
     type: TElementType;
     category: string;
@@ -264,7 +255,7 @@ export function removeInstance(instanceID: string): void {
  * @param name - name of the element
  * @returns count of the element instances for the element name
  */
-export function getNameCount(name: TElementName): number {
+export function getNameCount(name: string): number {
     return _elementNameCountMap[name];
 }
 

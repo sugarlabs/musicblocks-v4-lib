@@ -1,5 +1,4 @@
 import { TData, TDataName } from '../../@types/data';
-import { TElementName } from '../../@types/specification';
 import { IElementBlock, IElementInstruction, IElementStatement } from '../../@types/elements';
 
 import { ElementSyntax } from './elementSyntax';
@@ -24,7 +23,7 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
      *  `argName: type[]` pair
      */
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         type: 'Statement' | 'Block',
         argMap: { [key: string]: TDataName[] }
@@ -50,7 +49,7 @@ export abstract class ElementStatement extends ElementInstruction implements IEl
      * @param argMap an object describing the type specification of each argument as a
      *  `argName: type[]` pair
      */
-    constructor(name: TElementName, label: string, argMap: { [key: string]: TDataName[] }) {
+    constructor(name: string, label: string, argMap: { [key: string]: TDataName[] }) {
         super(name, label, 'Statement', argMap);
     }
 }
@@ -72,7 +71,7 @@ export abstract class ElementBlock extends ElementInstruction implements IElemen
      * @param argMap an object describing the type specification of each argument as a
      *  `argName: type[]` pair
      */
-    constructor(name: TElementName, label: string, argMap: { [key: string]: TDataName[] }) {
+    constructor(name: string, label: string, argMap: { [key: string]: TDataName[] }) {
         super(name, label, 'Block', argMap);
     }
 

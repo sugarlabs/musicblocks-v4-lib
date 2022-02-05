@@ -4,7 +4,6 @@ import {
     IElementSpecificationStatement,
     IElementSpecificationBlock,
     IElementSpecification,
-    TElementName,
 } from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -120,7 +119,7 @@ export function queryElementSpecification(
  * @returns a list of syntax element names.
  */
 export function getElementNames(): string[] {
-    return Object.keys(_elementSpecification) as TElementName[];
+    return Object.keys(_elementSpecification);
 }
 
 /**

@@ -1,13 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-    IElementSpecificationInstruction,
-    TElementName,
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-} from '../../@types/specification';
+import { IElementSpecificationInstruction } from '../../@types/specification';
 
 import {
     TreeNode,
@@ -124,7 +117,7 @@ export function getCrumbs(): TreeNode[] {
  * @param name - name of the syntax element
  * @returns node ID of the syntax tree node
  */
-export function addNode(name: TElementName): string {
+export function addNode(name: string): string {
     const instanceID = addInstance(name);
     let nodeID: string;
     do {
@@ -438,24 +431,16 @@ export function attachInstructionInsideCheck(
 
     if (
         (specificationConnector.forbidNestInside &&
-            specificationConnector.forbidNestInside.includes(
-                nodeConnecting.elementName as TElementNameStatement | TElementNameBlock
-            )) ||
+            specificationConnector.forbidNestInside.includes(nodeConnecting.elementName)) ||
         (specificationConnecting.forbiddenNestInside &&
-            specificationConnecting.forbiddenNestInside.includes(
-                nodeConnector.elementName as TElementNameBlock
-            ))
+            specificationConnecting.forbiddenNestInside.includes(nodeConnector.elementName))
     ) {
         return false;
     }
 
     if (specificationConnector.allowNestInside !== undefined) {
         if (specificationConnector.allowNestInside instanceof Array) {
-            if (
-                !specificationConnector.allowNestInside.includes(
-                    nodeConnecting.elementName as TElementNameStatement | TElementNameBlock
-                )
-            ) {
+            if (!specificationConnector.allowNestInside.includes(nodeConnecting.elementName)) {
                 return false;
             }
         } else {
@@ -467,11 +452,7 @@ export function attachInstructionInsideCheck(
 
     if (specificationConnecting.allowedNestInside !== undefined) {
         if (specificationConnecting.allowedNestInside instanceof Array) {
-            if (
-                !specificationConnecting.allowedNestInside.includes(
-                    nodeConnector.elementName as TElementNameBlock
-                )
-            ) {
+            if (!specificationConnecting.allowedNestInside.includes(nodeConnector.elementName)) {
                 return false;
             }
         } else {
@@ -646,24 +627,24 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     }
 
     function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameData);
+        const nodeID = addNode(snapshot.elementName);
         return nodeID;
     }
 
     function __generateFromSnapshotExpression(snapshot: ITreeSnapshotExpressionInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameExpression);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotStatement(snapshot: ITreeSnapshotStatementInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameStatement);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotBlock(snapshot: ITreeSnapshotBlockInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameBlock);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         const innerNodeID = __generateSnapshotList(snapshot.scope);
         if (innerNodeID !== null) {
