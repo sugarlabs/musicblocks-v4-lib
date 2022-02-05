@@ -247,7 +247,7 @@ describe('Syntax Tree', () => {
     });
 
     describe('tree generation from snapshot', () => {
-        test('validate tree generation', () => {
+        test('validate tree generation without initialisation values', () => {
             const snapshotInput: ITreeSnapshotInput = {
                 process: [
                     {
@@ -410,6 +410,36 @@ describe('Syntax Tree', () => {
                     __check(snapshotInput.crumbs[i][j], snapshotOutput.crumbs[i][j]);
                 }
             }
+        });
+
+        test('validate tree generation with initialisation values', () => {
+            const snapshotInput: ITreeSnapshotInput = {
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: {
+                                    elementName: 'value-number',
+                                    value: '5',
+                                },
+                            },
+                        },
+                    ],
+                ],
+            };
+            generateFromSnapshot(snapshotInput);
+            const snapshotOutput = generateSnapshot();
+
+            expect(
+                getInstance(
+                    // @ts-ignore
+                    getNode(snapshotOutput.crumbs[0][0].argMap['operand2'].nodeID)!.instanceID
+                )!.instance.label
+            ).toBe('5');
         });
     });
 });

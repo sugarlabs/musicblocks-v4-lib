@@ -628,6 +628,9 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
 
     function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
         const nodeID = addNode(snapshot.elementName);
+        if (snapshot.value) {
+            getInstance(getNode(nodeID)!.instanceID)!.instance.updateLabel(snapshot.value);
+        }
         return nodeID;
     }
 
