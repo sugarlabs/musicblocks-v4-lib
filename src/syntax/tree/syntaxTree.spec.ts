@@ -412,7 +412,7 @@ describe('Syntax Tree', () => {
             }
         });
 
-        test('validate tree generation with initialisation values', () => {
+        test('validate tree generation with valid initialisation values', () => {
             const snapshotInput: ITreeSnapshotInput = {
                 process: [],
                 routine: [],
@@ -440,6 +440,32 @@ describe('Syntax Tree', () => {
                     getNode(snapshotOutput.crumbs[0][0].argMap['operand2'].nodeID)!.instanceID
                 )!.instance.label
             ).toBe('5');
+        });
+
+        test('validate tree generation with invalid initialisation values', () => {
+            const snapshotInput: ITreeSnapshotInput = {
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: {
+                                    elementName: 'value-number',
+                                    value: 'foobar',
+                                },
+                            },
+                        },
+                    ],
+                ],
+            };
+            expect(() => {
+                generateFromSnapshot(snapshotInput);
+            }).toThrowError(
+                'InvalidDataError: value "foobar" cannot be assigned to data element "value-number"'
+            );
         });
     });
 });
