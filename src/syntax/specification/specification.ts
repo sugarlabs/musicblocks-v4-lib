@@ -61,6 +61,8 @@ export function registerElementSpecificationEntry(
         if (!['label', 'type', 'category', 'prototype'].includes(key)) {
             // @ts-ignore
             specificationTableEntry[key] = value;
+            // @ts-ignore
+            specificationSnapshotTableEntry[key] = value;
         }
     });
 

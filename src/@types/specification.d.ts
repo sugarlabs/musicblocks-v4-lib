@@ -1,4 +1,4 @@
-import { TData } from './data';
+import { TData, TDataName } from './data';
 import {
     IElementData,
     IElementExpression,
@@ -20,6 +20,11 @@ export interface IElementSpecificationData {
     type: 'Data';
     category: string;
     prototype: (name: string, label: string) => IElementData<TData>;
+    values?:
+        | string[]
+        | {
+              types: TDataName[];
+          };
 }
 
 /** Type for the specification entry object for data elements. */
@@ -108,6 +113,11 @@ export interface IElementSpecification {
     forbiddenNestInside?: string[];
     allowNestInside?: string[] | boolean;
     forbidNestInside?: string[] | boolean;
+    values?:
+        | string[]
+        | {
+              types: TDataName[];
+          };
 }
 
 /** Type for the snapshot of an element's specification. */
