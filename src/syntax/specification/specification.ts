@@ -1,3 +1,4 @@
+import { TDataName } from 'index';
 import {
     IElementSpecificationData,
     IElementSpecificationExpression,
@@ -168,6 +169,36 @@ export function getSpecificationSnapshot(): {
     [name: string]: IElementSpecificationSnapshot;
 } {
     return _elementSpecificationSnapshot;
+}
+
+/**
+ * Check if `value` can be assigned to element `name`.
+ * @param name name of the syntax element (expecting a data element)
+ * @param value value to check
+ * @returns whether value can be assigned
+ */
+export function checkValueAssignment(name: string, value: string): boolean {
+    if ('values' in _elementSpecification[name]) {
+        const values = (_elementSpecification[name] as IElementSpecificationData).values!;
+
+        if (values instanceof Array) {
+            return values.includes(value);
+        } else {
+            let typeDeepInfer: TDataName;
+            if (['true', 'false'].includes(value)) {
+                typeDeepInfer = 'boolean';
+            } else if (!isNaN(Number(value))) {
+                typeDeepInfer = 'number';
+            } else {
+                typeDeepInfer = 'string';
+            }
+
+            return (
+                values.types.includes(typeDeepInfer as TDataName) || values.types.includes('string')
+            );
+        }
+    }
+    return true;
 }
 
 resetElementSpecificationTable();

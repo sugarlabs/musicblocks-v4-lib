@@ -21,6 +21,7 @@ export {
     getElementCategories,
     resetElementSpecificationTable,
     getSpecificationSnapshot,
+    checkValueAssignment,
 } from './syntax/specification/specification';
 
 // -- syntax tree ----------------------------------------------------------------------------------

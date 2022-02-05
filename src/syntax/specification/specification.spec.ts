@@ -6,6 +6,7 @@ import {
     removeElementSpecificationEntries,
     resetElementSpecificationTable,
     getSpecificationSnapshot,
+    checkValueAssignment,
 } from './specification';
 
 import elementSpecificationEntries from '../../library/specification';
@@ -385,14 +386,103 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             expect(getSpecificationSnapshot()).toEqual({});
 
-            registerElementSpecificationEntry('mydummy', {
-                label: 'dummy',
-                type: 'Data',
-                category: 'dummy',
-                prototype: DummyElementData,
-                values: ['1', '2', '3'],
+            registerElementSpecificationEntries({
+                dummy: {
+                    label: 'dummy',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
             });
-            expect(getSpecificationSnapshot()['mydummy'].values).toEqual(['1', '2', '3']);
+            expect(getSpecificationSnapshot()['dummy'].values).toEqual(['1', '2', '3']);
+        });
+
+        test('check against specification valid value assignment', () => {
+            resetElementSpecificationTable();
+            registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['number'] },
+                },
+                dummy5: {
+                    label: 'dummy5',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['string'] },
+                },
+            });
+
+            expect(checkValueAssignment('dummy1', 'foobar')).toBe(true);
+            expect(checkValueAssignment('dummy2', '2')).toBe(true);
+            expect(checkValueAssignment('dummy3', 'true')).toBe(true);
+            expect(checkValueAssignment('dummy4', '55')).toBe(true);
+            expect(checkValueAssignment('dummy5', 'true')).toBe(true);
+            expect(checkValueAssignment('dummy5', '55')).toBe(true);
+            expect(checkValueAssignment('dummy5', 'foobar')).toBe(true);
+        });
+
+        test('check against specification invalid value assignment', () => {
+            resetElementSpecificationTable();
+            registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['number'] },
+                },
+            });
+
+            expect(checkValueAssignment('dummy1', '4')).toBe(false);
+            expect(checkValueAssignment('dummy2', '5')).toBe(false);
+            expect(checkValueAssignment('dummy3', '5')).toBe(false);
+            expect(checkValueAssignment('dummy4', 'true')).toBe(false);
         });
     });
 });
