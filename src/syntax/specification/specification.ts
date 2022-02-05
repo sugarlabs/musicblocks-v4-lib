@@ -4,6 +4,7 @@ import {
     IElementSpecificationStatement,
     IElementSpecificationBlock,
     IElementSpecification,
+    IElementSpecificationSnapshot,
 } from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -15,6 +16,14 @@ let _elementSpecification: {
         | IElementSpecificationExpression
         | IElementSpecificationStatement
         | IElementSpecificationBlock;
+} = {};
+/**
+ * Stores the snapshot (similar to snapshot, except that prototype is replaced with prototype name —
+ * class name of the syntax element or the prototype) of the specifications for each element as a
+ * key-value pair of name: specification.
+ */
+let _elementSpecificationSnapshot: {
+    [identifier: string]: IElementSpecificationSnapshot;
 } = {};
 
 // -- public functions -----------------------------------------------------------------------------
@@ -41,6 +50,13 @@ export function registerElementSpecificationEntry(
         prototype: (name: string, label: string) => new prototype(name, label),
     };
 
+    const specificationSnapshotTableEntry: IElementSpecificationSnapshot = {
+        label,
+        type,
+        category,
+        prototypeName: prototype.name,
+    };
+
     Object.entries(specification).forEach(([key, value]) => {
         if (!['label', 'type', 'category', 'prototype'].includes(key)) {
             // @ts-ignore
@@ -53,6 +69,8 @@ export function registerElementSpecificationEntry(
         | IElementSpecificationExpression
         | IElementSpecificationStatement
         | IElementSpecificationBlock;
+
+    _elementSpecificationSnapshot[name] = specificationSnapshotTableEntry;
 
     return name in _elementSpecification;
 }
@@ -81,6 +99,7 @@ export function registerElementSpecificationEntries(specification: {
 export function removeElementSpecificationEntry(name: string): boolean {
     if (name in _elementSpecification) {
         delete _elementSpecification[name];
+        delete _elementSpecificationSnapshot[name];
         return true;
     } else {
         return false;
@@ -135,6 +154,18 @@ export function getElementCategories(): string[] {
  */
 export function resetElementSpecificationTable(): void {
     _elementSpecification = {};
+    _elementSpecificationSnapshot = {};
+}
+
+/**
+ * Returns the snapshot of the element specification table.
+ * @returns snapshot entry table object with key-value pairs of element name and corresponding
+ * element specification snapshot
+ */
+export function getSpecificationSnapshot(): {
+    [name: string]: IElementSpecificationSnapshot;
+} {
+    return _elementSpecificationSnapshot;
 }
 
 resetElementSpecificationTable();

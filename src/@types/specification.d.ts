@@ -93,6 +93,7 @@ export type IElementSpecificationEntryBlock = IElementSpecificationInstruction &
     forbidNestInside?: string[];
 };
 
+/** Type for the specification object for an element. */
 export interface IElementSpecification {
     label: string;
     type: TElementType;
@@ -107,4 +108,9 @@ export interface IElementSpecification {
     forbiddenNestInside?: string[];
     allowNestInside?: string[] | boolean;
     forbidNestInside?: string[] | boolean;
+}
+
+/** Type for the snapshot of an element's specification. */
+export interface IElementSpecificationSnapshot extends Omit<IElementSpecification, 'prototype'> {
+    prototypeName: string;
 }
