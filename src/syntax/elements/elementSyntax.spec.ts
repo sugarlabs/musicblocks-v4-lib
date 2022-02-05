@@ -1,12 +1,11 @@
 import { TDataName } from '../../@types/data';
-import { TElementName } from '../../@types/specification';
 import { ElementSyntax } from './elementSyntax';
 
 // -------------------------------------------------------------------------------------------------
 
 class DummyElementSyntax extends ElementSyntax {
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         kind: 'Argument' | 'Instruction',
         type: 'Data' | 'Expression' | 'Statement' | 'Block',
@@ -21,13 +20,7 @@ describe('class ElementSyntax', () => {
         test('instantiate class that extends ElementSyntax with 0 arguments and validate API', () => {
             let dummyElementSyntax: DummyElementSyntax;
 
-            dummyElementSyntax = new DummyElementSyntax(
-                'dummy' as TElementName,
-                'dummy',
-                'Argument',
-                'Data',
-                {}
-            );
+            dummyElementSyntax = new DummyElementSyntax('dummy', 'dummy', 'Argument', 'Data', {});
             expect(dummyElementSyntax.name).toBe('dummy');
             expect(dummyElementSyntax.label).toBe('dummy');
             expect(dummyElementSyntax.kind).toBe('Argument');
@@ -36,7 +29,7 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.argLabels).toEqual([]);
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy' as TElementName,
+                'dummy',
                 'dummy',
                 'Argument',
                 'Expression',
@@ -50,7 +43,7 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.argLabels).toEqual([]);
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy' as TElementName,
+                'dummy',
                 'dummy',
                 'Instruction',
                 'Statement',
@@ -64,7 +57,7 @@ describe('class ElementSyntax', () => {
             expect(dummyElementSyntax.argLabels).toEqual([]);
 
             dummyElementSyntax = new DummyElementSyntax(
-                'dummy' as TElementName,
+                'dummy',
                 'dummy',
                 'Instruction',
                 'Block',
@@ -80,7 +73,7 @@ describe('class ElementSyntax', () => {
 
         test('instantiate class that extends ElementSyntax with 3 arguments and validate API', () => {
             const dummyElementSyntax = new DummyElementSyntax(
-                'dummy' as TElementName,
+                'dummy',
                 'dummy',
                 'Instruction',
                 'Block',
@@ -103,13 +96,7 @@ describe('class ElementSyntax', () => {
     });
 
     test('update label and verify', () => {
-        const dummyElementSyntax = new DummyElementSyntax(
-            'dummy' as TElementName,
-            'dummy',
-            'Argument',
-            'Data',
-            {}
-        );
+        const dummyElementSyntax = new DummyElementSyntax('dummy', 'dummy', 'Argument', 'Data', {});
         expect(dummyElementSyntax.label).toBe('dummy');
         dummyElementSyntax.updateLabel('dummyElement');
         expect(dummyElementSyntax.label).toBe('dummyElement');

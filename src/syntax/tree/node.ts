@@ -11,13 +11,6 @@ import {
     ITreeSnapshotExpression,
     ITreeSnapshotStatement,
 } from '../../@types/syntaxTree';
-import {
-    TElementName,
-    TElementNameBlock,
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-} from '../../@types/specification';
 
 import { getInstance } from '../warehouse/warehouse';
 
@@ -30,7 +23,7 @@ import { getInstance } from '../warehouse/warehouse';
  */
 export abstract class TreeNode implements ITreeNode {
     /** Stores the name of the syntax element. */
-    protected _elementName: TElementName;
+    protected _elementName: string;
     /** Stores the node ID of the syntax tree node instance. */
     protected _nodeID: string;
     /** Stores the warehouse ID of the syntax element instance. */
@@ -41,7 +34,7 @@ export abstract class TreeNode implements ITreeNode {
 
     constructor(
         /** Name of the syntax element. */
-        elementName: TElementName,
+        elementName: string,
         /** Node ID of the syntax tree node instance. */
         nodeID: string,
         /** Warehouse ID of the syntax element instance. */
@@ -55,7 +48,7 @@ export abstract class TreeNode implements ITreeNode {
         instance.instance.argLabels.forEach((label) => (this._argConnections[label] = null));
     }
 
-    public abstract get elementName(): TElementName;
+    public abstract get elementName(): string;
 
     public get nodeID(): string {
         return this._nodeID;
@@ -125,13 +118,13 @@ abstract class TreeNodeArgument extends TreeNode implements ITreeNodeArgument {
  * Defines a syntax tree data element node.
  */
 export class TreeNodeData extends TreeNodeArgument implements ITreeNodeData {
-    public get elementName(): TElementNameData {
-        return this._elementName as TElementNameData;
+    public get elementName(): string {
+        return this._elementName;
     }
 
     public get snapshot(): ITreeSnapshotData {
         return {
-            elementName: this._elementName as TElementNameData,
+            elementName: this._elementName,
             nodeID: this._nodeID,
         };
     }
@@ -142,13 +135,13 @@ export class TreeNodeData extends TreeNodeArgument implements ITreeNodeData {
  * Defines a syntax tree expression element node.
  */
 export class TreeNodeExpression extends TreeNodeArgument implements ITreeNodeExpression {
-    public get elementName(): TElementNameExpression {
-        return this._elementName as TElementNameExpression;
+    public get elementName(): string {
+        return this._elementName;
     }
 
     public get snapshot(): ITreeSnapshotExpression {
         return {
-            elementName: this._elementName as TElementNameExpression,
+            elementName: this._elementName,
             nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
         };
@@ -181,13 +174,13 @@ abstract class TreeNodeInstruction extends TreeNode implements ITreeNodeInstruct
  * Defines a syntax tree statement element node.
  */
 export class TreeNodeStatement extends TreeNodeInstruction implements ITreeNodeStatement {
-    public get elementName(): TElementNameStatement {
-        return this._elementName as TElementNameStatement;
+    public get elementName(): string {
+        return this._elementName;
     }
 
     public get snapshot(): ITreeSnapshotStatement {
         return {
-            elementName: this._elementName as TElementNameStatement,
+            elementName: this._elementName,
             nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
         };
@@ -199,8 +192,8 @@ export class TreeNodeStatement extends TreeNodeInstruction implements ITreeNodeS
  * Defines a syntax tree block element node.
  */
 export class TreeNodeBlock extends TreeNodeInstruction implements ITreeNodeBlock {
-    public get elementName(): TElementNameBlock {
-        return this._elementName as TElementNameBlock;
+    public get elementName(): string {
+        return this._elementName;
     }
 
     public get snapshot(): ITreeSnapshotBlock {
@@ -213,7 +206,7 @@ export class TreeNodeBlock extends TreeNodeInstruction implements ITreeNodeBlock
         }
 
         return {
-            elementName: this._elementName as TElementNameBlock,
+            elementName: this._elementName,
             nodeID: this._nodeID,
             argMap: this._getArgSnapshot(),
             scope,
