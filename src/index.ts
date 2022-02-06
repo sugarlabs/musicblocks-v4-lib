@@ -36,6 +36,7 @@ export {
     generateSnapshot,
     generateFromSnapshot,
     resetSyntaxTree,
+    assignNodeValue,
 } from './syntax/tree/syntaxTree';
 
 // -- warehouse ------------------------------------------------------------------------------------

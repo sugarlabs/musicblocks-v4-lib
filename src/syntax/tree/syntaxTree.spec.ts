@@ -14,6 +14,7 @@ import {
     generateSnapshot,
     generateFromSnapshot,
     resetSyntaxTree,
+    assignNodeValue,
 } from './syntaxTree';
 import { getInstance } from '../warehouse/warehouse';
 
@@ -466,6 +467,64 @@ describe('Syntax Tree', () => {
             }).toThrowError(
                 'InvalidDataError: value "foobar" cannot be assigned to data element "value-number"'
             );
+        });
+    });
+
+    describe('value assignment to node', () => {
+        test('validate invalid attempt to assign value to non-data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: null,
+                            },
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'foobar')).toBe(false);
+        });
+
+        test('validate invalid attempt to assign value to non-existing element', () => {
+            expect(assignNodeValue('123456', 'foobar')).toBe(false);
+        });
+
+        test('validate valid attempt to assign invalid value to data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'value-number',
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'foobar')).toBe(false);
+        });
+
+        test('validate valid attempt to assign valid value to data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'value-boolean',
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'true')).toBe(true);
         });
     });
 });

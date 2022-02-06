@@ -673,3 +673,24 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
         throw e;
     }
 }
+
+/**
+ * Assigns the value (label) of the data element instance included in the node `nodeID`.
+ * @param nodeID node ID of the syntax tree node
+ * @param value value to assign
+ * @returns whether successful assignment or not
+ */
+export function assignNodeValue(nodeID: string, value: string): boolean {
+    try {
+        const instance = getInstance(getNode(nodeID)!.instanceID)!.instance;
+        if (instance.type === 'Data' && checkValueAssignment(instance.name, value)) {
+            instance.updateLabel(value);
+        } else {
+            throw Error();
+        }
+    } catch (e) {
+        return false;
+    }
+
+    return true;
+}
