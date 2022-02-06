@@ -50,12 +50,18 @@ const _elementSpecificationEntries: {
         type: 'Data',
         category: 'value',
         prototype: ElementValueBoolean,
+        values: {
+            types: ['boolean'],
+        },
     },
     'value-number': {
         label: '0',
         type: 'Data',
         category: 'value',
         prototype: ElementValueNumber,
+        values: {
+            types: ['number'],
+        },
     },
     'value-string': {
         label: 'string',

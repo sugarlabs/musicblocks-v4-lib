@@ -10,7 +10,7 @@ import {
     TreeNodeBlock,
 } from './node';
 import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse';
-import { queryElementSpecification } from '../specification/specification';
+import { checkValueAssignment, queryElementSpecification } from '../specification/specification';
 
 import { TData } from '../../@types/data';
 import { ElementArgument } from '../elements/elementArgument';
@@ -548,6 +548,7 @@ export function generateSnapshot(): ITreeSnapshot {
 /**
  * Generates the syntax tree from a snapshot.
  * @param snapshot - syntax tree snapshot
+ * @throws `InvalidDataError`
  */
 export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     resetSyntaxTree();
@@ -628,6 +629,16 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
 
     function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
         const nodeID = addNode(snapshot.elementName);
+        if (snapshot.value) {
+            const instance = getInstance(getNode(nodeID)!.instanceID)!.instance;
+            if (checkValueAssignment(instance.name, snapshot.value)) {
+                instance.updateLabel(snapshot.value);
+            } else {
+                throw Error(
+                    `InvalidDataError: value "${snapshot.value}" cannot be assigned to data element "${instance.name}"`
+                );
+            }
+        }
         return nodeID;
     }
 
@@ -653,7 +664,33 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
         return nodeID;
     }
 
-    snapshot.process.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
-    snapshot.routine.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
-    snapshot.crumbs.forEach((snapshotList) => __generateSnapshotList(snapshotList));
+    try {
+        snapshot.process.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
+        snapshot.routine.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
+        snapshot.crumbs.forEach((snapshotList) => __generateSnapshotList(snapshotList));
+    } catch (e) {
+        resetSyntaxTree();
+        throw e;
+    }
+}
+
+/**
+ * Assigns the value (label) of the data element instance included in the node `nodeID`.
+ * @param nodeID node ID of the syntax tree node
+ * @param value value to assign
+ * @returns whether successful assignment or not
+ */
+export function assignNodeValue(nodeID: string, value: string): boolean {
+    try {
+        const instance = getInstance(getNode(nodeID)!.instanceID)!.instance;
+        if (instance.type === 'Data' && checkValueAssignment(instance.name, value)) {
+            instance.updateLabel(value);
+        } else {
+            throw Error();
+        }
+    } catch (e) {
+        return false;
+    }
+
+    return true;
 }

@@ -4,6 +4,8 @@
 export interface ITreeSnapshotDataInput {
     /** Name of the data element. */
     elementName: string;
+    /** Value to initialize data element with. */
+    value?: string;
 }
 
 /** Type definition for the snapshot of a data element. */

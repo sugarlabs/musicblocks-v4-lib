@@ -14,6 +14,7 @@ import {
     generateSnapshot,
     generateFromSnapshot,
     resetSyntaxTree,
+    assignNodeValue,
 } from './syntaxTree';
 import { getInstance } from '../warehouse/warehouse';
 
@@ -247,7 +248,7 @@ describe('Syntax Tree', () => {
     });
 
     describe('tree generation from snapshot', () => {
-        test('validate tree generation', () => {
+        test('validate tree generation without initialisation values', () => {
             const snapshotInput: ITreeSnapshotInput = {
                 process: [
                     {
@@ -410,6 +411,120 @@ describe('Syntax Tree', () => {
                     __check(snapshotInput.crumbs[i][j], snapshotOutput.crumbs[i][j]);
                 }
             }
+        });
+
+        test('validate tree generation with valid initialisation values', () => {
+            const snapshotInput: ITreeSnapshotInput = {
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: {
+                                    elementName: 'value-number',
+                                    value: '5',
+                                },
+                            },
+                        },
+                    ],
+                ],
+            };
+            generateFromSnapshot(snapshotInput);
+            const snapshotOutput = generateSnapshot();
+
+            expect(
+                getInstance(
+                    // @ts-ignore
+                    getNode(snapshotOutput.crumbs[0][0].argMap['operand2'].nodeID)!.instanceID
+                )!.instance.label
+            ).toBe('5');
+        });
+
+        test('validate tree generation with invalid initialisation values', () => {
+            const snapshotInput: ITreeSnapshotInput = {
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: {
+                                    elementName: 'value-number',
+                                    value: 'foobar',
+                                },
+                            },
+                        },
+                    ],
+                ],
+            };
+            expect(() => {
+                generateFromSnapshot(snapshotInput);
+            }).toThrowError(
+                'InvalidDataError: value "foobar" cannot be assigned to data element "value-number"'
+            );
+        });
+    });
+
+    describe('value assignment to node', () => {
+        test('validate invalid attempt to assign value to non-data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'operator-math-plus',
+                            argMap: {
+                                operand1: null,
+                                operand2: null,
+                            },
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'foobar')).toBe(false);
+        });
+
+        test('validate invalid attempt to assign value to non-existing element', () => {
+            expect(assignNodeValue('123456', 'foobar')).toBe(false);
+        });
+
+        test('validate valid attempt to assign invalid value to data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'value-number',
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'foobar')).toBe(false);
+        });
+
+        test('validate valid attempt to assign valid value to data element', () => {
+            generateFromSnapshot({
+                process: [],
+                routine: [],
+                crumbs: [
+                    [
+                        {
+                            elementName: 'value-boolean',
+                        },
+                    ],
+                ],
+            });
+            const snapshot = generateSnapshot();
+            expect(assignNodeValue(snapshot.crumbs[0][0].nodeID, 'true')).toBe(true);
         });
     });
 });
