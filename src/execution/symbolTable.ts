@@ -38,9 +38,9 @@ function _addTableVariable(
 ): void {
     const table = tableName === 'process' ? _processTable : _routineTable;
     if (!(selector in table)) {
-        table[selector] = {};
+        table[selector] = { string: {}, number: {}, boolean: {} };
     }
-    table[selector][variable] = { dataType, value };
+    table[selector][dataType][variable] = { dataType, value };
 }
 
 /**
