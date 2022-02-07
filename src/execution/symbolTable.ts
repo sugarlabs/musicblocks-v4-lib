@@ -103,22 +103,40 @@ function _getTableVariableNames(selector: string, tableName: 'process' | 'routin
 
 /**
  * A helper that returns names of all variables for a process or routine with their data types.
+ * If there are multiple variables with same name and different data types, all those data types
+ * will also be returned in array.
  * @param selector - the key to be used for selection (project ID or routine ID)
  * @param tableName - `process` or `routine`
- * @returns an object with key-value pairs of variable names and corresponding data type
+ * @returns an object with key-value pairs of variable names and array of corresponding data types
  */
 function _getTableVariableNamesWithTypes(
     selector: string,
     tableName: 'process' | 'routine'
-): { [variable: string]: TDataName } {
+): { [variable: string]: TDataName[] } {
     const table = tableName === 'process' ? _processTable : _routineTable;
     if (!(selector in table)) {
         return {};
     }
 
-    const res: { [variable: string]: TDataName } = {};
-    Object.entries(table[selector]).forEach(([variable, { dataType }]) => {
-        res[variable] = dataType;
+    const res: { [variable: string]: TDataName[] } = {};
+
+    Object.entries(table[selector]['string']).forEach(([variable, { dataType }]) => {
+        if (!(variable in res)) {
+            res[variable] = [];
+        }
+        res[variable].push(dataType);
+    });
+    Object.entries(table[selector]['number']).forEach(([variable, { dataType }]) => {
+        if (!(variable in res)) {
+            res[variable] = [];
+        }
+        res[variable].push(dataType);
+    });
+    Object.entries(table[selector]['boolean']).forEach(([variable, { dataType }]) => {
+        if (!(variable in res)) {
+            res[variable] = [];
+        }
+        res[variable].push(dataType);
     });
     return res;
 }
@@ -285,10 +303,10 @@ export function getProcessVariableNames(process: string): string[] {
 /**
  * Returns names of all variables for a process with their data types.
  * @param process - ID of the process
- * @returns an object with key-value pairs of variable names and corresponding data type
+ * @returns an object with key-value pairs of variable names and array of corresponding data types
  */
 export function getProcessVariableNamesWithTypes(process: string): {
-    [variable: string]: TDataName;
+    [variable: string]: TDataName[];
 } {
     return _getTableVariableNamesWithTypes(process, 'process');
 }
@@ -367,10 +385,10 @@ export function getRoutineVariableNames(routine: string): string[] {
 /**
  * Returns names of all variables for a routine with their data types.
  * @param routine - ID of the routine
- * @returns an object with key-value pairs of variable names and corresponding data type
+ * @returns an object with key-value pairs of variable names and array of corresponding data types
  */
 export function getRoutineVariableNamesWithTypes(routine: string): {
-    [variable: string]: TDataName;
+    [variable: string]: TDataName[];
 } {
     return _getTableVariableNamesWithTypes(routine, 'routine');
 }
