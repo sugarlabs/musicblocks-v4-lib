@@ -89,8 +89,18 @@ function _getTableVariable(
  */
 function _getTableVariableNames(selector: string, tableName: 'process' | 'routine'): string[] {
     const table = tableName === 'process' ? _processTable : _routineTable;
-    return selector in table ? Object.keys(table[selector]) : [];
+    if (selector in table) {
+        let res: string[] = [];
+        res.push(...Object.keys(table[selector]['string']));
+        res.push(...Object.keys(table[selector]['number']));
+        res.push(...Object.keys(table[selector]['boolean']));
+        res = [...new Set(res)];
+        return res;
+    } else {
+        return [];
+    }
 }
+
 /**
  * A helper that returns names of all variables for a process or routine with their data types.
  * @param selector - the key to be used for selection (project ID or routine ID)
