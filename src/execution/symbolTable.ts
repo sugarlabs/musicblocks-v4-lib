@@ -200,17 +200,19 @@ function _getTableVariableNamesWithTypesAll(tableName: 'process' | 'routine'): {
 /**
  * Removes a variable for a process or routine if present.
  * @param variable - name of the variable
+ * @param dataType - type of the variable
  * @param selector - the key to be used for selection (project ID or routine ID)
  * @param tableName - `process` or `routine`
  */
 function _removeTableVariable(
     variable: string,
+    dataType: TDataName,
     selector: string,
     tableName: 'process' | 'routine'
 ): void {
     const table = tableName === 'process' ? _processTable : _routineTable;
-    if (selector in table && variable in table[selector]) {
-        delete table[selector][variable];
+    if (selector in table && variable in table[selector][dataType]) {
+        delete table[selector][dataType][variable];
     }
 }
 
@@ -353,10 +355,15 @@ export function getProcessVariableNamesWithTypesAll(): {
 /**
  * Removes a variable for a process if present.
  * @param variable - name of the variable
+ * @param dataType - type of the variable
  * @param process - ID of the process
  */
-export function removeProcessVariable(variable: string, process: string): void {
-    _removeTableVariable(variable, process, 'process');
+export function removeProcessVariable(
+    variable: string,
+    dataType: TDataName,
+    process: string
+): void {
+    _removeTableVariable(variable, dataType, process, 'process');
 }
 
 /**
@@ -435,10 +442,15 @@ export function getRoutineVariableNamesWithTypesAll(): {
 /**
  * Removes a variable for a routine if present.
  * @param variable - name of the variable
+ * @param dataType - type of the variable
  * @param routine - ID of the routine
  */
-export function removeRoutineVariable(variable: string, routine: string): void {
-    _removeTableVariable(variable, routine, 'routine');
+export function removeRoutineVariable(
+    variable: string,
+    dataType: TDataName,
+    routine: string
+): void {
+    _removeTableVariable(variable, dataType, routine, 'routine');
 }
 
 /**
