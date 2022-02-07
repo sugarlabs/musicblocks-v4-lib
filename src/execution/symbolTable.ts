@@ -144,8 +144,8 @@ function _getTableVariableNamesWithTypes(
 /**
  * A helper that returns names of all process or routine variables.
  * @param tableName - `process` or `routine`
- * @returns an object with key-value pairs of process or routine names and corresponding list of
- * variable names
+ * @returns an object with key-value pairs of process or routine names and corresponding list of all
+ * variable names in an array
  */
 function _getTableVariableNamesAll(tableName: 'process' | 'routine'): {
     [key: string]: string[];
@@ -153,7 +153,11 @@ function _getTableVariableNamesAll(tableName: 'process' | 'routine'): {
     const table = tableName === 'process' ? _processTable : _routineTable;
     const res: { [key: string]: string[] } = {};
     Object.entries(table).forEach(([key, variables]) => {
-        res[key] = Object.keys(variables);
+        res[key] = [];
+        res[key].push(...Object.keys(variables['string']));
+        res[key].push(...Object.keys(variables['number']));
+        res[key].push(...Object.keys(variables['boolean']));
+        res[key] = [...new Set(res[key])];
     });
     return res;
 }
@@ -313,8 +317,8 @@ export function getProcessVariableNamesWithTypes(process: string): {
 
 /**
  * Returns names of all process variables.
- * @returns an object with key-value pairs of process names and corresponding list of variable
- * names
+ * @returns an object with key-value pairs of process names and corresponding list of all  variable
+ * names in an array
  */
 export function getProcessVariableNamesAll(): { [process: string]: string[] } {
     return _getTableVariableNamesAll('process');
@@ -395,8 +399,8 @@ export function getRoutineVariableNamesWithTypes(routine: string): {
 
 /**
  * Returns names of all routine variables.
- * @returns an object with key-value pairs of routine names and corresponding list of variable
- * names
+ * @returns an object with key-value pairs of routine names and corresponding list of all variable
+ * names in an array
  */
 export function getRoutineVariableNamesAll(): { [routine: string]: string[] } {
     return _getTableVariableNamesAll('routine');
