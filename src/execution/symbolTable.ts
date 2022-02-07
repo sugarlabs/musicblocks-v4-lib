@@ -306,11 +306,27 @@ export function getGlobalVariableNamesWithTypes(): { [variable: string]: TDataNa
 
 /**
  * Removes a global variable if present.
+ * If the `dataType` is passed as an argument, function will remove the variable name of the
+ * specific data type.
+ * If the `dataType` is `undefined`, function will remove all variables with the given variable name
  * @param variable - name of the variable
+ * @param dataType - (optional) type of the variable
  */
-export function removeGlobalVariable(variable: string): void {
-    if (variable in _globalTable) {
-        delete _globalTable[variable];
+export function removeGlobalVariable(variable: string, dataType?: TDataName): void {
+    if (dataType != undefined) {
+        if (variable in _globalTable[dataType]) {
+            delete _globalTable[dataType][variable];
+        }
+    } else {
+        if (variable in _globalTable['string']) {
+            delete _globalTable['string'][variable];
+        }
+        if (variable in _globalTable['number']) {
+            delete _globalTable['number'][variable];
+        }
+        if (variable in _globalTable['boolean']) {
+            delete _globalTable['boolean'][variable];
+        }
     }
 }
 
@@ -492,7 +508,7 @@ export function removeRoutineVariable(
  * Clears all global variables.
  */
 export function flushGlobalVariables(): void {
-    _globalTable = {};
+    _globalTable = { string: {}, number: {}, boolean: {} };
 }
 
 /**
