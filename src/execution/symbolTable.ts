@@ -237,16 +237,29 @@ function _flushTableVariables(selector: string, tableName: 'process' | 'routine'
  * @param value - value of the variable
  */
 export function addGlobalVariable(variable: string, dataType: TDataName, value: TData): void {
-    _globalTable[variable] = { dataType, value };
+    _globalTable[dataType][variable] = { dataType, value };
 }
 
 /**
  * Fetches a global variable.
+ * If the optional arg `dataType` is `undefined`, it will try to fetch the global variable in the
+ * given order of data types - string, number, boolean.
  * @param variable - name of the variable
+ * @param dataType - (optional) type of the variable
  * @returns the variable entry if present, else `null`
  */
-export function getGlobalVariable(variable: string): IVariable | null {
-    return variable in _globalTable ? _globalTable[variable] : null;
+export function getGlobalVariable(variable: string, dataType?: TDataName): IVariable | null {
+    if (dataType != undefined) {
+        return variable in _globalTable[dataType] ? _globalTable[dataType][variable] : null;
+    } else {
+        if (variable in _globalTable['string']) {
+            return _globalTable['string'][variable];
+        } else if (variable in _globalTable['number']) {
+            return _globalTable['number'][variable];
+        } else if (variable in _globalTable['boolean']) {
+            return _globalTable['boolean'][variable];
+        } else return null;
+    }
 }
 
 /**
