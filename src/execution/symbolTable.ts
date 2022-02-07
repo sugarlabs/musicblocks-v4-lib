@@ -5,13 +5,15 @@ import { IVariable } from '../@types/execution';
 
 /** Type describing a set of variables. */
 type IVariableTable = {
-    [variable: string]: IVariable;
+    [dataType in TDataName]: {
+        [variable: string]: IVariable;
+    };
 };
 
 // -- private variables ----------------------------------------------------------------------------
 
 /** Stores the global table. */
-let _globalTable: IVariableTable = {};
+let _globalTable: IVariableTable = { string: {}, number: {}, boolean: {} };
 /** Stores the processes' tables. */
 let _processTable: { [process: string]: IVariableTable } = {};
 /** Stores the routines' table. */
