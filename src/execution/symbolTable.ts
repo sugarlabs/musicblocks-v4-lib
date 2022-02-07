@@ -45,18 +45,40 @@ function _addTableVariable(
 
 /**
  * A helper that fetches a variable for a process or routine.
+ * If the optional arg `dataType` is `undefined`, it will fetch the variable in the given order of
+ * data types - string, number, boolean for process or routine.
  * @param variable - name of the variable
  * @param selector - the key to be used for selection (project ID or routine ID)
  * @param tableName - `process` or `routine`
+ * @param dataType - (optional) data type of the variable.
  * @returns the variable entry if present, else `null`
  */
 function _getTableVariable(
     variable: string,
     selector: string,
-    tableName: 'process' | 'routine'
+    tableName: 'process' | 'routine',
+    dataType?: TDataName
 ): IVariable | null {
     const table = tableName === 'process' ? _processTable : _routineTable;
-    return selector in table && variable in table[selector] ? table[selector][variable] : null;
+    if (dataType != undefined) {
+        return selector in table && variable in table[selector][dataType]
+            ? table[selector][dataType][variable]
+            : null;
+    } else {
+        if (selector in table) {
+            if (variable in table[selector]['string']) {
+                return table[selector]['string'][variable];
+            } else if (variable in table[selector]['number']) {
+                return table[selector]['number'][variable];
+            } else if (variable in table[selector]['boolean']) {
+                return table[selector]['boolean'][variable];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }
 
 /**
@@ -226,12 +248,19 @@ export function addProcessVariable(
 
 /**
  * Fetches a variable for a process.
+ * If the optional arg `dataType` is `undefined`, it will fetch the variable in the given order of
+ * data types - string, number, boolean for the process.
  * @param variable - name of the variable
  * @param process - ID of the process
+ * @param dataType - (optional) type of the variable.
  * @returns the variable entry if present, else `null`
  */
-export function getProcessVariable(variable: string, process: string): IVariable | null {
-    return _getTableVariable(variable, process, 'process');
+export function getProcessVariable(
+    variable: string,
+    process: string,
+    dataType?: TDataName
+): IVariable | null {
+    return _getTableVariable(variable, process, 'process', dataType);
 }
 
 /**
@@ -301,12 +330,19 @@ export function addRoutineVariable(
 
 /**
  * Fetches a variable for a routine.
+ * If the optional arg `dataType` is `undefined`, it will fetch the variable in the given order of
+ * data types - string, number, boolean for the routine.
  * @param variable - name of the variable
  * @param routine - ID of the routine
+ * @param dataType - (optional) type of the variable.
  * @returns the variable entry if present, else `null`
  */
-export function getRoutineVariable(variable: string, routine: string): IVariable | null {
-    return _getTableVariable(variable, routine, 'routine');
+export function getRoutineVariable(
+    variable: string,
+    routine: string,
+    dataType?: TDataName
+): IVariable | null {
+    return _getTableVariable(variable, routine, 'routine', dataType);
 }
 
 /**
