@@ -267,18 +267,40 @@ export function getGlobalVariable(variable: string, dataType?: TDataName): IVari
  * @returns a list of all global variable names
  */
 export function getGlobalVariableNames(): string[] {
-    return Object.keys(_globalTable);
+    let res: string[] = [];
+    res.push(...Object.keys(_globalTable['string']));
+    res.push(...Object.keys(_globalTable['boolean']));
+    res.push(...Object.keys(_globalTable['number']));
+    res = [...new Set(res)];
+    return res;
 }
 
 /**
- * Returns names of all global variables with their data types.
- * @returns an object with key-value pairs of variable names and corresponding data type
+ * Returns names of all global variables with their corresponding data types.
+ * @returns object with key-value pairs of variable names and corresponding data types in an array
  */
-export function getGlobalVariableNamesWithTypes(): { [variable: string]: TDataName } {
-    const table: { [variable: string]: TDataName } = {};
-    Object.entries(_globalTable).forEach(([variable, { dataType }]) => {
-        table[variable] = dataType;
+export function getGlobalVariableNamesWithTypes(): { [variable: string]: TDataName[] } {
+    const table: { [variable: string]: TDataName[] } = {};
+
+    Object.entries(_globalTable['string']).forEach(([variable, { dataType }]) => {
+        if (!(variable in table)) {
+            table[variable] = [];
+        }
+        table[variable].push(dataType);
     });
+    Object.entries(_globalTable['number']).forEach(([variable, { dataType }]) => {
+        if (!(variable in table)) {
+            table[variable] = [];
+        }
+        table[variable].push(dataType);
+    });
+    Object.entries(_globalTable['boolean']).forEach(([variable, { dataType }]) => {
+        if (!(variable in table)) {
+            table[variable] = [];
+        }
+        table[variable].push(dataType);
+    });
+
     return table;
 }
 
