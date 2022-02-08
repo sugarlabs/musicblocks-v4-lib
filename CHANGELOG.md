@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.1 [2022-02-09]
+
+- ([#122](https://github.com/sugarlabs/musicblocks-v4-lib/pull/122))
+Added provision to provide initialisation values in snapshot of data elements.
+- ([#119](https://github.com/sugarlabs/musicblocks-v4-lib/pull/119))
+Added function to **specification** snapshot.
+- ([#121](https://github.com/sugarlabs/musicblocks-v4-lib/pull/121))
+Removed custom type reliance for element name (`TElementName`).
+- ([#120](https://github.com/sugarlabs/musicblocks-v4-lib/pull/120))
+Updated package dependencies.
+- ([#118](https://github.com/sugarlabs/musicblocks-v4-lib/pull/118))
+Added validations in **specification** functions for registering and unregistering _syntax elements_.
+
 ## 1.0.0 [2022-01-26]
 
 - Added 3 categories of components: **Syntax Representation**, **Execution Engine**, **Library**
