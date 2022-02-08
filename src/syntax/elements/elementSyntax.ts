@@ -1,5 +1,4 @@
 import { TDataName } from '../../@types/data';
-import { TElementName } from '../../@types/specification';
 import { IElementSyntax } from '../../@types/elements';
 
 // -------------------------------------------------------------------------------------------------
@@ -15,7 +14,7 @@ import { IElementSyntax } from '../../@types/elements';
  */
 export abstract class ElementSyntax implements IElementSyntax {
     /** Stores the name of the syntax element. */
-    private _name: TElementName;
+    private _name: string;
     /** Stores the display name of the syntax element. */
     private _label: string;
     /** Stores the kind of the syntax element. */
@@ -39,7 +38,7 @@ export abstract class ElementSyntax implements IElementSyntax {
      *  `argName: type[]` pair
      */
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         kind: 'Argument' | 'Instruction',
         type: 'Data' | 'Expression' | 'Statement' | 'Block',
@@ -54,7 +53,7 @@ export abstract class ElementSyntax implements IElementSyntax {
         this._argCount = this.argLabels.length;
     }
 
-    public get name(): TElementName {
+    public get name(): string {
         return this._name;
     }
 

@@ -15,7 +15,6 @@ import { getInstance } from '../syntax/warehouse/warehouse';
 import { TData } from '../@types/data';
 import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
 import { ElementBlock, ElementStatement } from '../syntax/elements/elementInstruction';
-import { TElementName } from '../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
 
@@ -528,10 +527,10 @@ export function getNextElement(): IParsedElement | null {
  */
 export function stackTrace():
     | {
-          elementName: TElementName | null;
+          elementName: string | null;
           nodeID: string | null;
           pages:
-              | { elementName: TElementName | null; nodeID: string | null; marker: string | null }[]
+              | { elementName: string | null; nodeID: string | null; marker: string | null }[]
               | null;
       }[]
     | null {

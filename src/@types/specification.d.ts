@@ -1,4 +1,4 @@
-import { TData } from './data';
+import { TData, TDataName } from './data';
 import {
     IElementData,
     IElementExpression,
@@ -14,54 +14,17 @@ export type TElementKind = 'Argument' | 'Instruction';
 /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
 export type TElementType = 'Data' | 'Expression' | 'Statement' | 'Block';
 
-/** Names of factory list of data elements. */
-export type TElementNameData =
-    // value elements
-    | 'value-boolean'
-    | 'value-number'
-    | 'value-string'
-    // box identifier elements
-    | 'boxidentifier-generic'
-    | 'boxidentifier-boolean'
-    | 'boxidentifier-number'
-    | 'boxidentifier-string';
-
-/** Names of factory list of expression elements. */
-export type TElementNameExpression =
-    // math operator elements
-    | 'operator-math-plus'
-    | 'operator-math-minus'
-    | 'operator-math-times'
-    | 'operator-math-divide'
-    | 'operator-math-modulus';
-
-/** Names of factory list of statement elements. */
-export type TElementNameStatement =
-    // box elements
-    | 'box-generic'
-    | 'box-boolean'
-    | 'box-number'
-    | 'box-string'
-    // print element
-    | 'print';
-
-/** Names of factory list of block elements. */
-export type TElementNameBlock = 'process' | 'routine' | 'repeat' | 'if';
-
-/** Names of factory list of syntax elements. */
-export type TElementName =
-    | 'dummy'
-    | TElementNameData
-    | TElementNameExpression
-    | TElementNameStatement
-    | TElementNameBlock;
-
 /** Type for the specification object for data elements. */
 export interface IElementSpecificationData {
     label: string;
     type: 'Data';
     category: string;
-    prototype: (name: TElementNameData, label: string) => IElementData<TData>;
+    prototype: (name: string, label: string) => IElementData<TData>;
+    values?:
+        | string[]
+        | {
+              types: TDataName[];
+          };
 }
 
 /** Type for the specification entry object for data elements. */
@@ -77,7 +40,7 @@ export interface IElementSpecificationExpression {
     label: string;
     type: 'Expression';
     category: string;
-    prototype: (name: TElementNameExpression, label: string) => IElementExpression<TData>;
+    prototype: (name: string, label: string) => IElementExpression<TData>;
 }
 
 /** Type for the specification object for expression elements. */
@@ -90,13 +53,13 @@ export interface IElementSpecificationEntryExpression extends IElementSpecificat
 
 /** Type for the specification object for instruction elements. */
 interface IElementSpecificationInstruction {
-    allowAbove?: TElementName[] | boolean;
-    allowBelow?: TElementName[] | boolean;
-    forbidAbove?: TElementName[];
-    forbidBelow?: TElementName[];
+    allowAbove?: string[] | boolean;
+    allowBelow?: string[] | boolean;
+    forbidAbove?: string[];
+    forbidBelow?: string[];
     allowedNestLevel?: number[] | 'any';
-    allowedNestInside?: TElementNameBlock[] | boolean;
-    forbiddenNestInside?: TElementNameBlock[];
+    allowedNestInside?: string[] | boolean;
+    forbiddenNestInside?: string[];
 }
 
 /** Type for the specification object for statement elements. */
@@ -104,7 +67,7 @@ export type IElementSpecificationStatement = IElementSpecificationInstruction & 
     label: string;
     type: 'Statement';
     category: string;
-    prototype: (name: TElementNameStatement, label: string) => IElementStatement;
+    prototype: (name: string, label: string) => IElementStatement;
 };
 
 /** Type for the specification object for statement elements. */
@@ -120,9 +83,9 @@ export type IElementSpecificationBlock = IElementSpecificationInstruction & {
     label: string;
     type: 'Block';
     category: string;
-    prototype: (name: TElementNameBlock, label: string) => IElementBlock;
-    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
-    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[];
+    prototype: (name: string, label: string) => IElementBlock;
+    allowNestInside?: string[] | boolean;
+    forbidNestInside?: string[];
 };
 
 /** Type for the specification entry object for block elements. */
@@ -131,22 +94,33 @@ export type IElementSpecificationEntryBlock = IElementSpecificationInstruction &
     type: 'Block';
     category: string;
     prototype: typeof IElementBlock;
-    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
-    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[];
+    allowNestInside?: string[] | boolean;
+    forbidNestInside?: string[];
 };
 
+/** Type for the specification object for an element. */
 export interface IElementSpecification {
     label: string;
     type: TElementType;
     category: string;
-    prototype: new (name: TElementName, label: string) => IElementSyntax;
-    allowAbove?: TElementName[] | boolean;
-    allowBelow?: TElementName[] | boolean;
-    forbidAbove?: TElementName[];
-    forbidBelow?: TElementName[];
+    prototype: new (name: string, label: string) => IElementSyntax;
+    allowAbove?: string[] | boolean;
+    allowBelow?: string[] | boolean;
+    forbidAbove?: string[];
+    forbidBelow?: string[];
     allowedNestLevel?: number[] | 'any';
-    allowedNestInside?: TElementNameBlock[] | boolean;
-    forbiddenNestInside?: TElementNameBlock[];
-    allowNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
-    forbidNestInside?: (TElementNameStatement | TElementNameBlock)[] | boolean;
+    allowedNestInside?: string[] | boolean;
+    forbiddenNestInside?: string[];
+    allowNestInside?: string[] | boolean;
+    forbidNestInside?: string[] | boolean;
+    values?:
+        | string[]
+        | {
+              types: TDataName[];
+          };
+}
+
+/** Type for the snapshot of an element's specification. */
+export interface IElementSpecificationSnapshot extends Omit<IElementSpecification, 'prototype'> {
+    prototypeName: string;
 }

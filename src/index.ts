@@ -20,6 +20,8 @@ export {
     getElementNames,
     getElementCategories,
     resetElementSpecificationTable,
+    getSpecificationSnapshot,
+    checkValueAssignment,
 } from './syntax/specification/specification';
 
 // -- syntax tree ----------------------------------------------------------------------------------
@@ -34,6 +36,7 @@ export {
     generateSnapshot,
     generateFromSnapshot,
     resetSyntaxTree,
+    assignNodeValue,
 } from './syntax/tree/syntaxTree';
 
 // -- warehouse ------------------------------------------------------------------------------------

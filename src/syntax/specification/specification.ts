@@ -1,10 +1,11 @@
+import { TDataName } from 'index';
 import {
     IElementSpecificationData,
     IElementSpecificationExpression,
     IElementSpecificationStatement,
     IElementSpecificationBlock,
     IElementSpecification,
-    TElementName,
+    IElementSpecificationSnapshot,
 } from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -17,6 +18,14 @@ let _elementSpecification: {
         | IElementSpecificationStatement
         | IElementSpecificationBlock;
 } = {};
+/**
+ * Stores the snapshot (similar to snapshot, except that prototype is replaced with prototype name —
+ * class name of the syntax element or the prototype) of the specifications for each element as a
+ * key-value pair of name: specification.
+ */
+let _elementSpecificationSnapshot: {
+    [identifier: string]: IElementSpecificationSnapshot;
+} = {};
 
 // -- public functions -----------------------------------------------------------------------------
 
@@ -24,11 +33,14 @@ let _elementSpecification: {
  * Registers a syntax element specification from a given specification entry data.
  * @param name name of the syntax element
  * @param specification specification entry data
+ * @returns `false` if element name already exists, else `true`
  */
 export function registerElementSpecificationEntry(
     name: string,
     specification: IElementSpecification
-): void {
+): boolean {
+    if (name in _elementSpecification) return false;
+
     const { label, type, category, prototype } = specification;
 
     const specificationTableEntry: IElementSpecification = {
@@ -39,10 +51,19 @@ export function registerElementSpecificationEntry(
         prototype: (name: string, label: string) => new prototype(name, label),
     };
 
+    const specificationSnapshotTableEntry: IElementSpecificationSnapshot = {
+        label,
+        type,
+        category,
+        prototypeName: prototype.name,
+    };
+
     Object.entries(specification).forEach(([key, value]) => {
         if (!['label', 'type', 'category', 'prototype'].includes(key)) {
             // @ts-ignore
             specificationTableEntry[key] = value;
+            // @ts-ignore
+            specificationSnapshotTableEntry[key] = value;
         }
     });
 
@@ -51,37 +72,52 @@ export function registerElementSpecificationEntry(
         | IElementSpecificationExpression
         | IElementSpecificationStatement
         | IElementSpecificationBlock;
+
+    _elementSpecificationSnapshot[name] = specificationSnapshotTableEntry;
+
+    return name in _elementSpecification;
 }
 
 /**
  * Registers a syntax element specification from a given specification entry table.
  * @param specification specification entry table object with key-value pairs of element name and
  *  corresponding specification entry data
+ * @returns a list of boolean , `false` if element name already exists else `true`
  */
 export function registerElementSpecificationEntries(specification: {
     [identifier: string]: IElementSpecification;
-}): void {
+}): boolean[] {
+    const registerStatus: boolean[] = [];
     Object.entries(specification).forEach(([identifier, specification]) =>
-        registerElementSpecificationEntry(identifier, specification)
+        registerStatus.push(registerElementSpecificationEntry(identifier, specification))
     );
+    return registerStatus;
 }
 
 /**
  * Removes specification for a syntax element.
  * @param name name of the syntax element
+ * @returns `true` if element is successfully removed, else `false` if element doesn't exist already
  */
-export function removeElementSpecificationEntry(name: string): void {
+export function removeElementSpecificationEntry(name: string): boolean {
     if (name in _elementSpecification) {
         delete _elementSpecification[name];
+        delete _elementSpecificationSnapshot[name];
+        return true;
+    } else {
+        return false;
     }
 }
 
 /**
  * Removes specification for a list of syntax element.
  * @param names list of names of the syntax element
+ * @returns list of boolean, `true` if element is successfully removed, else `false`
  */
-export function removeElementSpecificationEntries(names: string[]): void {
-    names.forEach((name) => removeElementSpecificationEntry(name));
+export function removeElementSpecificationEntries(names: string[]): boolean[] {
+    const removeStatus: boolean[] = [];
+    names.forEach((name) => removeStatus.push(removeElementSpecificationEntry(name)));
+    return removeStatus;
 }
 
 /**
@@ -105,7 +141,7 @@ export function queryElementSpecification(
  * @returns a list of syntax element names.
  */
 export function getElementNames(): string[] {
-    return Object.keys(_elementSpecification) as TElementName[];
+    return Object.keys(_elementSpecification);
 }
 
 /**
@@ -121,6 +157,48 @@ export function getElementCategories(): string[] {
  */
 export function resetElementSpecificationTable(): void {
     _elementSpecification = {};
+    _elementSpecificationSnapshot = {};
+}
+
+/**
+ * Returns the snapshot of the element specification table.
+ * @returns snapshot entry table object with key-value pairs of element name and corresponding
+ * element specification snapshot
+ */
+export function getSpecificationSnapshot(): {
+    [name: string]: IElementSpecificationSnapshot;
+} {
+    return _elementSpecificationSnapshot;
+}
+
+/**
+ * Check if `value` can be assigned to element `name`.
+ * @param name name of the syntax element (expecting a data element)
+ * @param value value to check
+ * @returns whether value can be assigned
+ */
+export function checkValueAssignment(name: string, value: string): boolean {
+    if ('values' in _elementSpecification[name]) {
+        const values = (_elementSpecification[name] as IElementSpecificationData).values!;
+
+        if (values instanceof Array) {
+            return values.includes(value);
+        } else {
+            let typeDeepInfer: TDataName;
+            if (['true', 'false'].includes(value)) {
+                typeDeepInfer = 'boolean';
+            } else if (!isNaN(Number(value))) {
+                typeDeepInfer = 'number';
+            } else {
+                typeDeepInfer = 'string';
+            }
+
+            return (
+                values.types.includes(typeDeepInfer as TDataName) || values.types.includes('string')
+            );
+        }
+    }
+    return true;
 }
 
 resetElementSpecificationTable();

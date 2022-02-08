@@ -1,13 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-    IElementSpecificationInstruction,
-    TElementName,
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-} from '../../@types/specification';
+import { IElementSpecificationInstruction } from '../../@types/specification';
 
 import {
     TreeNode,
@@ -17,7 +10,7 @@ import {
     TreeNodeBlock,
 } from './node';
 import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse';
-import { queryElementSpecification } from '../specification/specification';
+import { checkValueAssignment, queryElementSpecification } from '../specification/specification';
 
 import { TData } from '../../@types/data';
 import { ElementArgument } from '../elements/elementArgument';
@@ -124,7 +117,7 @@ export function getCrumbs(): TreeNode[] {
  * @param name - name of the syntax element
  * @returns node ID of the syntax tree node
  */
-export function addNode(name: TElementName): string {
+export function addNode(name: string): string {
     const instanceID = addInstance(name);
     let nodeID: string;
     do {
@@ -438,24 +431,16 @@ export function attachInstructionInsideCheck(
 
     if (
         (specificationConnector.forbidNestInside &&
-            specificationConnector.forbidNestInside.includes(
-                nodeConnecting.elementName as TElementNameStatement | TElementNameBlock
-            )) ||
+            specificationConnector.forbidNestInside.includes(nodeConnecting.elementName)) ||
         (specificationConnecting.forbiddenNestInside &&
-            specificationConnecting.forbiddenNestInside.includes(
-                nodeConnector.elementName as TElementNameBlock
-            ))
+            specificationConnecting.forbiddenNestInside.includes(nodeConnector.elementName))
     ) {
         return false;
     }
 
     if (specificationConnector.allowNestInside !== undefined) {
         if (specificationConnector.allowNestInside instanceof Array) {
-            if (
-                !specificationConnector.allowNestInside.includes(
-                    nodeConnecting.elementName as TElementNameStatement | TElementNameBlock
-                )
-            ) {
+            if (!specificationConnector.allowNestInside.includes(nodeConnecting.elementName)) {
                 return false;
             }
         } else {
@@ -467,11 +452,7 @@ export function attachInstructionInsideCheck(
 
     if (specificationConnecting.allowedNestInside !== undefined) {
         if (specificationConnecting.allowedNestInside instanceof Array) {
-            if (
-                !specificationConnecting.allowedNestInside.includes(
-                    nodeConnector.elementName as TElementNameBlock
-                )
-            ) {
+            if (!specificationConnecting.allowedNestInside.includes(nodeConnector.elementName)) {
                 return false;
             }
         } else {
@@ -567,6 +548,7 @@ export function generateSnapshot(): ITreeSnapshot {
 /**
  * Generates the syntax tree from a snapshot.
  * @param snapshot - syntax tree snapshot
+ * @throws `InvalidDataError`
  */
 export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     resetSyntaxTree();
@@ -646,24 +628,34 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
     }
 
     function __generateFromSnapshotData(snapshot: ITreeSnapshotDataInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameData);
+        const nodeID = addNode(snapshot.elementName);
+        if (snapshot.value) {
+            const instance = getInstance(getNode(nodeID)!.instanceID)!.instance;
+            if (checkValueAssignment(instance.name, snapshot.value)) {
+                instance.updateLabel(snapshot.value);
+            } else {
+                throw Error(
+                    `InvalidDataError: value "${snapshot.value}" cannot be assigned to data element "${instance.name}"`
+                );
+            }
+        }
         return nodeID;
     }
 
     function __generateFromSnapshotExpression(snapshot: ITreeSnapshotExpressionInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameExpression);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotStatement(snapshot: ITreeSnapshotStatementInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameStatement);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         return nodeID;
     }
 
     function __generateFromSnapshotBlock(snapshot: ITreeSnapshotBlockInput): string {
-        const nodeID = addNode(snapshot.elementName as TElementNameBlock);
+        const nodeID = addNode(snapshot.elementName);
         __generateFromSnapshotArg(nodeID, snapshot.argMap);
         const innerNodeID = __generateSnapshotList(snapshot.scope);
         if (innerNodeID !== null) {
@@ -672,7 +664,33 @@ export function generateFromSnapshot(snapshot: ITreeSnapshotInput): void {
         return nodeID;
     }
 
-    snapshot.process.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
-    snapshot.routine.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
-    snapshot.crumbs.forEach((snapshotList) => __generateSnapshotList(snapshotList));
+    try {
+        snapshot.process.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
+        snapshot.routine.forEach((snapshot) => __generateFromSnapshotBlock(snapshot));
+        snapshot.crumbs.forEach((snapshotList) => __generateSnapshotList(snapshotList));
+    } catch (e) {
+        resetSyntaxTree();
+        throw e;
+    }
+}
+
+/**
+ * Assigns the value (label) of the data element instance included in the node `nodeID`.
+ * @param nodeID node ID of the syntax tree node
+ * @param value value to assign
+ * @returns whether successful assignment or not
+ */
+export function assignNodeValue(nodeID: string, value: string): boolean {
+    try {
+        const instance = getInstance(getNode(nodeID)!.instanceID)!.instance;
+        if (instance.type === 'Data' && checkValueAssignment(instance.name, value)) {
+            instance.updateLabel(value);
+        } else {
+            throw Error();
+        }
+    } catch (e) {
+        return false;
+    }
+
+    return true;
 }

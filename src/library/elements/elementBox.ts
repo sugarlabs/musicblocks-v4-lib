@@ -1,5 +1,4 @@
 import { TData, TDataName } from '../../@types/data';
-import { TElementName } from '../../@types/specification';
 
 import { ElementStatement } from '../../syntax/elements/elementInstruction';
 import { declareVariable } from '../../execution/interpreter';
@@ -15,7 +14,7 @@ import { declareVariable } from '../../execution/interpreter';
  * Box elements add (declare) variables to the symbol table.
  */
 abstract class ElementBox extends ElementStatement {
-    constructor(name: TElementName, label: string, types: TDataName[]) {
+    constructor(name: string, label: string, types: TDataName[]) {
         super(name, label, {
             name: ['string'],
             value: types,
@@ -45,7 +44,7 @@ abstract class ElementBox extends ElementStatement {
  * Defines a box element that declares a variable of any data type.
  */
 export class ElementBoxGeneric extends ElementBox {
-    constructor(name: TElementName, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, ['boolean', 'number', 'string']);
     }
 
@@ -60,7 +59,7 @@ export class ElementBoxGeneric extends ElementBox {
  * Defines a box element that declares a variable of boolean type.
  */
 export class ElementBoxBoolean extends ElementBox {
-    constructor(name: TElementName, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, ['boolean']);
     }
 
@@ -75,7 +74,7 @@ export class ElementBoxBoolean extends ElementBox {
  * Defines a box element that declares a variable of number type.
  */
 export class ElementBoxNumber extends ElementBox {
-    constructor(name: TElementName, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, ['number']);
     }
 
@@ -90,7 +89,7 @@ export class ElementBoxNumber extends ElementBox {
  * Defines a box element that declares a variable of string type.
  */
 export class ElementBoxString extends ElementBox {
-    constructor(name: TElementName, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, ['string']);
     }
 

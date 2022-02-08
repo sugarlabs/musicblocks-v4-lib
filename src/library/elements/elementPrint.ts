@@ -1,11 +1,10 @@
 import { TData } from '../../@types/data';
-import { TElementNameStatement } from '../../@types/specification';
 import { ElementStatement } from '../../syntax/elements/elementInstruction';
 
 // -------------------------------------------------------------------------------------------------
 
 export class ElementPrint extends ElementStatement {
-    constructor(name: TElementNameStatement, label: string) {
+    constructor(name: string, label: string) {
         super(name, label, { value: ['boolean', 'number', 'string'] });
     }
 

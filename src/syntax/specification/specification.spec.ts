@@ -1,21 +1,17 @@
 import {
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-    TElementName,
-} from '../../@types/specification';
-import {
     registerElementSpecificationEntry,
     registerElementSpecificationEntries,
     queryElementSpecification,
     removeElementSpecificationEntry,
     removeElementSpecificationEntries,
     resetElementSpecificationTable,
+    getSpecificationSnapshot,
+    checkValueAssignment,
 } from './specification';
 
 import elementSpecificationEntries from '../../library/specification';
 
+import { IElementSpecificationData } from '../../@types/specification';
 import { TData } from '../../@types/data';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
@@ -40,7 +36,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameData,
+                    name: string,
                     label: string
                 ) => ElementDataCover;
                 const elementInstance = prototype('value-boolean', dataElementEntry.label);
@@ -61,7 +57,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameExpression,
+                    name: string,
                     label: string
                 ) => ElementExpressionCover;
                 const elementInstance = prototype('operator-math-plus', dataElementEntry.label);
@@ -82,7 +78,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameStatement,
+                    name: string,
                     label: string
                 ) => ElementStatement;
                 const elementInstance = prototype('box-generic', dataElementEntry.label);
@@ -103,7 +99,7 @@ describe('Syntax Element Specification', () => {
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
                 const prototype = dataElementEntry.prototype as (
-                    name: TElementNameBlock,
+                    name: string,
                     label: string
                 ) => ElementBlock;
                 const elementInstance = prototype('process', dataElementEntry.label);
@@ -116,7 +112,7 @@ describe('Syntax Element Specification', () => {
 
     describe('functions', () => {
         class DummyElementData extends ElementData<TData> {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {}, ['number'], 0);
             }
             public evaluate(): void {
@@ -125,7 +121,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementExpression extends ElementExpression<TData> {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {}, ['number'], 0);
             }
             public evaluate(): void {
@@ -134,7 +130,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementStatement extends ElementStatement {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {});
             }
             public onVisit(): void {
@@ -143,7 +139,7 @@ describe('Syntax Element Specification', () => {
         }
 
         class DummyElementBlock extends ElementBlock {
-            constructor(name: TElementName, label: string) {
+            constructor(name: string, label: string) {
                 super(name, label, {});
             }
             public onVisit(): void {
@@ -160,29 +156,124 @@ describe('Syntax Element Specification', () => {
             }
         }
 
-        test('register element specification entry and verify', () => {
-            registerElementSpecificationEntry('dummy0', {
+        test('register new element specification entry and verify', () => {
+            const status = registerElementSpecificationEntry('dummy0', {
+                label: 'dummy0',
+                type: 'Data',
+                category: 'dummy',
+                prototype: DummyElementData,
+                values: { types: ['boolean'] },
+            });
+            expect(status).toBe(true);
+
+            const elementEntry = queryElementSpecification('dummy0')!;
+            expect(elementEntry.label).toBe('dummy0');
+            expect(elementEntry.type).toBe('Data');
+            expect(elementEntry.category).toBe('dummy');
+            expect(
+                (elementEntry.prototype as (name: string, label: string) => ElementDataCover)(
+                    'dummy0',
+                    'dummy0'
+                ) instanceof DummyElementData
+            ).toBe(true);
+            expect('values' in elementEntry).toBe(true);
+            expect((elementEntry as IElementSpecificationData).values).toEqual({
+                types: ['boolean'],
+            });
+        });
+
+        test('register duplicate element specification entry and verify', () => {
+            const status = registerElementSpecificationEntry('dummy0', {
                 label: 'dummy0',
                 type: 'Block',
                 category: 'dummy',
                 prototype: DummyElementBlock,
             });
-            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
-            expect(elementEntry.label).toBe('dummy0');
-            expect(elementEntry.type).toBe('Block');
-            expect(elementEntry.category).toBe('dummy');
+            expect(status).toBe(false);
+        });
+
+        test('register new element specification entries and verify', () => {
+            const status = registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Expression',
+                    category: 'dummy',
+                    prototype: DummyElementExpression,
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Statement',
+                    category: 'dummy',
+                    prototype: DummyElementStatement,
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Block',
+                    category: 'dummy',
+                    prototype: DummyElementBlock,
+                },
+            });
+            expect(status).toEqual([true, true, true, true]);
+
+            const elementEntry1 = queryElementSpecification('dummy1')!;
+            const elementEntry2 = queryElementSpecification('dummy2')!;
+            const elementEntry3 = queryElementSpecification('dummy3')!;
+            const elementEntry4 = queryElementSpecification('dummy4')!;
+
+            expect(elementEntry1.label).toBe('dummy1');
+            expect(elementEntry1.type).toBe('Data');
+            expect(elementEntry1.category).toBe('dummy');
+            expect(
+                (elementEntry1.prototype as (name: string, label: string) => ElementDataCover)(
+                    'dummy1',
+                    'dummy1'
+                ) instanceof DummyElementData
+            ).toBe(true);
+            expect('values' in elementEntry1).toBe(true);
+            expect((elementEntry1 as IElementSpecificationData).values).toEqual(['1', '2', '3']);
+
+            expect(elementEntry2.label).toBe('dummy2');
+            expect(elementEntry2.type).toBe('Expression');
+            expect(elementEntry2.category).toBe('dummy');
             expect(
                 (
-                    elementEntry.prototype as (
-                        name: TElementNameBlock,
+                    elementEntry2.prototype as (
+                        name: string,
                         label: string
-                    ) => ElementBlock
-                )('dummy0' as TElementNameBlock, 'dummy0') instanceof DummyElementBlock
+                    ) => ElementExpressionCover
+                )('dummy2', 'dummy2') instanceof DummyElementExpression
+            ).toBe(true);
+
+            expect(elementEntry3.label).toBe('dummy3');
+            expect(elementEntry3.type).toBe('Statement');
+            expect(elementEntry3.category).toBe('dummy');
+            expect(
+                (elementEntry3.prototype as (name: string, label: string) => ElementStatement)(
+                    'dummy3',
+                    'dummy3'
+                ) instanceof DummyElementStatement
+            ).toBe(true);
+
+            expect(elementEntry4.label).toBe('dummy4');
+            expect(elementEntry4.type).toBe('Block');
+            expect(elementEntry4.category).toBe('dummy');
+            expect(
+                (elementEntry4.prototype as (name: string, label: string) => ElementBlock)(
+                    'dummy4',
+                    'dummy4'
+                ) instanceof DummyElementBlock
             ).toBe(true);
         });
 
-        test('register element specification entries and verify', () => {
-            registerElementSpecificationEntries({
+        test('register duplicate element specification entries and verify', () => {
+            const status = registerElementSpecificationEntries({
                 dummy1: {
                     label: 'dummy1',
                     type: 'Data',
@@ -208,79 +299,190 @@ describe('Syntax Element Specification', () => {
                     prototype: DummyElementBlock,
                 },
             });
-
-            const elementEntry1 = queryElementSpecification('dummy1' as TElementName)!;
-            const elementEntry2 = queryElementSpecification('dummy2' as TElementName)!;
-            const elementEntry3 = queryElementSpecification('dummy3' as TElementName)!;
-            const elementEntry4 = queryElementSpecification('dummy4' as TElementName)!;
-
-            expect(elementEntry1.label).toBe('dummy1');
-            expect(elementEntry1.type).toBe('Data');
-            expect(elementEntry1.category).toBe('dummy');
-            expect(
-                (
-                    elementEntry1.prototype as (
-                        name: TElementNameData,
-                        label: string
-                    ) => ElementDataCover
-                )('dummy1' as TElementNameData, 'dummy1') instanceof DummyElementData
-            ).toBe(true);
-
-            expect(elementEntry2.label).toBe('dummy2');
-            expect(elementEntry2.type).toBe('Expression');
-            expect(elementEntry2.category).toBe('dummy');
-            expect(
-                (
-                    elementEntry2.prototype as (
-                        name: TElementNameExpression,
-                        label: string
-                    ) => ElementExpressionCover
-                )('dummy2' as TElementNameExpression, 'dummy2') instanceof DummyElementExpression
-            ).toBe(true);
-
-            expect(elementEntry3.label).toBe('dummy3');
-            expect(elementEntry3.type).toBe('Statement');
-            expect(elementEntry3.category).toBe('dummy');
-            expect(
-                (
-                    elementEntry3.prototype as (
-                        name: TElementNameStatement,
-                        label: string
-                    ) => ElementStatement
-                )('dummy3' as TElementNameStatement, 'dummy3') instanceof DummyElementStatement
-            ).toBe(true);
-
-            expect(elementEntry4.label).toBe('dummy4');
-            expect(elementEntry4.type).toBe('Block');
-            expect(elementEntry4.category).toBe('dummy');
-            expect(
-                (
-                    elementEntry4.prototype as (
-                        name: TElementNameBlock,
-                        label: string
-                    ) => ElementBlock
-                )('dummy4' as TElementNameBlock, 'dummy4') instanceof DummyElementBlock
-            ).toBe(true);
+            expect(status).toEqual([false, false, false, false]);
         });
 
-        test('remove element specification entry and verify', () => {
-            removeElementSpecificationEntry('dummy0' as TElementName);
-            const elementEntry = queryElementSpecification('dummy0' as TElementName)!;
+        test('remove valid element specification entry and verify', () => {
+            const removeStatus = removeElementSpecificationEntry('dummy0');
+            const elementEntry = queryElementSpecification('dummy0')!;
+
+            expect(removeStatus).toBe(true);
             expect(elementEntry).toBe(null);
         });
 
-        test('remove element specification entries and verify', () => {
-            removeElementSpecificationEntries(['dummy1' as TElementName, 'dummy2' as TElementName]);
-            expect(queryElementSpecification('dummy1' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy2' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy3' as TElementName)!).not.toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).not.toBe(null);
+        test('remove invalid element specification entry and verify', () => {
+            const removeStatus = removeElementSpecificationEntry('dummy0');
+            const elementEntry = queryElementSpecification('dummy0')!;
+
+            expect(removeStatus).toBe(false);
+            expect(elementEntry).toBe(null);
+        });
+
+        test('remove valid element specification entries and verify', () => {
+            const removeStatus = removeElementSpecificationEntries([
+                'dummy1',
+                'dummy2',
+                'dummy3',
+                'dummy4',
+            ]);
+            expect(removeStatus).toEqual([true, true, true, true]);
+            expect(queryElementSpecification('dummy1')!).toBe(null);
+            expect(queryElementSpecification('dummy2')!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
+        });
+
+        test('remove invalid element specification entries and verify', () => {
+            const removeStatus = removeElementSpecificationEntries([
+                'dummy1',
+                'dummy2',
+                'dummy3',
+                'dummy4',
+            ]);
+            expect(removeStatus).toEqual([false, false, false, false]);
+            expect(queryElementSpecification('dummy1')!).toBe(null);
+            expect(queryElementSpecification('dummy2')!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
         });
 
         test('reset element specification table and verify', () => {
             resetElementSpecificationTable();
-            expect(queryElementSpecification('dummy3' as TElementName)!).toBe(null);
-            expect(queryElementSpecification('dummy4' as TElementName)!).toBe(null);
+            expect(queryElementSpecification('dummy3')!).toBe(null);
+            expect(queryElementSpecification('dummy4')!).toBe(null);
+        });
+
+        test('generate snapshot and verify', () => {
+            registerElementSpecificationEntries(elementSpecificationEntries);
+            expect(
+                Object.entries(getSpecificationSnapshot()).map(([key, value]) => [
+                    key,
+                    value.prototypeName,
+                ])
+            ).toEqual([
+                ['value-boolean', 'ElementValueBoolean'],
+                ['value-number', 'ElementValueNumber'],
+                ['value-string', 'ElementValueString'],
+                ['box-generic', 'ElementBoxGeneric'],
+                ['box-boolean', 'ElementBoxBoolean'],
+                ['box-number', 'ElementBoxNumber'],
+                ['box-string', 'ElementBoxString'],
+                ['boxidentifier-generic', 'ElementBoxIdentifierGeneric'],
+                ['boxidentifier-boolean', 'ElementBoxIdentifierBoolean'],
+                ['boxidentifier-number', 'ElementBoxIdentifierNumber'],
+                ['boxidentifier-string', 'ElementBoxIdentifierString'],
+                ['operator-math-plus', 'ElementOperatorMathPlus'],
+                ['operator-math-minus', 'ElementOperatorMathMinus'],
+                ['operator-math-times', 'ElementOperatorMathTimes'],
+                ['operator-math-divide', 'ElementOperatorMathDivide'],
+                ['operator-math-modulus', 'ElementOperatorMathModulus'],
+                ['repeat', 'ElementRepeat'],
+                ['if', 'ElementIf'],
+                ['process', 'ElementProcess'],
+                ['routine', 'ElementRoutine'],
+                ['print', 'ElementPrint'],
+            ]);
+
+            resetElementSpecificationTable();
+            expect(getSpecificationSnapshot()).toEqual({});
+
+            registerElementSpecificationEntries({
+                dummy: {
+                    label: 'dummy',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+            });
+            expect(getSpecificationSnapshot()['dummy'].values).toEqual(['1', '2', '3']);
+        });
+
+        test('check against specification valid value assignment', () => {
+            resetElementSpecificationTable();
+            registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['number'] },
+                },
+                dummy5: {
+                    label: 'dummy5',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['string'] },
+                },
+            });
+
+            expect(checkValueAssignment('dummy1', 'foobar')).toBe(true);
+            expect(checkValueAssignment('dummy2', '2')).toBe(true);
+            expect(checkValueAssignment('dummy3', 'true')).toBe(true);
+            expect(checkValueAssignment('dummy4', '55')).toBe(true);
+            expect(checkValueAssignment('dummy5', 'true')).toBe(true);
+            expect(checkValueAssignment('dummy5', '55')).toBe(true);
+            expect(checkValueAssignment('dummy5', 'foobar')).toBe(true);
+        });
+
+        test('check against specification invalid value assignment', () => {
+            resetElementSpecificationTable();
+            registerElementSpecificationEntries({
+                dummy1: {
+                    label: 'dummy1',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: ['1', '2', '3'],
+                },
+                dummy2: {
+                    label: 'dummy2',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy3: {
+                    label: 'dummy3',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['boolean'] },
+                },
+                dummy4: {
+                    label: 'dummy4',
+                    type: 'Data',
+                    category: 'dummy',
+                    prototype: DummyElementData,
+                    values: { types: ['number'] },
+                },
+            });
+
+            expect(checkValueAssignment('dummy1', '4')).toBe(false);
+            expect(checkValueAssignment('dummy2', '5')).toBe(false);
+            expect(checkValueAssignment('dummy3', '5')).toBe(false);
+            expect(checkValueAssignment('dummy4', 'true')).toBe(false);
         });
     });
 });

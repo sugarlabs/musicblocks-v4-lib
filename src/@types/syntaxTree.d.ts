@@ -1,17 +1,11 @@
-import {
-    TElementNameData,
-    TElementNameExpression,
-    TElementNameStatement,
-    TElementNameBlock,
-    TElementName,
-} from './specification';
-
 // -- snapshots ------------------------------------------------------------------------------------
 
 /** Type definition for the snapshot input of a data element. */
 export interface ITreeSnapshotDataInput {
     /** Name of the data element. */
     elementName: string;
+    /** Value to initialize data element with. */
+    value?: string;
 }
 
 /** Type definition for the snapshot of a data element. */
@@ -105,7 +99,7 @@ export interface ITreeSnapshot {
 /** Type definition for the class that implements a generic syntax tree node. */
 interface ITreeNode {
     /** Name of the syntax element. */
-    elementName: TElementName;
+    elementName: string;
     /** Node ID of the syntax tree node instance. */
     nodeID: string;
     /** Warehouse ID of the syntax element instance. */
@@ -121,7 +115,7 @@ export interface ITreeNodeArgument extends ITreeNode {
 /** Type definition for the class that implements a syntax tree data node. */
 export interface ITreeNodeData extends ITreeNodeArgument {
     /** Name of the data element. */
-    elementName: TElementNameData;
+    elementName: string;
     /** Returns a snapshot of the syntax tree data node. */
     snapshot: ITreeSnapshotData;
 }
@@ -129,7 +123,7 @@ export interface ITreeNodeData extends ITreeNodeArgument {
 /** Type definition for the class that implements a syntax tree expression node. */
 export interface ITreeNodeExpression extends ITreeNodeArgument {
     /** Name of the expression element. */
-    elementName: TElementNameExpression;
+    elementName: string;
     /** Returns a snapshot of the syntax tree expression node. */
     snapshot: ITreeSnapshotExpression;
     /** Object with key-value pairs of argument names and corresponding argument nodes. */
@@ -175,7 +169,7 @@ export interface ITreeNodeInstruction extends ITreeNode {
 /** Type definition for the class that implements a syntax tree statement node. */
 export interface ITreeNodeStatement extends ITreeNodeInstruction {
     /** Name of the statement element. */
-    elementName: TElementNameStatement;
+    elementName: string;
     /** Returns a snapshot of the syntax tree statement node. */
     snapshot: ITreeSnapshotStatement;
 }
@@ -183,7 +177,7 @@ export interface ITreeNodeStatement extends ITreeNodeInstruction {
 /** Type definition for the class that implements a syntax tree block node. */
 export interface ITreeNodeBlock extends ITreeNodeInstruction {
     /** Name of the block element. */
-    elementName: TElementNameBlock;
+    elementName: string;
     /** Returns a snapshot of the syntax tree block node. */
     snapshot: ITreeSnapshotBlock;
     /** Syntax tree node reference of the first nested instruction element. */

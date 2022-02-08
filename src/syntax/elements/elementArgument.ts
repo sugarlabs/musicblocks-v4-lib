@@ -1,5 +1,4 @@
 import { TData, TDataName } from '../../@types/data';
-import { TElementName } from '../../@types/specification';
 import { IElementArgument, IElementExpression, IElementData } from '../../@types/elements';
 
 import { ElementSyntax } from './elementSyntax';
@@ -32,7 +31,7 @@ export abstract class ElementArgument<T> extends ElementSyntax implements IEleme
      * @param initialValue initial return value of the argument
      */
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         type: 'Data' | 'Expression',
         argMap: { [key: string]: TDataName[] },
@@ -72,7 +71,7 @@ export abstract class ElementData<T> extends ElementArgument<T> implements IElem
      * @param initialValue - initial return value of the argument
      */
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         argMap: { [key: string]: TDataName[] },
         returnType: TDataName[],
@@ -106,7 +105,7 @@ export abstract class ElementExpression<T>
      * @param initialValue initial return value of the argument
      */
     constructor(
-        name: TElementName,
+        name: string,
         label: string,
         argMap: { [key: string]: TDataName[] },
         returnType: TDataName[],
