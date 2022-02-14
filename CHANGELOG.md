@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 [2022-02-09]
+## 0.2.0 [2022-02-09]
 
 - ([#122](https://github.com/sugarlabs/musicblocks-v4-lib/pull/122))
 Added provision to provide initialisation values in snapshot of data elements for **syntax tree**
@@ -14,7 +14,7 @@ Updated package dependencies.
 - ([#118](https://github.com/sugarlabs/musicblocks-v4-lib/pull/118))
 Added validations in **specification** functions for registering and unregistering **syntax elements**.
 
-## 1.0.0 [2022-01-26]
+## 0.1.0 [2022-01-26]
 
 - Added 3 categories of components: **Syntax Representation**, **Execution Engine**, **Library**
 
