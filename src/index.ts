@@ -17,8 +17,8 @@ export {
     removeElementSpecificationEntry,
     removeElementSpecificationEntries,
     queryElementSpecification,
+    getElementClassifications,
     getElementNames,
-    getElementCategories,
     resetElementSpecificationTable,
     getSpecificationSnapshot,
     checkValueAssignment,
@@ -43,14 +43,14 @@ export {
 
 export {
     getInstance,
+    getClassificationCount,
+    getClassificationCountAll,
     getNameCount,
     getNameCountAll,
     getTypeCount,
     getTypeCountAll,
     getKindCount,
     getKindCountAll,
-    getCategoryCount,
-    getCategoryCountAll,
 } from './syntax/warehouse/warehouse';
 
 // == EXECUTION ====================================================================================

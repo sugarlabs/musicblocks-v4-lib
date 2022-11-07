@@ -1,11 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { TElementKind, TElementType } from '../../@types/specification';
-import {
-    getElementNames,
-    getElementCategories,
-    queryElementSpecification,
-} from '../specification/specification';
+import { TElementClassification, TElementKind, TElementType } from '../../@types/specification';
+import { queryElementSpecification } from '../specification/specification';
 
 import { TData } from '../../@types/data';
 import { ElementSyntax } from '../elements/elementSyntax';
@@ -20,13 +16,13 @@ abstract class _ElementDataCover extends ElementData<TData> {}
 abstract class _ElementExpressionCover extends ElementExpression<TData> {}
 
 /** Stores the count of element name. */
-let _elementNameCountMap: { [elementName: string]: number } = {};
+let _elementNameCountMap: { [name: string]: number } = {};
 /** Stores the count of element kind. */
-let _elementKindCountMap: { [elementKind: string]: number } = {};
+let _elementKindCountMap: { [kind: string]: number } = {};
 /** Stores the count of element type. */
-let _elementTypeCountMap: { [elementKind: string]: number } = {};
-/** Stores the count of element category. */
-let _elementCategoryCountMap: { [elementKind: string]: number } = {};
+let _elementTypeCountMap: { [type: string]: number } = {};
+/** Stores the count of element classification. */
+let _elementClassificationCountMap: { [group: string]: { [category: string]: number } } = {};
 
 /** Stores an extensive table of element name, kind, type, category, instance, by instance ID. */
 let _elementMap: {
@@ -36,32 +32,98 @@ let _elementMap: {
               type: 'Data';
               name: string;
               kind: 'Argument';
-              category: string;
+              classification: TElementClassification;
           }
         | {
               instance: _ElementExpressionCover;
               type: 'Expression';
               name: string;
               kind: 'Argument';
-              category: string;
+              classification: TElementClassification;
           }
         | {
               instance: ElementStatement;
               type: 'Statement';
               name: string;
               kind: 'Instruction';
-              category: string;
+              classification: TElementClassification;
           }
         | {
               instance: ElementBlock;
               type: 'Block';
               name: string;
               kind: 'Instruction';
-              category: string;
+              classification: TElementClassification;
           };
 } = {};
 
 // -- private functions ----------------------------------------------------------------------------
+
+/**
+ * Helper function that increases/decreases the count of an element name in the element name count
+ * table. While increasing, it adds the entry if not present. While decreasing, it removes the entry
+ * if corresponding count is 0.
+ * @param type - whether to increase or decrease
+ * @param elementName - name of the element
+ */
+function _adjustElementNameCount(type: 'increase' | 'decrease', elementName: string) {
+    if (type === 'increase') {
+        if (!(elementName in _elementNameCountMap)) {
+            _elementNameCountMap[elementName] = 0;
+        }
+
+        _elementNameCountMap[elementName]++;
+    } /* if (type === 'decrease') */ else {
+        if (elementName in _elementNameCountMap) {
+            _elementNameCountMap[elementName]--;
+
+            if (_elementNameCountMap[elementName] < 1) {
+                delete _elementNameCountMap[elementName];
+            }
+        }
+    }
+}
+
+/**
+ * Helper function that increases/decreases the count of an element classification entry in the
+ * element classification count table. While increasing, it adds the entry if not present. While
+ * decreasing, it removes the entry if corresponding count is 0.
+ * @param type - whether to increase or decrease
+ * @param group - identifier for the group of categories
+ * @param category - identifier for the category
+ */
+function _adjustElementClassificationCount(
+    type: 'increase' | 'decrease',
+    group: string,
+    category: string
+) {
+    if (type === 'increase') {
+        if (!(group in _elementClassificationCountMap)) {
+            _elementClassificationCountMap[group] = {};
+        }
+
+        if (!(category in _elementClassificationCountMap[group])) {
+            _elementClassificationCountMap[group][category] = 0;
+        }
+
+        _elementClassificationCountMap[group][category]++;
+    } /* if (type === 'decrease') */ else {
+        if (
+            group in _elementClassificationCountMap &&
+            category in _elementClassificationCountMap[group]
+        ) {
+            _elementClassificationCountMap[group][category]--;
+
+            if (_elementClassificationCountMap[group][category] < 1) {
+                delete _elementClassificationCountMap[group][category];
+            }
+
+            if (Object.keys(_elementClassificationCountMap[group]).length === 0) {
+                delete _elementClassificationCountMap[group];
+            }
+        }
+    }
+}
 
 /**
  * Helper function that creates a new instance, adds to element table, and updates count tables.
@@ -69,14 +131,14 @@ let _elementMap: {
  * @param instanceID - key for entry in element table
  * @param instance - element instance
  * @param type - type of the element
- * @param category - category of the element
+ * @param classification - group and category of the element
  */
 function _addInstance(
     elementName: string,
     instanceID: string,
     instance: ElementSyntax,
     type: TElementType,
-    category: string
+    classification: TElementClassification
 ): void {
     const kind = type === 'Data' || type === 'Expression' ? 'Argument' : 'Instruction';
 
@@ -87,7 +149,7 @@ function _addInstance(
                 name: elementName,
                 type: type as 'Data',
                 kind: 'Argument',
-                category: category as string,
+                classification,
             };
             break;
         case 'Expression':
@@ -96,7 +158,7 @@ function _addInstance(
                 name: elementName,
                 type: type as 'Expression',
                 kind: 'Argument',
-                category: category as string,
+                classification,
             };
             break;
         case 'Statement':
@@ -105,7 +167,7 @@ function _addInstance(
                 name: elementName,
                 type: type as 'Statement',
                 kind: 'Instruction',
-                category: category as string,
+                classification,
             };
             break;
         case 'Block':
@@ -114,15 +176,22 @@ function _addInstance(
                 name: elementName,
                 type: type as 'Block',
                 kind: 'Instruction',
-                category: category as string,
+                classification,
             };
             break;
     }
 
-    _elementNameCountMap[elementName]++;
+    _adjustElementClassificationCount('increase', classification.group, classification.category);
+    _adjustElementNameCount('increase', elementName);
     _elementKindCountMap[kind]++;
     _elementTypeCountMap[type]++;
-    _elementCategoryCountMap[category]++;
+}
+
+/**
+ * Helper that resets the element classification count table.
+ */
+function _resetElementClassificationCountMap(): void {
+    _elementClassificationCountMap = {};
 }
 
 /**
@@ -130,7 +199,6 @@ function _addInstance(
  */
 function _resetElementNameCountMap(): void {
     _elementNameCountMap = {};
-    getElementNames().forEach((elementName) => (_elementNameCountMap[elementName] = 0));
 }
 
 /**
@@ -155,14 +223,6 @@ function _resetElementTypeCountMap(): void {
     };
 }
 
-/**
- * Helper that resets the element category count table.
- */
-function _resetElementCategoryCountMap(): void {
-    _elementCategoryCountMap = {};
-    getElementCategories().forEach((category) => (_elementCategoryCountMap[category] = 0));
-}
-
 // -- public functions -----------------------------------------------------------------------------
 
 /**
@@ -177,7 +237,7 @@ export function addInstance(elementName: string): string {
         throw Error(`InvalidAccessError: element with name "${elementName}" does not exist`);
     }
 
-    const { label, type, category, prototype } = elementSpecification;
+    const { classification, label, type, prototype } = elementSpecification;
 
     let instance: ElementSyntax;
 
@@ -213,7 +273,7 @@ export function addInstance(elementName: string): string {
         instanceID = uuidv4();
     } while (instanceID in _elementMap);
 
-    _addInstance(elementName, instanceID, instance, type, category);
+    _addInstance(elementName, instanceID, instance, type, classification);
 
     return instanceID;
 }
@@ -227,7 +287,7 @@ export function getInstance(instanceID: string): {
     name: string;
     kind: TElementKind;
     type: TElementType;
-    category: string;
+    classification: TElementClassification;
     instance: ElementSyntax;
 } | null {
     return instanceID in _elementMap ? { ..._elementMap[instanceID] } : null;
@@ -242,12 +302,38 @@ export function removeInstance(instanceID: string): void {
         return;
     }
 
-    const { name, kind, type, category } = _elementMap[instanceID];
-    _elementNameCountMap[name]--;
+    const { name, kind, type, classification } = _elementMap[instanceID];
+    _adjustElementNameCount('decrease', name);
+    _adjustElementClassificationCount('decrease', classification.group, classification.category);
     _elementKindCountMap[kind]--;
     _elementTypeCountMap[type]--;
-    _elementCategoryCountMap[category]--;
     delete _elementMap[instanceID];
+}
+
+/**
+ * Returns the number of element instances of an element classification exists in element table.
+ * @param group - group of the element
+ * @param category - category of the element
+ * @returns count of the element instances for the element category
+ */
+export function getClassificationCount(group: string, category: string): number {
+    return group in _elementClassificationCountMap &&
+        category in _elementClassificationCountMap[group]
+        ? _elementClassificationCountMap[group][category]
+        : 0;
+}
+
+/**
+ * Generates a table of element instance counts by element group and category.
+ * @returns an object with key-value pairs of element group and key-value pairs of element category
+ * and instance count
+ */
+export function getClassificationCountAll(): {
+    [group: string]: {
+        [category: string]: number;
+    };
+} {
+    return JSON.parse(JSON.stringify(_elementClassificationCountMap));
 }
 
 /**
@@ -256,7 +342,7 @@ export function removeInstance(instanceID: string): void {
  * @returns count of the element instances for the element name
  */
 export function getNameCount(name: string): number {
-    return _elementNameCountMap[name];
+    return name in _elementNameCountMap ? _elementNameCountMap[name] : 0;
 }
 
 /**
@@ -264,7 +350,7 @@ export function getNameCount(name: string): number {
  * @returns an object with key-value pairs of element name and instance count
  */
 export function getNameCountAll(): { [name: string]: number } {
-    return { ..._elementNameCountMap };
+    return JSON.parse(JSON.stringify(_elementNameCountMap));
 }
 
 /**
@@ -281,7 +367,7 @@ export function getKindCount(kind: TElementKind): number {
  * @returns an object with key-value pairs of element kind and instance count
  */
 export function getKindCountAll(): { [kind: string]: number } {
-    return { ..._elementKindCountMap };
+    return JSON.parse(JSON.stringify(_elementKindCountMap));
 }
 
 /**
@@ -298,24 +384,7 @@ export function getTypeCount(type: TElementType): number {
  * @returns an object with key-value pairs of element type and instance count
  */
 export function getTypeCountAll(): { [type: string]: number } {
-    return { ..._elementTypeCountMap };
-}
-
-/**
- * Returns the number of element instances of an element category exists in element table.
- * @param category - category of the element
- * @returns count of the element instances for the element category
- */
-export function getCategoryCount(category: string): number {
-    return _elementCategoryCountMap[category];
-}
-
-/**
- * Generates a table of element instance counts by element category.
- * @returns an object with key-value pairs of element category and instance count
- */
-export function getCategoryCountAll(): { [category: string]: number } {
-    return { ..._elementCategoryCountMap };
+    return JSON.parse(JSON.stringify(_elementTypeCountMap));
 }
 
 /**
@@ -323,10 +392,10 @@ export function getCategoryCountAll(): { [category: string]: number } {
  */
 export function resetWarehouse(): void {
     _elementMap = {};
+    _resetElementClassificationCountMap();
     _resetElementNameCountMap();
     _resetElementKindCountMap();
     _resetElementTypeCountMap();
-    _resetElementCategoryCountMap();
 }
 
 resetWarehouse();

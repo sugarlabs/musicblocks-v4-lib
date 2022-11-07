@@ -2,14 +2,14 @@ import {
     addInstance,
     getInstance,
     removeInstance,
+    getClassificationCount,
+    getClassificationCountAll,
     getNameCount,
     getNameCountAll,
     getKindCount,
     getKindCountAll,
     getTypeCount,
     getTypeCountAll,
-    getCategoryCount,
-    getCategoryCountAll,
     resetWarehouse,
 } from './warehouse';
 
@@ -61,38 +61,66 @@ describe('Syntax Element Warehouse', () => {
         });
 
         test('fetch instance of a data element with valid instance ID and verify', () => {
-            const { name, kind, type, category, instance } = getInstance(instanceID1)!;
+            const {
+                classification: { group, category },
+                name,
+                kind,
+                type,
+                instance,
+            } = getInstance(instanceID1)!;
+            expect(group).toBe('programming');
+            expect(category).toBe('value');
             expect(name).toBe('value-boolean');
             expect(kind).toBe('Argument');
             expect(type).toBe('Data');
-            expect(category).toBe('value');
             expect(instance instanceof ElementValueBoolean);
         });
 
         test('fetch instance of an expression element with valid instance ID and verify', () => {
-            const { name, kind, type, category, instance } = getInstance(instanceID2)!;
+            const {
+                classification: { group, category },
+                name,
+                kind,
+                type,
+                instance,
+            } = getInstance(instanceID2)!;
+            expect(group).toBe('programming');
+            expect(category).toBe('operator-math');
             expect(name).toBe('operator-math-plus');
             expect(kind).toBe('Argument');
             expect(type).toBe('Expression');
-            expect(category).toBe('operator-math');
             expect(instance instanceof ElementOperatorMathPlus);
         });
 
         test('fetch instance of a statement element with valid instance ID and verify', () => {
-            const { name, kind, type, category, instance } = getInstance(instanceID3)!;
+            const {
+                classification: { group, category },
+                name,
+                kind,
+                type,
+                instance,
+            } = getInstance(instanceID3)!;
+            expect(group).toBe('programming');
+            expect(category).toBe('box');
             expect(name).toBe('box-boolean');
             expect(kind).toBe('Instruction');
             expect(type).toBe('Statement');
-            expect(category).toBe('box');
             expect(instance instanceof ElementBoxBoolean);
         });
 
         test('fetch instance of a block element with valid instance ID and verify', () => {
-            const { name, kind, type, category, instance } = getInstance(instanceID4)!;
+            const {
+                classification: { group, category },
+                name,
+                kind,
+                type,
+                instance,
+            } = getInstance(instanceID4)!;
+            expect(group).toBe('programming');
+            expect(category).toBe('program');
             expect(name).toBe('process');
             expect(kind).toBe('Instruction');
             expect(type).toBe('Block');
-            expect(category).toBe('program');
             expect(instance instanceof ElementBlock);
         });
     });
@@ -103,9 +131,45 @@ describe('Syntax Element Warehouse', () => {
         addInstance('operator-math-divide');
         addInstance('box-number');
 
+        test('verify classification count', () => {
+            expect(getClassificationCount('programming', 'value')).toBe(2);
+            expect(getClassificationCount('programming', 'boxidentifier')).toBe(1);
+            expect(getClassificationCount('programming', 'operator-math')).toBe(2);
+            expect(getClassificationCount('programming', 'box')).toBe(2);
+            expect(getClassificationCount('programming', 'program')).toBe(1);
+        });
+
+        test('verify classification count all', () => {
+            const classificationCount = getClassificationCountAll();
+            expect(Object.keys(classificationCount).length).toBe(1);
+            [
+                ['value', 2],
+                ['boxidentifier', 1],
+                ['operator-math', 2],
+                ['box', 2],
+                ['program', 1],
+            ].forEach(([key, value]) =>
+                expect(classificationCount['programming'][key]).toBe(value)
+            );
+        });
+
         test('verify name count', () => {
             expect(getNameCount('value-boolean')).toBe(2);
             expect(getNameCount('value-number')).toBe(0);
+        });
+
+        test('verify name count all', () => {
+            expect(new Set(Object.entries(getNameCountAll()))).toEqual(
+                new Set([
+                    ['value-boolean', 2],
+                    ['operator-math-plus', 1],
+                    ['box-boolean', 1],
+                    ['process', 1],
+                    ['boxidentifier-boolean', 1],
+                    ['operator-math-divide', 1],
+                    ['box-number', 1],
+                ])
+            );
         });
 
         test('verify kind count', () => {
@@ -139,31 +203,17 @@ describe('Syntax Element Warehouse', () => {
                 ])
             );
         });
-
-        test('verify category count', () => {
-            expect(getCategoryCount('value')).toBe(2);
-            expect(getCategoryCount('boxidentifier')).toBe(1);
-            expect(getCategoryCount('operator-math')).toBe(2);
-            expect(getCategoryCount('box')).toBe(2);
-            expect(getCategoryCount('program')).toBe(1);
-        });
-
-        test('verify category count all', () => {
-            const categoryCount = getCategoryCountAll();
-            [
-                ['value', 2],
-                ['boxidentifier', 1],
-                ['operator-math', 2],
-                ['box', 2],
-                ['program', 1],
-            ].forEach(([key, value]) => expect(categoryCount[key]).toBe(value));
-        });
     });
 
     describe('removing instance', () => {
         test('remove an existing instance ID and verify', () => {
             removeInstance(instanceID1);
             expect(getInstance(instanceID1)).toBe(null);
+            expect(getClassificationCount('programming', 'value')).toBe(1);
+            expect(getClassificationCount('programming', 'boxidentifier')).toBe(1);
+            expect(getClassificationCount('programming', 'operator-math')).toBe(2);
+            expect(getClassificationCount('programming', 'box')).toBe(2);
+            expect(getClassificationCount('programming', 'program')).toBe(1);
             expect(getNameCount('value-boolean')).toBe(1);
             expect(getKindCount('Argument')).toBe(4);
             expect(getKindCount('Instruction')).toBe(3);
@@ -171,25 +221,28 @@ describe('Syntax Element Warehouse', () => {
             expect(getTypeCount('Expression')).toBe(2);
             expect(getTypeCount('Statement')).toBe(2);
             expect(getTypeCount('Block')).toBe(1);
-            expect(getCategoryCount('value')).toBe(1);
-            expect(getCategoryCount('boxidentifier')).toBe(1);
-            expect(getCategoryCount('operator-math')).toBe(2);
-            expect(getCategoryCount('box')).toBe(2);
-            expect(getCategoryCount('program')).toBe(1);
         });
     });
 
     describe('reset', () => {
         function _checkEmpty(table: { [key: string]: number }): boolean {
-            return Object.values(table).reduce((a, b) => a + b) === 0;
+            return Object.values(table).length === 0
+                ? true
+                : Object.values(table).reduce((a, b) => a + b) === 0;
         }
 
         test('reset warehouse and verify from stats', () => {
             resetWarehouse();
+            {
+                let count = 0;
+                Object.values(getClassificationCountAll()).forEach(
+                    (categoryMap) => (count += Object.values(categoryMap).reduce((a, b) => a + b))
+                );
+                expect(count).toBe(0);
+            }
             expect(_checkEmpty(getNameCountAll())).toBe(true);
             expect(_checkEmpty(getKindCountAll())).toBe(true);
             expect(_checkEmpty(getTypeCountAll())).toBe(true);
-            expect(_checkEmpty(getCategoryCountAll())).toBe(true);
         });
     });
 });

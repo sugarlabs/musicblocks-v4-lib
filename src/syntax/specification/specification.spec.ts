@@ -30,8 +30,9 @@ describe('Syntax Element Specification', () => {
             expect(dataElementEntry.label).toBe('true');
 
             test('fetch element and verify entry', () => {
+                expect(dataElementEntry.classification.group).toBe('programming');
+                expect(dataElementEntry.classification.category).toBe('value');
                 expect(dataElementEntry.type).toBe('Data');
-                expect(dataElementEntry.category).toBe('value');
             });
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
@@ -50,9 +51,10 @@ describe('Syntax Element Specification', () => {
             const dataElementEntry = queryElementSpecification('operator-math-plus')!;
 
             test('fetch element and verify entry', () => {
+                expect(dataElementEntry.classification.group).toBe('programming');
+                expect(dataElementEntry.classification.category).toBe('operator-math');
                 expect(dataElementEntry.label).toBe('+');
                 expect(dataElementEntry.type).toBe('Expression');
-                expect(dataElementEntry.category).toBe('operator-math');
             });
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
@@ -71,9 +73,10 @@ describe('Syntax Element Specification', () => {
             const dataElementEntry = queryElementSpecification('box-generic')!;
 
             test('fetch element and verify entry', () => {
+                expect(dataElementEntry.classification.group).toBe('programming');
+                expect(dataElementEntry.classification.category).toBe('box');
                 expect(dataElementEntry.label).toBe('Box');
                 expect(dataElementEntry.type).toBe('Statement');
-                expect(dataElementEntry.category).toBe('box');
             });
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
@@ -92,9 +95,10 @@ describe('Syntax Element Specification', () => {
             const dataElementEntry = queryElementSpecification('process')!;
 
             test('fetch element and verify entry', () => {
+                expect(dataElementEntry.classification.group).toBe('programming');
+                expect(dataElementEntry.classification.category).toBe('program');
                 expect(dataElementEntry.label).toBe('start');
                 expect(dataElementEntry.type).toBe('Block');
-                expect(dataElementEntry.category).toBe('program');
             });
 
             test('instantiate prototype fetch from entry query and verify instance', () => {
@@ -158,18 +162,19 @@ describe('Syntax Element Specification', () => {
 
         test('register new element specification entry and verify', () => {
             const status = registerElementSpecificationEntry('dummy0', {
+                classification: { group: 'group', category: 'dummy' },
                 label: 'dummy0',
                 type: 'Data',
-                category: 'dummy',
                 prototype: DummyElementData,
                 values: { types: ['boolean'] },
             });
             expect(status).toBe(true);
 
             const elementEntry = queryElementSpecification('dummy0')!;
+            expect(elementEntry.classification.group).toBe('group');
+            expect(elementEntry.classification.category).toBe('dummy');
             expect(elementEntry.label).toBe('dummy0');
             expect(elementEntry.type).toBe('Data');
-            expect(elementEntry.category).toBe('dummy');
             expect(
                 (elementEntry.prototype as (name: string, label: string) => ElementDataCover)(
                     'dummy0',
@@ -184,9 +189,9 @@ describe('Syntax Element Specification', () => {
 
         test('register duplicate element specification entry and verify', () => {
             const status = registerElementSpecificationEntry('dummy0', {
+                classification: { group: 'group', category: 'dummy' },
                 label: 'dummy0',
                 type: 'Block',
-                category: 'dummy',
                 prototype: DummyElementBlock,
             });
             expect(status).toBe(false);
@@ -195,28 +200,28 @@ describe('Syntax Element Specification', () => {
         test('register new element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
                 dummy1: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy1',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: ['1', '2', '3'],
                 },
                 dummy2: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy2',
                     type: 'Expression',
-                    category: 'dummy',
                     prototype: DummyElementExpression,
                 },
                 dummy3: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy3',
                     type: 'Statement',
-                    category: 'dummy',
                     prototype: DummyElementStatement,
                 },
                 dummy4: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy4',
                     type: 'Block',
-                    category: 'dummy',
                     prototype: DummyElementBlock,
                 },
             });
@@ -227,9 +232,10 @@ describe('Syntax Element Specification', () => {
             const elementEntry3 = queryElementSpecification('dummy3')!;
             const elementEntry4 = queryElementSpecification('dummy4')!;
 
+            expect(elementEntry1.classification.group).toBe('group');
+            expect(elementEntry1.classification.category).toBe('dummy');
             expect(elementEntry1.label).toBe('dummy1');
             expect(elementEntry1.type).toBe('Data');
-            expect(elementEntry1.category).toBe('dummy');
             expect(
                 (elementEntry1.prototype as (name: string, label: string) => ElementDataCover)(
                     'dummy1',
@@ -239,9 +245,10 @@ describe('Syntax Element Specification', () => {
             expect('values' in elementEntry1).toBe(true);
             expect((elementEntry1 as IElementSpecificationData).values).toEqual(['1', '2', '3']);
 
+            expect(elementEntry2.classification.group).toBe('group');
+            expect(elementEntry2.classification.category).toBe('dummy');
             expect(elementEntry2.label).toBe('dummy2');
             expect(elementEntry2.type).toBe('Expression');
-            expect(elementEntry2.category).toBe('dummy');
             expect(
                 (
                     elementEntry2.prototype as (
@@ -251,9 +258,10 @@ describe('Syntax Element Specification', () => {
                 )('dummy2', 'dummy2') instanceof DummyElementExpression
             ).toBe(true);
 
+            expect(elementEntry3.classification.group).toBe('group');
+            expect(elementEntry3.classification.category).toBe('dummy');
             expect(elementEntry3.label).toBe('dummy3');
             expect(elementEntry3.type).toBe('Statement');
-            expect(elementEntry3.category).toBe('dummy');
             expect(
                 (elementEntry3.prototype as (name: string, label: string) => ElementStatement)(
                     'dummy3',
@@ -261,9 +269,10 @@ describe('Syntax Element Specification', () => {
                 ) instanceof DummyElementStatement
             ).toBe(true);
 
+            expect(elementEntry4.classification.group).toBe('group');
+            expect(elementEntry4.classification.category).toBe('dummy');
             expect(elementEntry4.label).toBe('dummy4');
             expect(elementEntry4.type).toBe('Block');
-            expect(elementEntry4.category).toBe('dummy');
             expect(
                 (elementEntry4.prototype as (name: string, label: string) => ElementBlock)(
                     'dummy4',
@@ -275,27 +284,27 @@ describe('Syntax Element Specification', () => {
         test('register duplicate element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
                 dummy1: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy1',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                 },
                 dummy2: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy2',
                     type: 'Expression',
-                    category: 'dummy',
                     prototype: DummyElementExpression,
                 },
                 dummy3: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy3',
                     type: 'Statement',
-                    category: 'dummy',
                     prototype: DummyElementStatement,
                 },
                 dummy4: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy4',
                     type: 'Block',
-                    category: 'dummy',
                     prototype: DummyElementBlock,
                 },
             });
@@ -388,9 +397,9 @@ describe('Syntax Element Specification', () => {
 
             registerElementSpecificationEntries({
                 dummy: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: ['1', '2', '3'],
                 },
@@ -402,36 +411,36 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
                 dummy1: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy1',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                 },
                 dummy2: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy2',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: ['1', '2', '3'],
                 },
                 dummy3: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy3',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['boolean'] },
                 },
                 dummy4: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy4',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['number'] },
                 },
                 dummy5: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy5',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['string'] },
                 },
@@ -450,30 +459,30 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
                 dummy1: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy1',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: ['1', '2', '3'],
                 },
                 dummy2: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy2',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['boolean'] },
                 },
                 dummy3: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy3',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['boolean'] },
                 },
                 dummy4: {
+                    classification: { group: 'group', category: 'dummy' },
                     label: 'dummy4',
                     type: 'Data',
-                    category: 'dummy',
                     prototype: DummyElementData,
                     values: { types: ['number'] },
                 },

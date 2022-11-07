@@ -47,10 +47,11 @@ describe('Syntax Tree', () => {
             const node = getNode(process)!;
             expect(node.elementName).toBe('process');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('program');
             expect(instance.name).toBe('process');
             expect(instance.kind).toBe('Instruction');
             expect(instance.type).toBe('Block');
-            expect(instance.category).toBe('program');
             expect(instance.instance instanceof ElementProcess).toBe(true);
         });
 
@@ -59,10 +60,11 @@ describe('Syntax Tree', () => {
             const node = getNode(routine)!;
             expect(node.elementName).toBe('routine');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('program');
             expect(instance.name).toBe('routine');
             expect(instance.kind).toBe('Instruction');
             expect(instance.type).toBe('Block');
-            expect(instance.category).toBe('program');
             expect(instance.instance instanceof ElementRoutine).toBe(true);
         });
 
@@ -71,10 +73,11 @@ describe('Syntax Tree', () => {
             const node = getNode(data)!;
             expect(node.elementName).toBe('value-boolean');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('value');
             expect(instance.name).toBe('value-boolean');
             expect(instance.kind).toBe('Argument');
             expect(instance.type).toBe('Data');
-            expect(instance.category).toBe('value');
             expect(instance.instance instanceof ElementValueBoolean).toBe(true);
         });
 
@@ -83,10 +86,11 @@ describe('Syntax Tree', () => {
             const node = getNode(expression)!;
             expect(node.elementName).toBe('operator-math-plus');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('operator-math');
             expect(instance.name).toBe('operator-math-plus');
             expect(instance.kind).toBe('Argument');
             expect(instance.type).toBe('Expression');
-            expect(instance.category).toBe('operator-math');
             expect(instance.instance instanceof ElementOperatorMathPlus).toBe(true);
         });
 
@@ -95,10 +99,11 @@ describe('Syntax Tree', () => {
             const node = getNode(statement)!;
             expect(node.elementName).toBe('box-boolean');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('box');
             expect(instance.name).toBe('box-boolean');
             expect(instance.kind).toBe('Instruction');
             expect(instance.type).toBe('Statement');
-            expect(instance.category).toBe('box');
             expect(instance.instance instanceof ElementBoxBoolean).toBe(true);
         });
 
@@ -107,10 +112,11 @@ describe('Syntax Tree', () => {
             const node = getNode(block)!;
             expect(node.elementName).toBe('routine');
             const instance = getInstance(node.instanceID)!;
+            expect(instance.classification.group).toBe('programming');
+            expect(instance.classification.category).toBe('program');
             expect(instance.name).toBe('routine');
             expect(instance.kind).toBe('Instruction');
             expect(instance.type).toBe('Block');
-            expect(instance.category).toBe('program');
             expect(instance.instance instanceof ElementRoutine).toBe(true);
         });
     });
