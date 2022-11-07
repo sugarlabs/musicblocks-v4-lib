@@ -1,3 +1,5 @@
+import type { IParsedElementArgument, IParsedElementInstruction } from '../@types/execution';
+
 import {
     validateArgumentSequence,
     generateArgumentSequence,
@@ -8,8 +10,6 @@ import {
     clearPCOverride,
     stackTrace,
 } from './parser';
-
-import { IParsedElementArgument, IParsedElementInstruction } from '../@types/execution';
 
 import {
     generateFromSnapshot,

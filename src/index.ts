@@ -2,14 +2,14 @@
 
 // -- elements -------------------------------------------------------------------------------------
 
-export { TData, TDataName } from './@types/data';
+export type { TData, TDataName } from './@types/data';
 
 export { ElementData, ElementExpression } from './syntax/elements/elementArgument';
 export { ElementStatement, ElementBlock } from './syntax/elements/elementInstruction';
 
 // -- specification --------------------------------------------------------------------------------
 
-export { IElementSpecification } from './@types/specification';
+export type { IElementSpecification } from './@types/specification';
 
 export {
     registerElementSpecificationEntry,
@@ -26,7 +26,7 @@ export {
 
 // -- syntax tree ----------------------------------------------------------------------------------
 
-export { ITreeSnapshotInput } from './@types/syntaxTree';
+export type { ITreeSnapshotInput } from './@types/syntaxTree';
 
 export {
     getProcessNodes,
@@ -55,7 +55,7 @@ export {
 
 // == EXECUTION ====================================================================================
 
-export { TPCOverride } from './@types/execution';
+export type { TPCOverride } from './@types/execution';
 
 export {
     declareVariable,

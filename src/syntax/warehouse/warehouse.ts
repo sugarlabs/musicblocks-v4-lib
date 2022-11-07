@@ -1,9 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { TElementClassification, TElementKind, TElementType } from '../../@types/specification';
+import type {
+    TElementClassification,
+    TElementKind,
+    TElementType,
+} from '../../@types/specification';
+import type { TData } from '../../@types/data';
+
 import { queryElementSpecification } from '../specification/specification';
 
-import { TData } from '../../@types/data';
 import { ElementSyntax } from '../elements/elementSyntax';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';

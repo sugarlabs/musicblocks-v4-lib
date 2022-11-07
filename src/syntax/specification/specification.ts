@@ -1,5 +1,5 @@
-import { TDataName } from 'index';
-import {
+import type { TDataName } from '../../@types/data';
+import type {
     IElementSpecificationData,
     IElementSpecificationExpression,
     IElementSpecificationStatement,

@@ -1,4 +1,4 @@
-import { TData, TDataName } from '../../@types/data';
+import type { TData, TDataName } from '../../@types/data';
 
 import { ElementData } from '../../syntax/elements/elementArgument';
 import { queryVariable } from '../../execution/interpreter';

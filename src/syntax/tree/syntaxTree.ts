@@ -1,6 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { IElementSpecificationInstruction } from '../../@types/specification';
+import type {
+    ITreeSnapshot,
+    ITreeSnapshotInput,
+    ITreeSnapshotDataInput,
+    ITreeSnapshotExpressionInput,
+    ITreeSnapshotStatement,
+    ITreeSnapshotStatementInput,
+    ITreeSnapshotBlock,
+    ITreeSnapshotBlockInput,
+} from '../../@types/syntaxTree';
+import type { IElementSpecificationInstruction } from '../../@types/specification';
+import type { TData } from '../../@types/data';
 
 import {
     TreeNode,
@@ -12,18 +23,7 @@ import {
 import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse';
 import { checkValueAssignment, queryElementSpecification } from '../specification/specification';
 
-import { TData } from '../../@types/data';
 import { ElementArgument } from '../elements/elementArgument';
-import {
-    ITreeSnapshot,
-    ITreeSnapshotInput,
-    ITreeSnapshotDataInput,
-    ITreeSnapshotExpressionInput,
-    ITreeSnapshotStatement,
-    ITreeSnapshotStatementInput,
-    ITreeSnapshotBlock,
-    ITreeSnapshotBlockInput,
-} from '../../@types/syntaxTree';
 
 // -- private variables ----------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-import { TDataName } from '../../@types/data';
+import type { TDataName } from '../../@types/data';
 
 import { ElementData } from '../../syntax/elements/elementArgument';
 

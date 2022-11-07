@@ -1,3 +1,6 @@
+import type { IElementSpecificationData } from '../../@types/specification';
+import type { TData } from '../../@types/data';
+
 import {
     registerElementSpecificationEntry,
     registerElementSpecificationEntries,
@@ -11,8 +14,6 @@ import {
 
 import elementSpecificationEntries from '../../library/specification';
 
-import { IElementSpecificationData } from '../../@types/specification';
-import { TData } from '../../@types/data';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
 
