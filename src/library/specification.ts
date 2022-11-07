@@ -46,146 +46,146 @@ const _elementSpecificationEntries: {
 } = {
     // -- value elements ---------------------------------------------------------------------------
     'value-boolean': {
+        classification: { group: 'programming', category: 'value' },
         label: 'true',
         type: 'Data',
-        category: 'value',
         prototype: ElementValueBoolean,
         values: {
             types: ['boolean'],
         },
     },
     'value-number': {
+        classification: { group: 'programming', category: 'value' },
         label: '0',
         type: 'Data',
-        category: 'value',
         prototype: ElementValueNumber,
         values: {
             types: ['number'],
         },
     },
     'value-string': {
+        classification: { group: 'programming', category: 'value' },
         label: 'string',
         type: 'Data',
-        category: 'value',
         prototype: ElementValueString,
     },
     // -- box elements -----------------------------------------------------------------------------
     'box-generic': {
+        classification: { group: 'programming', category: 'box' },
         label: 'Box',
         type: 'Statement',
-        category: 'box',
         prototype: ElementBoxGeneric,
     },
     'box-boolean': {
+        classification: { group: 'programming', category: 'box' },
         label: 'Box (boolean)',
         type: 'Statement',
-        category: 'box',
         prototype: ElementBoxBoolean,
     },
     'box-number': {
+        classification: { group: 'programming', category: 'box' },
         label: 'Box (number)',
         type: 'Statement',
-        category: 'box',
         prototype: ElementBoxNumber,
     },
     'box-string': {
+        classification: { group: 'programming', category: 'box' },
         label: 'Box (string)',
         type: 'Statement',
-        category: 'box',
         prototype: ElementBoxString,
     },
     // -- box identifier elements ------------------------------------------------------------------
     'boxidentifier-generic': {
+        classification: { group: 'programming', category: 'boxidentifier' },
         label: 'Box 1',
         type: 'Data',
-        category: 'boxidentifier',
         prototype: ElementBoxIdentifierGeneric,
     },
     'boxidentifier-boolean': {
+        classification: { group: 'programming', category: 'boxidentifier' },
         label: 'Box 1',
         type: 'Data',
-        category: 'boxidentifier',
         prototype: ElementBoxIdentifierBoolean,
     },
     'boxidentifier-number': {
+        classification: { group: 'programming', category: 'boxidentifier' },
         label: 'Box 1',
         type: 'Data',
-        category: 'boxidentifier',
         prototype: ElementBoxIdentifierNumber,
     },
     'boxidentifier-string': {
+        classification: { group: 'programming', category: 'boxidentifier' },
         label: 'Box 1',
         type: 'Data',
-        category: 'boxidentifier',
         prototype: ElementBoxIdentifierString,
     },
     // -- math operator elements -------------------------------------------------------------------
     'operator-math-plus': {
+        classification: { group: 'programming', category: 'operator-math' },
         label: '+',
         type: 'Expression',
-        category: 'operator-math',
         prototype: ElementOperatorMathPlus,
     },
     'operator-math-minus': {
+        classification: { group: 'programming', category: 'operator-math' },
         label: '-',
         type: 'Expression',
-        category: 'operator-math',
         prototype: ElementOperatorMathMinus,
     },
     'operator-math-times': {
+        classification: { group: 'programming', category: 'operator-math' },
         label: '\u00d7',
         type: 'Expression',
-        category: 'operator-math',
         prototype: ElementOperatorMathTimes,
     },
     'operator-math-divide': {
+        classification: { group: 'programming', category: 'operator-math' },
         label: '\u00f7',
         type: 'Expression',
-        category: 'operator-math',
         prototype: ElementOperatorMathDivide,
     },
     'operator-math-modulus': {
+        classification: { group: 'programming', category: 'operator-math' },
         label: '%',
         type: 'Expression',
-        category: 'operator-math',
         prototype: ElementOperatorMathModulus,
     },
     // -- loop elements ----------------------------------------------------------------------------
     'repeat': {
+        classification: { group: 'programming', category: 'loop' },
         label: 'repeat',
         type: 'Block',
-        category: 'loop',
         prototype: ElementRepeat,
     },
     // -- conditional elements ---------------------------------------------------------------------
     'if': {
+        classification: { group: 'programming', category: 'conditional' },
         label: 'if',
         type: 'Block',
-        category: 'loop',
         prototype: ElementIf,
     },
     // -- program elements -------------------------------------------------------------------------
     'process': {
+        classification: { group: 'programming', category: 'program' },
         label: 'start',
         type: 'Block',
-        category: 'program',
         prototype: ElementProcess,
         allowAbove: false,
         allowBelow: false,
     },
     'routine': {
+        classification: { group: 'programming', category: 'program' },
         label: 'action',
         type: 'Block',
-        category: 'program',
         prototype: ElementRoutine,
         allowAbove: false,
         allowBelow: false,
     },
     // -- print element ----------------------------------------------------------------------------
     'print': {
+        classification: { group: 'programming', category: 'misc' },
         label: 'print',
         type: 'Statement',
-        category: 'print',
         prototype: ElementPrint,
     },
 };

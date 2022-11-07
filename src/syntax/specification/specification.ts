@@ -41,20 +41,20 @@ export function registerElementSpecificationEntry(
 ): boolean {
     if (name in _elementSpecification) return false;
 
-    const { label, type, category, prototype } = specification;
+    const { classification, label, type, prototype } = specification;
 
     const specificationTableEntry: IElementSpecification = {
+        classification,
         label,
         type,
-        category,
         // @ts-ignore
         prototype: (name: string, label: string) => new prototype(name, label),
     };
 
     const specificationSnapshotTableEntry: IElementSpecificationSnapshot = {
+        classification,
         label,
         type,
-        category,
         prototypeName: prototype.name,
     };
 
@@ -137,19 +137,37 @@ export function queryElementSpecification(
 }
 
 /**
+ * Returns the classification (logical grouping) of available syntax elements.
+ * @returns a map of syntax element classification over groups and further into categories
+ */
+export function getElementClassifications(): { [group: string]: string[] } {
+    const classifications: { [group: string]: Set<string> } = {};
+    Object.entries(_elementSpecification).forEach(
+        ([
+            _,
+            {
+                classification: { group, category },
+            },
+        ]) => {
+            if (!(group in classifications)) {
+                classifications[group] = new Set<string>();
+            }
+
+            classifications[group].add(category);
+        }
+    );
+
+    return Object.fromEntries(
+        Object.entries(classifications).map(([group, category]) => [group, [...category].sort()])
+    );
+}
+
+/**
  * Returns the names of available syntax elements.
  * @returns a list of syntax element names.
  */
 export function getElementNames(): string[] {
     return Object.keys(_elementSpecification);
-}
-
-/**
- * Returns the categories of available syntax elements.
- * @returns a list of syntax element categories
- */
-export function getElementCategories(): string[] {
-    return [...new Set(Object.entries(_elementSpecification).map(([_, { category }]) => category))];
 }
 
 /**

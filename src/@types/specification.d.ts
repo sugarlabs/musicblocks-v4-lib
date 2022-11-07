@@ -13,12 +13,19 @@ import {
 export type TElementKind = 'Argument' | 'Instruction';
 /** Type (`Data`, `Expression`, `Statement`, `Block`) of the syntax element. */
 export type TElementType = 'Data' | 'Expression' | 'Statement' | 'Block';
+/** Classification (logical grouping) of the syntax element. */
+export type TElementClassification = {
+    /** Identifier for related syntax element categories. */
+    group: string;
+    /** Identifier for related syntax elements. */
+    category: string;
+};
 
 /** Type for the specification object for data elements. */
 export interface IElementSpecificationData {
+    classification: TElementClassification;
     label: string;
     type: 'Data';
-    category: string;
     prototype: (name: string, label: string) => IElementData<TData>;
     values?:
         | string[]
@@ -29,25 +36,25 @@ export interface IElementSpecificationData {
 
 /** Type for the specification entry object for data elements. */
 export interface IElementSpecificationEntryData extends IElementSpecificationData {
+    classification: TElementClassification;
     label: string;
     type: 'Data';
-    category: string;
     prototype: typeof IElementData;
 }
 
 /** Type for the specification object for expression elements. */
 export interface IElementSpecificationExpression {
+    classification: TElementClassification;
     label: string;
     type: 'Expression';
-    category: string;
     prototype: (name: string, label: string) => IElementExpression<TData>;
 }
 
 /** Type for the specification object for expression elements. */
 export interface IElementSpecificationEntryExpression extends IElementSpecificationExpression {
+    classification: TElementClassification;
     label: string;
     type: 'Expression';
-    category: string;
     prototype: typeof IElementExpression;
 }
 
@@ -64,25 +71,25 @@ interface IElementSpecificationInstruction {
 
 /** Type for the specification object for statement elements. */
 export type IElementSpecificationStatement = IElementSpecificationInstruction & {
+    classification: TElementClassification;
     label: string;
     type: 'Statement';
-    category: string;
     prototype: (name: string, label: string) => IElementStatement;
 };
 
 /** Type for the specification object for statement elements. */
 export type IElementSpecificationEntryStatement = IElementSpecificationInstruction & {
+    classification: TElementClassification;
     label: string;
     type: 'Statement';
-    category: string;
     prototype: typeof IElementStatement;
 };
 
 /** Type for the specification object for block elements. */
 export type IElementSpecificationBlock = IElementSpecificationInstruction & {
+    classification: TElementClassification;
     label: string;
     type: 'Block';
-    category: string;
     prototype: (name: string, label: string) => IElementBlock;
     allowNestInside?: string[] | boolean;
     forbidNestInside?: string[];
@@ -90,9 +97,9 @@ export type IElementSpecificationBlock = IElementSpecificationInstruction & {
 
 /** Type for the specification entry object for block elements. */
 export type IElementSpecificationEntryBlock = IElementSpecificationInstruction & {
+    classification: TElementClassification;
     label: string;
     type: 'Block';
-    category: string;
     prototype: typeof IElementBlock;
     allowNestInside?: string[] | boolean;
     forbidNestInside?: string[];
@@ -100,9 +107,9 @@ export type IElementSpecificationEntryBlock = IElementSpecificationInstruction &
 
 /** Type for the specification object for an element. */
 export interface IElementSpecification {
+    classification: TElementClassification;
     label: string;
     type: TElementType;
-    category: string;
     prototype: new (name: string, label: string) => IElementSyntax;
     allowAbove?: string[] | boolean;
     allowBelow?: string[] | boolean;
