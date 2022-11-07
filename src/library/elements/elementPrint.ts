@@ -1,4 +1,5 @@
-import { TData } from '../../@types/data';
+import type { TData } from '../../@types/data';
+
 import { ElementStatement } from '../../syntax/elements/elementInstruction';
 
 // -------------------------------------------------------------------------------------------------

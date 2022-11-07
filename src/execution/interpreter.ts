@@ -1,5 +1,5 @@
-import { TData, TDataName } from '../@types/data';
-import { IVariable, TPCOverride } from '../@types/execution';
+import type { TData, TDataName } from '../@types/data';
+import type { IVariable, TPCOverride } from '../@types/execution';
 
 import { addGlobalVariable, getGlobalVariable } from './symbolTable';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from './parser';

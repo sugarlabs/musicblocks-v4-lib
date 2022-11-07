@@ -1,4 +1,4 @@
-import { TData, TDataName } from '../../@types/data';
+import type { TData, TDataName } from '../../@types/data';
 
 import { ElementStatement } from '../../syntax/elements/elementInstruction';
 import { declareVariable } from '../../execution/interpreter';

@@ -1,3 +1,5 @@
+import type { ITreeSnapshotInput } from '../../@types/syntaxTree';
+
 import {
     addNode,
     getNode,
@@ -16,10 +18,8 @@ import {
     resetSyntaxTree,
     assignNodeValue,
 } from './syntaxTree';
-import { getInstance } from '../warehouse/warehouse';
-
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
-import { ITreeSnapshotInput } from '../../@types/syntaxTree';
+import { getInstance } from '../warehouse/warehouse';
 
 import { registerElementSpecificationEntries } from '../specification/specification';
 import elementSpecificationEntries from '../../library/specification';

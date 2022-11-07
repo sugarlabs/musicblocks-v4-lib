@@ -1,4 +1,5 @@
-import { IParsedElement, TPCOverride } from '../@types/execution';
+import type { IParsedElement, TPCOverride } from '../@types/execution';
+import type { TData } from '../@types/data';
 
 import {
     TreeNode,
@@ -9,10 +10,8 @@ import {
 } from '../syntax/tree/node';
 
 import { getProcessNodes, getRoutineNodes, getCrumbs } from '../syntax/tree/syntaxTree';
-
 import { getInstance } from '../syntax/warehouse/warehouse';
 
-import { TData } from '../@types/data';
 import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
 import { ElementBlock, ElementStatement } from '../syntax/elements/elementInstruction';
 
