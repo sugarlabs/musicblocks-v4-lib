@@ -17,7 +17,7 @@ import {
     generateFromSnapshot,
     resetSyntaxTree,
     assignNodeValue,
-} from './syntaxTree';
+} from '.';
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
 import { getInstance } from '../warehouse/warehouse';
 

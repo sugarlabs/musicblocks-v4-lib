@@ -9,7 +9,7 @@ import {
     TreeNodeBlock,
 } from '../../syntax/tree/node';
 
-import { getProcessNodes, getRoutineNodes, getCrumbs } from '../../syntax/tree/syntaxTree';
+import { getProcessNodes, getRoutineNodes, getCrumbs } from '../../syntax/tree';
 import { getInstance } from '../../syntax/warehouse/warehouse';
 
 import { ElementData, ElementExpression } from '../../syntax/elements/elementArgument';

@@ -18,7 +18,7 @@ import {
     getProcessNodes,
     resetSyntaxTree,
     getRoutineNodes,
-} from '../../syntax/tree/syntaxTree';
+} from '../../syntax/tree';
 import { TreeNodeStatement } from '../../syntax/tree/node';
 
 import { registerElementSpecificationEntries } from '../../syntax/specification/specification';

@@ -1,6 +1,6 @@
 import { run } from '.';
 
-import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree/syntaxTree';
+import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree';
 
 import { registerElementSpecificationEntries } from '../../syntax/specification/specification';
 import elementSpecification from '../../library';
