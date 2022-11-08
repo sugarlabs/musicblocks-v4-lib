@@ -19,7 +19,7 @@ import {
     assignNodeValue,
 } from '.';
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
-import { getInstance } from '../warehouse/warehouse';
+import { getInstance } from '../warehouse';
 
 import { registerElementSpecificationEntries } from '../specification/specification';
 import elementSpecificationEntries from '../../library';

@@ -11,7 +11,7 @@ import {
     getTypeCount,
     getTypeCountAll,
     resetWarehouse,
-} from './warehouse';
+} from '.';
 
 import { ElementBlock } from '../elements/elementInstruction';
 

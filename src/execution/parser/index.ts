@@ -10,7 +10,7 @@ import {
 } from '../../syntax/tree/node';
 
 import { getProcessNodes, getRoutineNodes, getCrumbs } from '../../syntax/tree';
-import { getInstance } from '../../syntax/warehouse/warehouse';
+import { getInstance } from '../../syntax/warehouse';
 
 import { ElementData, ElementExpression } from '../../syntax/elements/elementArgument';
 import { ElementBlock, ElementStatement } from '../../syntax/elements/elementInstruction';

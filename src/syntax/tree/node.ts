@@ -12,7 +12,7 @@ import type {
     ITreeSnapshotStatement,
 } from '../../@types/syntaxTree';
 
-import { getInstance } from '../warehouse/warehouse';
+import { getInstance } from '../warehouse';
 
 // -------------------------------------------------------------------------------------------------
 

@@ -51,7 +51,7 @@ export {
     getTypeCountAll,
     getKindCount,
     getKindCountAll,
-} from './syntax/warehouse/warehouse';
+} from './syntax/warehouse';
 
 // == EXECUTION ====================================================================================
 
