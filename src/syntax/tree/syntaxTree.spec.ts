@@ -22,7 +22,7 @@ import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
 import { getInstance } from '../warehouse/warehouse';
 
 import { registerElementSpecificationEntries } from '../specification/specification';
-import elementSpecificationEntries from '../../library/specification';
+import elementSpecificationEntries from '../../library';
 
 import { ElementProcess, ElementRoutine } from '../../library/elements/elementProgram';
 import { ElementValueBoolean } from '../../library/elements/elementValue';

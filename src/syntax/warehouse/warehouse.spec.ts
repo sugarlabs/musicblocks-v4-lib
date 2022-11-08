@@ -16,7 +16,7 @@ import {
 import { ElementBlock } from '../elements/elementInstruction';
 
 import { registerElementSpecificationEntries } from '../specification/specification';
-import elementSpecificationEntries from '../../library/specification';
+import elementSpecificationEntries from '../../library';
 
 import { ElementBoxBoolean } from '../../library/elements/elementBox';
 import { ElementOperatorMathPlus } from '../../library/elements/elementOperatorMath';

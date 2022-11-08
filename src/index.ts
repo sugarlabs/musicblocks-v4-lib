@@ -69,7 +69,7 @@ export {
 
 // -- specification --------------------------------------------------------------------------------
 
-export { default as librarySpecification } from './library/specification';
+export { default as librarySpecification } from './library';
 
 // -- elements -------------------------------------------------------------------------------------
 

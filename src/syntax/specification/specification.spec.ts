@@ -12,7 +12,7 @@ import {
     checkValueAssignment,
 } from './specification';
 
-import elementSpecificationEntries from '../../library/specification';
+import elementSpecificationEntries from '../../library';
 
 import { ElementData, ElementExpression } from '../elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../elements/elementInstruction';
