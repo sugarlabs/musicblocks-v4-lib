@@ -10,7 +10,7 @@ import {
     resetElementSpecificationTable,
     getSpecificationSnapshot,
     checkValueAssignment,
-} from './specification';
+} from '.';
 
 import elementSpecificationEntries from '../../library';
 

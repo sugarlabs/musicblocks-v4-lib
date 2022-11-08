@@ -15,7 +15,7 @@ import {
 
 import { ElementBlock } from '../elements/elementInstruction';
 
-import { registerElementSpecificationEntries } from '../specification/specification';
+import { registerElementSpecificationEntries } from '../specification';
 import elementSpecificationEntries from '../../library';
 
 import { ElementBoxBoolean } from '../../library/elements/elementBox';

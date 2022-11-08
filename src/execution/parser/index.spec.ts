@@ -21,7 +21,7 @@ import {
 } from '../../syntax/tree';
 import { TreeNodeStatement } from '../../syntax/tree/node';
 
-import { registerElementSpecificationEntries } from '../../syntax/specification/specification';
+import { registerElementSpecificationEntries } from '../../syntax/specification';
 import elementSpecificationEntries from '../../library';
 
 // -------------------------------------------------------------------------------------------------

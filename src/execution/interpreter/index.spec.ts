@@ -2,7 +2,7 @@ import { run } from '.';
 
 import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree';
 
-import { registerElementSpecificationEntries } from '../../syntax/specification/specification';
+import { registerElementSpecificationEntries } from '../../syntax/specification';
 import elementSpecification from '../../library';
 
 // -------------------------------------------------------------------------------------------------

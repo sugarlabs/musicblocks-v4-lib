@@ -22,7 +22,7 @@ export {
     resetElementSpecificationTable,
     getSpecificationSnapshot,
     checkValueAssignment,
-} from './syntax/specification/specification';
+} from './syntax/specification';
 
 // -- syntax tree ----------------------------------------------------------------------------------
 
