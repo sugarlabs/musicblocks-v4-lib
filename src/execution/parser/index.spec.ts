@@ -1,4 +1,4 @@
-import type { IParsedElementArgument, IParsedElementInstruction } from '../@types/execution';
+import type { IParsedElementArgument, IParsedElementInstruction } from '../../@types/execution';
 
 import {
     validateArgumentSequence,
@@ -9,7 +9,7 @@ import {
     setPCOverride,
     clearPCOverride,
     stackTrace,
-} from './parser';
+} from '.';
 
 import {
     generateFromSnapshot,
@@ -18,11 +18,11 @@ import {
     getProcessNodes,
     resetSyntaxTree,
     getRoutineNodes,
-} from '../syntax/tree/syntaxTree';
-import { TreeNodeStatement } from '../syntax/tree/node';
+} from '../../syntax/tree/syntaxTree';
+import { TreeNodeStatement } from '../../syntax/tree/node';
 
-import { registerElementSpecificationEntries } from '../syntax/specification/specification';
-import elementSpecificationEntries from '../library/specification';
+import { registerElementSpecificationEntries } from '../../syntax/specification/specification';
+import elementSpecificationEntries from '../../library/specification';
 
 // -------------------------------------------------------------------------------------------------
 

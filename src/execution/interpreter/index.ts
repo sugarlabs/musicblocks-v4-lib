@@ -1,15 +1,15 @@
-import type { TData, TDataName } from '../@types/data';
-import type { IVariable, TPCOverride } from '../@types/execution';
+import type { TData, TDataName } from '../../@types/data';
+import type { IVariable, TPCOverride } from '../../@types/execution';
 
-import { addGlobalVariable, getGlobalVariable } from './symbolTable';
-import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from './parser';
+import { addGlobalVariable, getGlobalVariable } from '../symbolTable';
+import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from '../parser';
 
 import {
     ElementData,
     ElementExpression,
     ElementArgument,
-} from '../syntax/elements/elementArgument';
-import { ElementStatement, ElementBlock } from '../syntax/elements/elementInstruction';
+} from '../../syntax/elements/elementArgument';
+import { ElementStatement, ElementBlock } from '../../syntax/elements/elementInstruction';
 
 // -- private functions ----------------------------------------------------------------------------
 

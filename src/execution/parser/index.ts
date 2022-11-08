@@ -1,5 +1,5 @@
-import type { IParsedElement, TPCOverride } from '../@types/execution';
-import type { TData } from '../@types/data';
+import type { IParsedElement, TPCOverride } from '../../@types/execution';
+import type { TData } from '../../@types/data';
 
 import {
     TreeNode,
@@ -7,13 +7,13 @@ import {
     TreeNodeExpression,
     TreeNodeStatement,
     TreeNodeBlock,
-} from '../syntax/tree/node';
+} from '../../syntax/tree/node';
 
-import { getProcessNodes, getRoutineNodes, getCrumbs } from '../syntax/tree/syntaxTree';
-import { getInstance } from '../syntax/warehouse/warehouse';
+import { getProcessNodes, getRoutineNodes, getCrumbs } from '../../syntax/tree/syntaxTree';
+import { getInstance } from '../../syntax/warehouse/warehouse';
 
-import { ElementData, ElementExpression } from '../syntax/elements/elementArgument';
-import { ElementBlock, ElementStatement } from '../syntax/elements/elementInstruction';
+import { ElementData, ElementExpression } from '../../syntax/elements/elementArgument';
+import { ElementBlock, ElementStatement } from '../../syntax/elements/elementInstruction';
 
 // -- private variables ----------------------------------------------------------------------------
 

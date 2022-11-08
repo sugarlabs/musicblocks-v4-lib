@@ -1,9 +1,9 @@
-import { run } from './interpreter';
+import { run } from '.';
 
-import { generateFromSnapshot, generateSnapshot } from '../syntax/tree/syntaxTree';
+import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree/syntaxTree';
 
-import { registerElementSpecificationEntries } from '../syntax/specification/specification';
-import elementSpecification from '../library/specification';
+import { registerElementSpecificationEntries } from '../../syntax/specification/specification';
+import elementSpecification from '../../library/specification';
 
 // -------------------------------------------------------------------------------------------------
 
