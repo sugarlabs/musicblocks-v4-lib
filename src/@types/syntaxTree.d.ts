@@ -127,35 +127,35 @@ export interface ITreeNodeExpression extends ITreeNodeArgument {
     /** Returns a snapshot of the syntax tree expression node. */
     snapshot: ITreeSnapshotExpression;
     /** Object with key-value pairs of argument names and corresponding argument nodes. */
-    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null } = {};
+    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null };
     /**
      * Adds an argument connection.
      * @param argName - name of the argument
      * @param node - node instance of the connecting node
      */
-    public attachArg(argName: string, node: ITreeNodeData | ITreeNodeExpression): void;
+    attachArg(argName: string, node: ITreeNodeData | ITreeNodeExpression): void;
     /**
      * Removes an argument connection.
      * @param argName - name of the argument
      */
-    public detachArg(argName: string): void;
+    detachArg(argName: string): void;
 }
 
 /** Type definition for a generic syntax tree instruction node. */
 export interface ITreeNodeInstruction extends ITreeNode {
     /** Object with key-value pairs of argument names and corresponding argument nodes. */
-    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null } = {};
+    argConnections: { [arg: string]: TreeNodeData | TreeNodeExpression | null };
     /**
      * Adds an argument connection.
      * @param argName - name of the argument
      * @param node - node instance of the connecting node
      */
-    public attachArg(argName: string, node: ITreeNodeData | ITreeNodeExpression): void;
+    attachArg(argName: string, node: ITreeNodeData | ITreeNodeExpression): void;
     /**
      * Removes an argument connection.
      * @param argName - name of the argument
      */
-    public detachArg(argName: string): void;
+    detachArg(argName: string): void;
     /** Syntax tree node reference of the preceding instruction element. */
     beforeConnection: ITreeNodeInstruction | null;
     /** Syntax tree node reference of the following instruction element. */

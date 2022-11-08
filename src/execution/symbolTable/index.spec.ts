@@ -1,4 +1,4 @@
-import * as symbolTable from './symbolTable';
+import * as symbolTable from '.';
 
 // -------------------------------------------------------------------------------------------------
 

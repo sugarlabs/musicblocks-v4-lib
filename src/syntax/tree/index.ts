@@ -20,8 +20,8 @@ import {
     TreeNodeStatement,
     TreeNodeBlock,
 } from './node';
-import { addInstance, getInstance, removeInstance } from '../warehouse/warehouse';
-import { checkValueAssignment, queryElementSpecification } from '../specification/specification';
+import { addInstance, getInstance, removeInstance } from '../warehouse';
+import { checkValueAssignment, queryElementSpecification } from '../specification';
 
 import { ElementArgument } from '../elements/elementArgument';
 

@@ -11,12 +11,12 @@ import {
     getTypeCount,
     getTypeCountAll,
     resetWarehouse,
-} from './warehouse';
+} from '.';
 
 import { ElementBlock } from '../elements/elementInstruction';
 
-import { registerElementSpecificationEntries } from '../specification/specification';
-import elementSpecificationEntries from '../../library/specification';
+import { registerElementSpecificationEntries } from '../specification';
+import elementSpecificationEntries from '../../library';
 
 import { ElementBoxBoolean } from '../../library/elements/elementBox';
 import { ElementOperatorMathPlus } from '../../library/elements/elementOperatorMath';

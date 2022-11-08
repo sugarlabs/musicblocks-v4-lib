@@ -17,12 +17,12 @@ import {
     generateFromSnapshot,
     resetSyntaxTree,
     assignNodeValue,
-} from './syntaxTree';
+} from '.';
 import { TreeNodeData, TreeNodeStatement, TreeNodeBlock } from './node';
-import { getInstance } from '../warehouse/warehouse';
+import { getInstance } from '../warehouse';
 
-import { registerElementSpecificationEntries } from '../specification/specification';
-import elementSpecificationEntries from '../../library/specification';
+import { registerElementSpecificationEntries } from '../specification';
+import elementSpecificationEntries from '../../library';
 
 import { ElementProcess, ElementRoutine } from '../../library/elements/elementProgram';
 import { ElementValueBoolean } from '../../library/elements/elementValue';

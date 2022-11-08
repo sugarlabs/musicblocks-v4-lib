@@ -22,7 +22,7 @@ export {
     resetElementSpecificationTable,
     getSpecificationSnapshot,
     checkValueAssignment,
-} from './syntax/specification/specification';
+} from './syntax/specification';
 
 // -- syntax tree ----------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ export {
     generateFromSnapshot,
     resetSyntaxTree,
     assignNodeValue,
-} from './syntax/tree/syntaxTree';
+} from './syntax/tree';
 
 // -- warehouse ------------------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export {
     getTypeCountAll,
     getKindCount,
     getKindCountAll,
-} from './syntax/warehouse/warehouse';
+} from './syntax/warehouse';
 
 // == EXECUTION ====================================================================================
 
@@ -69,7 +69,7 @@ export {
 
 // -- specification --------------------------------------------------------------------------------
 
-export { default as librarySpecification } from './library/specification';
+export { default as librarySpecification } from './library';
 
 // -- elements -------------------------------------------------------------------------------------
 

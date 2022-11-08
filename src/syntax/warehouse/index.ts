@@ -7,7 +7,7 @@ import type {
 } from '../../@types/specification';
 import type { TData } from '../../@types/data';
 
-import { queryElementSpecification } from '../specification/specification';
+import { queryElementSpecification } from '../specification';
 
 import { ElementSyntax } from '../elements/elementSyntax';
 import { ElementData, ElementExpression } from '../elements/elementArgument';
