@@ -4,13 +4,13 @@ import {
     ElementBoxIdentifierNumber,
     ElementBoxIdentifierString,
 } from './elementBoxIdentifier';
-import { addGlobalVariable } from '../../execution/symbolTable';
+import { declareVariable } from '../../execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 
-addGlobalVariable('myVar1', 'boolean', true);
-addGlobalVariable('myVar2', 'number', 5);
-addGlobalVariable('myVar3', 'string', 'foo');
+declareVariable('myVar1', 'boolean', true);
+declareVariable('myVar2', 'number', 5);
+declareVariable('myVar3', 'string', 'foo');
 
 describe('Box Identifier Elements', () => {
     describe('class ElementBoxIdentifierGeneric', () => {

@@ -1,7 +1,7 @@
 import type { TData, TDataName } from '../../@types/data';
 import type { IVariable, TPCOverride } from '../../@types/execution';
 
-import { addGlobalVariable, getGlobalVariable } from '../symbolTable';
+import { addGlobalSymbol, getGlobalSymbol } from '../symbolTable/scope';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from '../parser';
 
 import {
@@ -25,7 +25,10 @@ export function declareVariable(variable: string, dataType: 'number', value: num
 export function declareVariable(variable: string, dataType: 'string', value: string): void;
 export function declareVariable(variable: string, dataType: 'boolean', value: boolean): void;
 export function declareVariable(variable: string, dataType: TDataName, value: TData): void {
-    addGlobalVariable(variable, dataType, value);
+    addGlobalSymbol(variable, {
+        type: dataType,
+        data: { value },
+    });
 }
 
 /**
@@ -34,7 +37,11 @@ export function declareVariable(variable: string, dataType: TDataName, value: TD
  * @returns the variable entry if present, else `null`
  */
 export function queryVariable(variable: string): IVariable | null {
-    return getGlobalVariable(variable);
+    const { type, data } = getGlobalSymbol(variable)!;
+    return {
+        dataType: type as TDataName,
+        value: (data as { value: TData }).value,
+    };
 }
 
 /**
