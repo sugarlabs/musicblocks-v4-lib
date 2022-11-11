@@ -2,7 +2,7 @@ import { LayeredMap } from './utils';
 
 // -- types ----------------------------------------------------------------------------------------
 
-import type { IContextStack, IContextManager } from '../../@types/symbolTable';
+import type { IContextStack, IContextManager } from '../../@types/scope';
 
 // -- public classes -------------------------------------------------------------------------------
 

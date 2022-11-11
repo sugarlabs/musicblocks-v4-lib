@@ -8,11 +8,11 @@ import {
     removeGlobalSymbol,
     listGlobalSymbols,
     getGlobalSymbol,
-} from './scope';
+} from '.';
 
 // -- types ----------------------------------------------------------------------------------------
 
-import type { IContextStack, IScopeStack } from '../../@types/symbolTable';
+import type { IContextStack, IScopeStack } from '../../@types/scope';
 
 type TContextPainter = {
     color: string;

@@ -11,7 +11,7 @@ import type {
     ISymbolTableStack,
     ISymbolTableManager,
     IScopeStack,
-} from '../../@types/symbolTable';
+} from '../../@types/scope';
 
 // -- private variables ----------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ import { SymbolTableStack, SymbolTableManager } from './symbolTable';
 
 // -- types ----------------------------------------------------------------------------------------
 
-import type { ISymbolTableStack } from '../../@types/symbolTable';
+import type { ISymbolTableStack } from '../../@types/scope';
 
 type TSymbolDataProcess = {
     pc: number;

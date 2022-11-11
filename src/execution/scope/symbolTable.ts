@@ -8,7 +8,7 @@ import type {
     ISymbolTableStack,
     TSymbolEntry,
     TSymbolTableKeyMap,
-} from '../../@types/symbolTable';
+} from '../../@types/scope';
 
 // -- public classes -------------------------------------------------------------------------------
 

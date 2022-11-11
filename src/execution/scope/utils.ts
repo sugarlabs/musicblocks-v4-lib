@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // -- types ----------------------------------------------------------------------------------------
 
-import type { ILayeredMap } from '../../@types/symbolTable';
+import type { ILayeredMap } from '../../@types/scope';
 
 /** Interface for each node (frame) in the tree. */
 interface TLayeredMapFrame<T> {

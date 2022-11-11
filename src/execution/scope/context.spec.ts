@@ -2,7 +2,7 @@ import { ContextManager } from './context';
 
 // -- types ----------------------------------------------------------------------------------------
 
-import type { IContextStack } from '../../@types/symbolTable';
+import type { IContextStack } from '../../@types/scope';
 
 type TContextDummy = {
     foo: number;

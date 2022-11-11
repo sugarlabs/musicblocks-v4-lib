@@ -1,7 +1,7 @@
 import type { TData, TDataName } from '../../@types/data';
 import type { IVariable, TPCOverride } from '../../@types/execution';
 
-import { addGlobalSymbol, getGlobalSymbol } from '../symbolTable/scope';
+import { addGlobalSymbol, getGlobalSymbol } from '../scope';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from '../parser';
 
 import {
