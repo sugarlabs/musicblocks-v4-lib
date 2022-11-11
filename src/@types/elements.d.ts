@@ -1,5 +1,6 @@
 import { TData, TDataName } from './data';
 import { TElementKind, TElementType } from './specification';
+import { IContext, ISymbolTable } from './scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -42,26 +43,35 @@ export interface IElementArgument<T> extends IElementSyntax {
 export interface IElementData<T> extends IElementArgument<T> {
     /**
      * Evalutates the logic of the data element (usually based on the label).
+     * @param scope An object containing context and symbol table instances
      */
-    evaluate(): void;
+    evaluate(scope: { context: IContext; symbolTable: ISymbolTable }): void;
 }
 
 /** Generic interface for the class that implements an expression element. */
 export interface IElementExpression<T> extends IElementArgument<T> {
     /**
      * Evalutates the logic of the expression using the supplied parameters and stores the value.
-     * @param params - An object containing key-value pairs of each argument and it's value
+     * @param scope object containing context and symbol table instances
+     * @param params object containing key-value pairs of each argument and it's value
      */
-    evaluate(params: { [key: string]: TData }): void;
+    evaluate(
+        scope: { context: IContext; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }
 
 /** Interface for the class that implements an instruction element. */
 export interface IElementInstruction extends IElementSyntax {
     /**
      * Executes the instruction using the supplied parameters.
-     * @param params - An object containing key-value pairs of each argument and it's value
+     * @param scope object containing context and symbol table instances
+     * @param params object containing key-value pairs of each argument and it's value
      */
-    onVisit(params: { [key: string]: TData }): void;
+    onVisit(
+        scope: { context: IContext; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }
 
 /** Interface for the class that implements a statement element. */
@@ -69,10 +79,28 @@ export interface IElementStatement extends IElementInstruction {}
 
 /** Interface for the class that implements a block element. */
 export interface IElementBlock extends IElementInstruction {
-    /** Executes before each containing instruction is executed. */
-    onInnerVisit(): void;
-    /** Executes after each containing instruction is executed. */
-    onInnerExit(): void;
-    /** Executes after all containing instructions are executed. */
-    onExit(): void;
+    /**
+     * Executes before each containing instruction is executed.
+     * @param scope object containing context and symbol table instances
+     */
+    onInnerVisit(
+        scope: { context: IContext; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
+    /**
+     * Executes after each containing instruction is executed.
+     * @param scope object containing context and symbol table instances
+     */
+    onInnerExit(
+        scope: { context: IContext; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
+    /**
+     * Executes after all containing instructions are executed.
+     * @param scope object containing context and symbol table instances
+     */
+    onExit(
+        scope: { context: IContext; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }

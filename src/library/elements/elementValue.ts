@@ -1,6 +1,9 @@
-import type { TDataName } from '../../@types/data';
-
 import { ElementData } from '../../syntax/elements/elementArgument';
+
+// -- types ----------------------------------------------------------------------------------------
+
+import type { TDataName } from '../../@types/data';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -22,7 +25,10 @@ abstract class ElementValue<T> extends ElementData<T> {
     }
 
     /** @throws `Error` (TypeMismatchError) */
-    public evaluate(): void {
+    public evaluate(_: {
+        context: IContext<Record<string, unknown>>;
+        symbolTable: ISymbolTable;
+    }): void {
         switch (this.returnType[0]) {
             case 'boolean':
                 if (this.label === 'true' || this.label === 'false') {

@@ -1,7 +1,10 @@
+import { ElementSyntax } from './elementSyntax';
+
+// -- types ----------------------------------------------------------------------------------------
+
 import type { TData, TDataName } from '../../@types/data';
 import type { IElementArgument, IElementExpression, IElementData } from '../../@types/elements';
-
-import { ElementSyntax } from './elementSyntax';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -80,7 +83,10 @@ export abstract class ElementData<T> extends ElementArgument<T> implements IElem
         super(name, label, 'Data', argMap, returnType, initialValue);
     }
 
-    public abstract evaluate(): void;
+    public abstract evaluate(scope: {
+        context: IContext<Record<string, unknown>>;
+        symbolTable: ISymbolTable;
+    }): void;
 }
 
 /**
@@ -114,5 +120,8 @@ export abstract class ElementExpression<T>
         super(name, label, 'Expression', argMap, returnType, initialValue);
     }
 
-    public abstract evaluate(params: { [key: string]: TData }): void;
+    public abstract evaluate(
+        scope: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }

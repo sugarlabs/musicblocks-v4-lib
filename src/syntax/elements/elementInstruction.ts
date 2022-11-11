@@ -1,7 +1,10 @@
+import { ElementSyntax } from './elementSyntax';
+
+// -- types ----------------------------------------------------------------------------------------
+
 import type { TData, TDataName } from '../../@types/data';
 import type { IElementBlock, IElementInstruction, IElementStatement } from '../../@types/elements';
-
-import { ElementSyntax } from './elementSyntax';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -31,7 +34,10 @@ export abstract class ElementInstruction extends ElementSyntax implements IEleme
         super(name, label, 'Instruction', type, argMap);
     }
 
-    public abstract onVisit(params: { [key: string]: TData }): void;
+    public abstract onVisit(
+        scope: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }
 
 /**
@@ -75,9 +81,18 @@ export abstract class ElementBlock extends ElementInstruction implements IElemen
         super(name, label, 'Block', argMap);
     }
 
-    public abstract onInnerVisit(): void;
+    public abstract onInnerVisit(
+        scope: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 
-    public abstract onInnerExit(): void;
+    public abstract onInnerExit(
+        scope: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 
-    public abstract onExit(): void;
+    public abstract onExit(
+        scope: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { [key: string]: TData }
+    ): void;
 }

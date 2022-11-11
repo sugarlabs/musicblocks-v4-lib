@@ -1,6 +1,11 @@
 import { ElementValueBoolean, ElementValueNumber, ElementValueString } from './elementValue';
 
+import { registerContext, ScopeStack } from '../../execution/scope';
+
 // -------------------------------------------------------------------------------------------------
+
+registerContext('dummy', {});
+const scopeStack = new ScopeStack();
 
 describe('class ElementValueBoolean', () => {
     let elementValueBoolean: ElementValueBoolean;
@@ -13,7 +18,10 @@ describe('class ElementValueBoolean', () => {
 
     test('update label and verify new value', () => {
         elementValueBoolean.updateLabel('false');
-        elementValueBoolean.evaluate();
+        elementValueBoolean.evaluate({
+            context: scopeStack.getContext('dummy'),
+            symbolTable: scopeStack.getSymbolTable(),
+        });
         expect(elementValueBoolean.value).toBe(false);
     });
 });
@@ -29,7 +37,10 @@ describe('class ElementValueNumber', () => {
 
     test('update label and verify new value', () => {
         elementValueNumber.updateLabel('5');
-        elementValueNumber.evaluate();
+        elementValueNumber.evaluate({
+            context: scopeStack.getContext('dummy'),
+            symbolTable: scopeStack.getSymbolTable(),
+        });
         expect(elementValueNumber.value).toBe(5);
     });
 });
@@ -45,7 +56,10 @@ describe('class ElementValueString', () => {
 
     test('update label and verify new value', () => {
         elementValueString.updateLabel('foo');
-        elementValueString.evaluate();
+        elementValueString.evaluate({
+            context: scopeStack.getContext('dummy'),
+            symbolTable: scopeStack.getSymbolTable(),
+        });
         expect(elementValueString.value).toBe('foo');
     });
 });

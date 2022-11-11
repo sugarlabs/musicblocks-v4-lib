@@ -1,11 +1,15 @@
 import { run } from '.';
 
 import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree';
+import { registerContext, ScopeStack } from '../../execution/scope';
 
 import { registerElementSpecificationEntries } from '../../syntax/specification';
 import elementSpecification from '../../library';
 
 // -------------------------------------------------------------------------------------------------
+
+registerContext('dummy', {});
+const scopeStack = new ScopeStack();
 
 registerElementSpecificationEntries(elementSpecification);
 
@@ -147,6 +151,9 @@ describe('Interpreter', () => {
         const snapshot = generateSnapshot();
 
         const node = snapshot.process[0];
-        run(node.nodeID);
+        run(node.nodeID, {
+            context: scopeStack.getContext('dummy'),
+            symbolTable: scopeStack.getSymbolTable(),
+        });
     });
 });

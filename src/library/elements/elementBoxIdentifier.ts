@@ -1,7 +1,11 @@
-import type { TData, TDataName } from '../../@types/data';
-
 import { ElementData } from '../../syntax/elements/elementArgument';
+
 import { queryVariable } from '../../execution/interpreter';
+
+// -- types ----------------------------------------------------------------------------------------
+
+import type { TData, TDataName } from '../../@types/data';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -28,7 +32,10 @@ abstract class ElementBoxIdentifier<T> extends ElementData<T> {
     }
 
     /** @override */
-    public evaluate(): void {
+    public evaluate(_: {
+        context: IContext<Record<string, unknown>>;
+        symbolTable: ISymbolTable;
+    }): void {
         const expectedType = typeof this._value as TDataName;
 
         try {
