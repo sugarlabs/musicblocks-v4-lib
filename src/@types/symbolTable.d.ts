@@ -201,3 +201,30 @@ export interface ISymbolTableManager {
     /** Resets states. */
     reset(): void;
 }
+
+// == symbol table =================================================================================
+
+/** Interface for a `Scope` instance. */
+export interface IScope {
+    /**
+     * Returns a context instance by name.
+     * @param name context name
+     */
+    // eslint-disable-next-line
+    getContext(name: string): IContext<Object>;
+    /**
+     * Returns symbol table stack.
+     */
+    getSymbolTable(): ISymbolTable;
+}
+
+/** Interface for a `Scope` stack. */
+export interface IScopeStack extends IScope {
+    /** Pushes a new scope frame into the stack. */
+    pushFrame(): void;
+    /**
+     * Removes topmost scope frame from the stack.
+     * @throws InvalidOperationError if popping root frame
+     */
+    popFrame(): void;
+}

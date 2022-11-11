@@ -52,3 +52,7 @@ Context.
 ## Symbol Table
 
 Symbol Table.
+
+## Scope
+
+Scope.
