@@ -48,3 +48,7 @@ projecting from F returns: K1(a), K2(b), K3(c), K4(d),        K6(i),            
 ## Context
 
 Context.
+
+## Symbol Table
+
+Symbol Table.

@@ -93,3 +93,111 @@ export interface IContextManager<T extends Object> {
     /** Resets states. */
     reset(): void;
 }
+
+// == symbol table =================================================================================
+
+/** Type definition for each symbol's value entry. */
+type TSymbolEntry<T> = {
+    /** Symbol type. */
+    type: string;
+    /** Symbol value. */
+    data: T;
+};
+
+/** Type definition for a symbol table key-value dictionary. */
+export type TSymbolTableKeyMap = Record<string, TSymbolEntry<unknown>>;
+
+/** Interface for a `Symbol Table` instance. */
+export interface ISymbolTable {
+    /** Symbol table ID. */
+    get symbolTableID(): string;
+    /**
+     * Adds new symbol.
+     * @param name symbol name
+     * @param entry symbol entry
+     * @param scope whether local or global
+     */
+    addSymbol(name: string, entry: TSymbolEntry<unknown>, scope?: 'local' | 'global'): void;
+    /**
+     * Returns existing symbol by name.
+     * @param name symbol name
+     * @param scope whether local or global
+     * @returns symbol entry if present else `undefined`
+     */
+    getSymbol(name: string, scope?: 'local' | 'global'): TSymbolEntry<unknown> | undefined;
+    // renameSymbol(oldName: string, newName: string): void;
+    /**
+     * Removes existing symbol by name.
+     * @param name symbol name
+     * @param scope whether local or global
+     * @throws InvalidSymbolError if symbol doesn't exist
+     */
+    removeSymbol(name: string, scope?: 'local' | 'global'): void;
+    listSymbols(): TSymbolTableKeyMap;
+    listSymbols(orderBy: 'name'): TSymbolTableKeyMap;
+    listSymbols(orderBy: 'type'): { [type: string]: TSymbolTableKeyMap };
+    /**
+     * Lists local symbol table as key-value dictionary.
+     * @param orderBy whether to list by name or grouped by type
+     * @returns a JSON object of key-value pairs
+     */
+    listSymbols(orderBy: 'name' | 'type'): TSymbolTableKeyMap;
+}
+
+/** Interface for a `Symbol Table` stack. */
+export interface ISymbolTableStack extends ISymbolTable {
+    /** Pushes a new symbol table frame into the stack. */
+    pushFrame(): void;
+    /**
+     * Removes topmost symbol table frame from the stack.
+     * @throws InvalidOperationError if popping root frame
+     */
+    popFrame(): void;
+}
+
+/** Interface for a `Symbol Table` manager. */
+export interface ISymbolTableManager {
+    /** Creates a new symbol table stack. */
+    createSymbolTableStack(): ISymbolTableStack;
+    /**
+     * Returns an existing symbol table stack.
+     * @param symbolTableStackID symbol table stack ID
+     * @throws InvalidAccessError if symbol table stack with symbolTableStackID doesn't exist
+     */
+    getSymbolTableStack(symbolTableStackID: string): ISymbolTableStack;
+    /**
+     * Removes an existing symbol table stack.
+     * @param symbolTableStackID symbol table stack ID
+     * @throws InvalidAccessError if symbol table stack with symbolTableStackID doesn't exist
+     */
+    removeSymbolTableStack(symbolTableStackID: string): void;
+    /**
+     * Adds new global symbol.
+     * @param name symbol name
+     * @param entry symbol entry
+     */
+    addGlobalSymbol(name: string, entry: TSymbolEntry<unknown>): void;
+    /**
+     * Returns existing global symbol by name.
+     * @param name symbol name
+     * @returns symbol entry if present else `undefined`
+     */
+    getGlobalSymbol(name: string): TSymbolEntry<unknown> | undefined;
+    /**
+     * Removes existing global symbol by name.
+     * @param name symbol name
+     * @throws InvalidSymbolError if symbol doesn't exist
+     */
+    removeGlobalSymbol(name: string): void;
+    listGlobalSymbols(): TSymbolTableKeyMap;
+    listGlobalSymbols(orderBy: 'name'): TSymbolTableKeyMap;
+    listGlobalSymbols(orderBy: 'type'): { [type: string]: TSymbolTableKeyMap };
+    /**
+     * Lists global symbol table as key-value dictionary.
+     * @param orderBy whether to list by name or grouped by type
+     * @returns a JSON object of key-value pairs
+     */
+    listGlobalSymbols(orderBy: 'name' | 'type'): TSymbolTableKeyMap;
+    /** Resets states. */
+    reset(): void;
+}
