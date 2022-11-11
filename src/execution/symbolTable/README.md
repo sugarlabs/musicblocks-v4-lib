@@ -44,3 +44,7 @@ projecting from D returns: K1(a), K2(b), K3(c), K4(d),        K6(i), K7(j), K8(k
 projecting from E returns: K1(a), K2(b), K3(c), K4(d),        K6(i),               K9(l)
 projecting from F returns: K1(a), K2(b), K3(c), K4(d),        K6(i),               K9(l), KA(m)
 ```
+
+## Context
+
+Context.
