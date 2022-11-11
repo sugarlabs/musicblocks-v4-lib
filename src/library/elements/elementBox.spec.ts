@@ -4,7 +4,7 @@ import {
     ElementBoxString,
     ElementBoxGeneric,
 } from './elementBox';
-import { getGlobalVariable } from '../../execution/symbolTable';
+import { queryVariable } from '../../execution/interpreter';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ describe('Box Elements', () => {
             const elementBoxBoolean = new ElementBoxBoolean('box-boolean', 'Box (boolean)');
             expect(elementBoxBoolean.label).toBe('Box (boolean)');
             elementBoxBoolean.onVisit({ name: 'booleanBox', value: true });
-            expect(getGlobalVariable('booleanBox')).toEqual({
+            expect(queryVariable('booleanBox')).toEqual({
                 dataType: 'boolean',
                 value: true,
             });
@@ -36,7 +36,7 @@ describe('Box Elements', () => {
             const elementBoxNumber = new ElementBoxNumber('box-number', 'Box (number)');
             expect(elementBoxNumber.label).toBe('Box (number)');
             elementBoxNumber.onVisit({ name: 'numberBox', value: 5 });
-            expect(getGlobalVariable('numberBox')).toEqual({
+            expect(queryVariable('numberBox')).toEqual({
                 dataType: 'number',
                 value: 5,
             });
@@ -48,7 +48,7 @@ describe('Box Elements', () => {
             const elementBoxString = new ElementBoxString('box-string', 'Box (string)');
             expect(elementBoxString.label).toBe('Box (string)');
             elementBoxString.onVisit({ name: 'stringBox', value: 'foo' });
-            expect(getGlobalVariable('stringBox')).toEqual({
+            expect(queryVariable('stringBox')).toEqual({
                 dataType: 'string',
                 value: 'foo',
             });
@@ -59,7 +59,7 @@ describe('Box Elements', () => {
         test('execute with boolean value parameter and verify variable addition in symbol table', () => {
             const elementBoxGeneric = new ElementBoxGeneric('box-generic', 'Box');
             elementBoxGeneric.onVisit({ name: 'genericBox', value: true });
-            expect(getGlobalVariable('genericBox')).toEqual({
+            expect(queryVariable('genericBox')).toEqual({
                 dataType: 'boolean',
                 value: true,
             });
@@ -68,7 +68,7 @@ describe('Box Elements', () => {
         test('execute with number value parameter and verify variable addition in symbol table', () => {
             const elementBoxGeneric = new ElementBoxGeneric('box-generic', 'Box');
             elementBoxGeneric.onVisit({ name: 'genericBox', value: 5 });
-            expect(getGlobalVariable('genericBox')).toEqual({
+            expect(queryVariable('genericBox')).toEqual({
                 dataType: 'number',
                 value: 5,
             });
@@ -77,7 +77,7 @@ describe('Box Elements', () => {
         test('execute with string value parameter and verify variable addition in symbol table', () => {
             const elementBoxGeneric = new ElementBoxGeneric('box-generic', 'Box');
             elementBoxGeneric.onVisit({ name: 'genericBox', value: 'foo' });
-            expect(getGlobalVariable('genericBox')).toEqual({
+            expect(queryVariable('genericBox')).toEqual({
                 dataType: 'string',
                 value: 'foo',
             });
