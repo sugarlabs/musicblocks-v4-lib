@@ -35,8 +35,9 @@ export interface IElementSpecificationData {
 }
 
 /** Type for the specification entry object for data elements. */
-export interface IElementSpecificationEntryData extends IElementSpecificationData {
-    classification: TElementClassification;
+export interface IElementSpecificationEntryData
+    extends Omit<IElementSpecificationData, 'classification'> {
+    category: string;
     label: string;
     type: 'Data';
     prototype: typeof IElementData;
@@ -51,8 +52,9 @@ export interface IElementSpecificationExpression {
 }
 
 /** Type for the specification object for expression elements. */
-export interface IElementSpecificationEntryExpression extends IElementSpecificationExpression {
-    classification: TElementClassification;
+export interface IElementSpecificationEntryExpression
+    extends Omit<IElementSpecificationEntryExpression, 'classification'> {
+    category: string;
     label: string;
     type: 'Expression';
     prototype: typeof IElementExpression;
@@ -78,8 +80,11 @@ export type IElementSpecificationStatement = IElementSpecificationInstruction & 
 };
 
 /** Type for the specification object for statement elements. */
-export type IElementSpecificationEntryStatement = IElementSpecificationInstruction & {
-    classification: TElementClassification;
+export type IElementSpecificationEntryStatement = Omit<
+    IElementSpecificationStatement,
+    'classification'
+> & {
+    category: string;
     label: string;
     type: 'Statement';
     prototype: typeof IElementStatement;
@@ -96,8 +101,8 @@ export type IElementSpecificationBlock = IElementSpecificationInstruction & {
 };
 
 /** Type for the specification entry object for block elements. */
-export type IElementSpecificationEntryBlock = IElementSpecificationInstruction & {
-    classification: TElementClassification;
+export type IElementSpecificationEntryBlock = Omit<IElementSpecificationBlock, 'classification'> & {
+    category: string;
     label: string;
     type: 'Block';
     prototype: typeof IElementBlock;
@@ -131,3 +136,20 @@ export interface IElementSpecification {
 export interface IElementSpecificationSnapshot extends Omit<IElementSpecification, 'prototype'> {
     prototypeName: string;
 }
+
+/** Type definition for a table of element specification entries. */
+export type IElementSpecificationEntries = {
+    /** Element group name. */
+    [group: string]: {
+        /** Element specification entries by element name/identifier. */
+        entries: {
+            [identifier: string]:
+                | IElementSpecificationEntryData
+                | IElementSpecificationEntryExpression
+                | IElementSpecificationEntryStatement
+                | IElementSpecificationEntryBlock;
+        };
+        /** Element group context key-value dictionary. */
+        context?: Record<string, unknown>;
+    };
+};

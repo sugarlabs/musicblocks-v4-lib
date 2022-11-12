@@ -2,6 +2,10 @@ import { ElementBlock } from '../../syntax/elements/elementInstruction';
 
 import { overrideProgramCounter } from '../../execution/interpreter';
 
+// -- types ----------------------------------------------------------------------------------------
+
+import type { IContext, ISymbolTable } from '../../@types/scope';
+
 // -------------------------------------------------------------------------------------------------
 
 /**
@@ -17,7 +21,13 @@ export class ElementRepeat extends ElementBlock {
 
     private _counter = 0;
 
-    onVisit(params: { times: number }): void {
+    onVisit(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { times: number }
+    ): void {
         this._counter = params.times;
     }
 

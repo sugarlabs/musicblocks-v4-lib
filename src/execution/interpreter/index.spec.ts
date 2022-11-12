@@ -1,6 +1,7 @@
 import { run } from '.';
 
 import { generateFromSnapshot, generateSnapshot } from '../../syntax/tree';
+import { ScopeStack } from '../../execution/scope';
 
 import { registerElementSpecificationEntries } from '../../syntax/specification';
 import elementSpecification from '../../library';
@@ -8,6 +9,7 @@ import elementSpecification from '../../library';
 // -------------------------------------------------------------------------------------------------
 
 registerElementSpecificationEntries(elementSpecification);
+const scopeStack = new ScopeStack();
 
 describe('Interpreter', () => {
     test('run a process and verify', () => {
@@ -147,6 +149,9 @@ describe('Interpreter', () => {
         const snapshot = generateSnapshot();
 
         const node = snapshot.process[0];
-        run(node.nodeID);
+        run(node.nodeID, {
+            context: scopeStack.getContext('programming'),
+            symbolTable: scopeStack.getSymbolTable(),
+        });
     });
 });

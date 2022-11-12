@@ -1,6 +1,3 @@
-import type { TData, TDataName } from '../../@types/data';
-import type { IVariable, TPCOverride } from '../../@types/execution';
-
 import { addGlobalSymbol, getGlobalSymbol } from '../scope';
 import { setPCOverride, clearPCOverride, setExecutionItem, getNextElement } from '../parser';
 
@@ -11,7 +8,11 @@ import {
 } from '../../syntax/elements/elementArgument';
 import { ElementStatement, ElementBlock } from '../../syntax/elements/elementInstruction';
 
-// -- private functions ----------------------------------------------------------------------------
+// -- types ----------------------------------------------------------------------------------------
+
+import type { TData, TDataName } from '../../@types/data';
+import type { IVariable, TPCOverride } from '../../@types/execution';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -- public functions -----------------------------------------------------------------------------
 
@@ -63,13 +64,28 @@ export function releaseProgramCounter(): void {
  * Runs a process, routine, or crumb stack from start to end.
  * @param nodeID syntax tree node ID of the starting node
  */
-export function run(nodeID: string): void {
+export function run(
+    nodeID: string,
+    scope: {
+        context: IContext<Record<string, unknown>>;
+        symbolTable: ISymbolTable;
+    }
+): void {
     abstract class ElementDataCover extends ElementData<TData> {
-        abstract evaluate(): void;
+        abstract evaluate(scope: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        }): void;
     }
 
     abstract class ElementExpressionCover extends ElementExpression<TData> {
-        abstract evaluate(params: { [key: string]: TData }): void;
+        abstract evaluate(
+            scope: {
+                context: IContext<Record<string, unknown>>;
+                symbolTable: ISymbolTable;
+            },
+            params: { [key: string]: TData }
+        ): void;
     }
 
     setExecutionItem(nodeID);
@@ -86,9 +102,9 @@ export function run(nodeID: string): void {
         const { instance, type, marker } = element;
         if (type === 'Argument') {
             if (instance instanceof ElementDataCover) {
-                instance.evaluate();
+                instance.evaluate(scope);
             } /* instance instanceof ElementExpressionCover */ else {
-                (instance as ElementExpressionCover).evaluate(memo);
+                (instance as ElementExpressionCover).evaluate(scope, memo);
             }
 
             const value = (instance as unknown as ElementArgument<TData>).value;
@@ -98,12 +114,12 @@ export function run(nodeID: string): void {
             }
         } else {
             if (instance instanceof ElementStatement) {
-                instance.onVisit(memo);
+                instance.onVisit(scope, memo);
             } /* instance instanceof ElementBlock */ else {
                 if (marker !== '__rollback__') {
-                    (instance as ElementBlock).onVisit(memo);
+                    (instance as ElementBlock).onVisit(scope, memo);
                 } else {
-                    (instance as ElementBlock).onExit();
+                    (instance as ElementBlock).onExit(scope, {});
                 }
             }
         }

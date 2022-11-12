@@ -1,7 +1,11 @@
-import type { TData, TDataName } from '../../@types/data';
-
 import { ElementStatement } from '../../syntax/elements/elementInstruction';
+
 import { declareVariable } from '../../execution/interpreter';
+
+// -- types ----------------------------------------------------------------------------------------
+
+import type { TData, TDataName } from '../../@types/data';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -22,7 +26,13 @@ abstract class ElementBox extends ElementStatement {
     }
 
     /** @override */
-    public onVisit(params: { name: string; value: TData }): void {
+    public onVisit(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { name: string; value: TData }
+    ): void {
         switch (typeof params.value) {
             case 'boolean':
                 declareVariable(params.name, 'boolean', params.value);
@@ -49,8 +59,14 @@ export class ElementBoxGeneric extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: TData }): void {
-        super.onVisit(params);
+    onVisit(
+        scope: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { name: string; value: TData }
+    ): void {
+        super.onVisit(scope, params);
     }
 }
 
@@ -64,8 +80,14 @@ export class ElementBoxBoolean extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: boolean }): void {
-        super.onVisit(params);
+    onVisit(
+        scope: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { name: string; value: boolean }
+    ): void {
+        super.onVisit(scope, params);
     }
 }
 
@@ -79,8 +101,14 @@ export class ElementBoxNumber extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: number }): void {
-        super.onVisit(params);
+    onVisit(
+        scope: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { name: string; value: number }
+    ): void {
+        super.onVisit(scope, params);
     }
 }
 
@@ -94,7 +122,13 @@ export class ElementBoxString extends ElementBox {
     }
 
     /** @override */
-    onVisit(params: { name: string; value: string }): void {
-        super.onVisit(params);
+    onVisit(
+        scope: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { name: string; value: string }
+    ): void {
+        super.onVisit(scope, params);
     }
 }

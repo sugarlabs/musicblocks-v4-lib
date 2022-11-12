@@ -1,6 +1,9 @@
-import type { TData, TDataName } from '../../@types/data';
-
 import { ElementExpression } from '../../syntax/elements/elementArgument';
+
+// -- types ----------------------------------------------------------------------------------------
+
+import type { TData, TDataName } from '../../@types/data';
+import type { IContext, ISymbolTable } from '../../@types/scope';
 
 // -------------------------------------------------------------------------------------------------
 
@@ -31,9 +34,27 @@ abstract class ElementOperatorMath<T> extends ElementExpression<T> {
         this.updateLabel(this._operator);
     }
 
-    public evaluate(params: { operand1: number; operand2: number }): void;
-    public evaluate(params: { operand1: number | string; operand2: number | string }): void;
-    public evaluate(params: { operand1: TData; operand2: TData }): void {
+    public evaluate(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { operand1: number; operand2: number }
+    ): void;
+    public evaluate(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { operand1: number | string; operand2: number | string }
+    ): void;
+    public evaluate(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { operand1: TData; operand2: TData }
+    ): void {
         const { operand1, operand2 } = params;
 
         switch (this._operator) {

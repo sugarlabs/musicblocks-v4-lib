@@ -6,7 +6,12 @@ import {
     ElementOperatorMathModulus,
 } from './elementOperatorMath';
 
+import { registerContext, ScopeStack } from '../../execution/scope';
+
 // -------------------------------------------------------------------------------------------------
+
+registerContext('dummy', {});
+const scopeStack = new ScopeStack();
 
 describe('Operator Elements', () => {
     describe('class ElementOperatorPlus', () => {
@@ -18,17 +23,35 @@ describe('Operator Elements', () => {
 
         describe('evaluation', () => {
             test('pass two numbers as parameters to evaluate and verify result', () => {
-                elementOperatorPlus.evaluate({ operand1: 5, operand2: 15 });
+                elementOperatorPlus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 5, operand2: 15 }
+                );
                 expect(elementOperatorPlus.value).toBe(20);
             });
 
             test('pass a number and a string as parameters to evaluate and verify result', () => {
-                elementOperatorPlus.evaluate({ operand1: 5, operand2: 'foo' });
+                elementOperatorPlus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 5, operand2: 'foo' }
+                );
                 expect(elementOperatorPlus.value).toBe('5foo');
             });
 
             test('pass two strings as parameters to evaluate and verify result', () => {
-                elementOperatorPlus.evaluate({ operand1: '5', operand2: '15' });
+                elementOperatorPlus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: '5', operand2: '15' }
+                );
                 expect(elementOperatorPlus.value).toBe('515');
             });
         });
@@ -43,9 +66,21 @@ describe('Operator Elements', () => {
 
         describe('evaluation', () => {
             test('pass two numbers as parameters to evaluate and verify result', () => {
-                elementOperatorMinus.evaluate({ operand1: 15, operand2: 5 });
+                elementOperatorMinus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 15, operand2: 5 }
+                );
                 expect(elementOperatorMinus.value).toBe(10);
-                elementOperatorMinus.evaluate({ operand1: 5, operand2: 15 });
+                elementOperatorMinus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 5, operand2: 15 }
+                );
                 expect(elementOperatorMinus.value).toBe(-10);
             });
         });
@@ -60,9 +95,21 @@ describe('Operator Elements', () => {
 
         describe('evaluation', () => {
             test('pass two numbers as parameters to evaluate and verify result', () => {
-                elementOperatorTimes.evaluate({ operand1: 15, operand2: 5 });
+                elementOperatorTimes.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 15, operand2: 5 }
+                );
                 expect(elementOperatorTimes.value).toBe(75);
-                elementOperatorTimes.evaluate({ operand1: -5, operand2: 15 });
+                elementOperatorTimes.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: -5, operand2: 15 }
+                );
                 expect(elementOperatorTimes.value).toBe(-75);
             });
         });
@@ -77,9 +124,21 @@ describe('Operator Elements', () => {
 
         describe('evaluation', () => {
             test('pass two numbers as parameters to evaluate and verify result', () => {
-                elementOperatorDivide.evaluate({ operand1: 15, operand2: 5 });
+                elementOperatorDivide.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 15, operand2: 5 }
+                );
                 expect(elementOperatorDivide.value).toBe(3);
-                elementOperatorDivide.evaluate({ operand1: -5, operand2: 10 });
+                elementOperatorDivide.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: -5, operand2: 10 }
+                );
                 expect(elementOperatorDivide.value).toBe(-0.5);
             });
         });
@@ -94,9 +153,21 @@ describe('Operator Elements', () => {
 
         describe('evaluation', () => {
             test('pass two numbers as parameters to evaluate and verify result', () => {
-                elementOperatorModulus.evaluate({ operand1: 15, operand2: 5 });
+                elementOperatorModulus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 15, operand2: 5 }
+                );
                 expect(elementOperatorModulus.value).toBe(0);
-                elementOperatorModulus.evaluate({ operand1: 15, operand2: 7 });
+                elementOperatorModulus.evaluate(
+                    {
+                        context: scopeStack.getContext('dummy'),
+                        symbolTable: scopeStack.getSymbolTable(),
+                    },
+                    { operand1: 15, operand2: 7 }
+                );
                 expect(elementOperatorModulus.value).toBe(1);
             });
         });

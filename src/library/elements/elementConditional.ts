@@ -2,6 +2,10 @@ import { ElementBlock } from '../../syntax/elements/elementInstruction';
 
 import { overrideProgramCounter } from '../../execution/interpreter';
 
+// -- types ----------------------------------------------------------------------------------------
+
+import type { IContext, ISymbolTable } from '../../@types/scope';
+
 // -------------------------------------------------------------------------------------------------
 
 /**
@@ -15,7 +19,13 @@ export class ElementIf extends ElementBlock {
         super(name, label, { condition: ['boolean'] });
     }
 
-    onVisit(params: { condition: boolean }): void {
+    onVisit(
+        _: {
+            context: IContext<Record<string, unknown>>;
+            symbolTable: ISymbolTable;
+        },
+        params: { condition: boolean }
+    ): void {
         if (!params.condition) {
             overrideProgramCounter('__skipscope__');
         }

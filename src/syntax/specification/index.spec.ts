@@ -162,8 +162,8 @@ describe('Syntax Element Specification', () => {
         }
 
         test('register new element specification entry and verify', () => {
-            const status = registerElementSpecificationEntry('dummy0', {
-                classification: { group: 'group', category: 'dummy' },
+            const status = registerElementSpecificationEntry('group', 'dummy0', {
+                category: 'dummy',
                 label: 'dummy0',
                 type: 'Data',
                 prototype: DummyElementData,
@@ -189,8 +189,8 @@ describe('Syntax Element Specification', () => {
         });
 
         test('register duplicate element specification entry and verify', () => {
-            const status = registerElementSpecificationEntry('dummy0', {
-                classification: { group: 'group', category: 'dummy' },
+            const status = registerElementSpecificationEntry('group', 'dummy0', {
+                category: 'dummy',
                 label: 'dummy0',
                 type: 'Block',
                 prototype: DummyElementBlock,
@@ -200,33 +200,43 @@ describe('Syntax Element Specification', () => {
 
         test('register new element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
-                dummy1: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy1',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: ['1', '2', '3'],
-                },
-                dummy2: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy2',
-                    type: 'Expression',
-                    prototype: DummyElementExpression,
-                },
-                dummy3: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy3',
-                    type: 'Statement',
-                    prototype: DummyElementStatement,
-                },
-                dummy4: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy4',
-                    type: 'Block',
-                    prototype: DummyElementBlock,
+                group: {
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Expression',
+                            prototype: DummyElementExpression,
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Statement',
+                            prototype: DummyElementStatement,
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Block',
+                            prototype: DummyElementBlock,
+                        },
+                    },
+                    context: {},
                 },
             });
-            expect(status).toEqual([true, true, true, true]);
+            expect(Object.keys(status).length).toBe(1);
+            expect(
+                Object.entries(status['group'])
+                    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    .map(([key, value]) => `${key}-${value}`)
+            ).toEqual(['dummy1-true', 'dummy2-true', 'dummy3-true', 'dummy4-true']);
 
             const elementEntry1 = queryElementSpecification('dummy1')!;
             const elementEntry2 = queryElementSpecification('dummy2')!;
@@ -284,32 +294,42 @@ describe('Syntax Element Specification', () => {
 
         test('register duplicate element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
-                dummy1: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy1',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                },
-                dummy2: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy2',
-                    type: 'Expression',
-                    prototype: DummyElementExpression,
-                },
-                dummy3: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy3',
-                    type: 'Statement',
-                    prototype: DummyElementStatement,
-                },
-                dummy4: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy4',
-                    type: 'Block',
-                    prototype: DummyElementBlock,
+                group: {
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Expression',
+                            prototype: DummyElementExpression,
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Statement',
+                            prototype: DummyElementStatement,
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Block',
+                            prototype: DummyElementBlock,
+                        },
+                    },
+                    context: {},
                 },
             });
-            expect(status).toEqual([false, false, false, false]);
+            expect(Object.keys(status).length).toBe(1);
+            expect(
+                Object.entries(status['group'])
+                    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    .map(([key, value]) => `${key}-${value}`)
+            ).toEqual(['dummy1-false', 'dummy2-false', 'dummy3-false', 'dummy4-false']);
         });
 
         test('remove valid element specification entry and verify', () => {
@@ -397,12 +417,17 @@ describe('Syntax Element Specification', () => {
             expect(getSpecificationSnapshot()).toEqual({});
 
             registerElementSpecificationEntries({
-                dummy: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: ['1', '2', '3'],
+                group: {
+                    entries: {
+                        dummy: {
+                            category: 'dummy',
+                            label: 'dummy',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                    },
+                    context: {},
                 },
             });
             expect(getSpecificationSnapshot()['dummy'].values).toEqual(['1', '2', '3']);
@@ -411,39 +436,44 @@ describe('Syntax Element Specification', () => {
         test('check against specification valid value assignment', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
-                dummy1: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy1',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                },
-                dummy2: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy2',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: ['1', '2', '3'],
-                },
-                dummy3: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy3',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['boolean'] },
-                },
-                dummy4: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy4',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['number'] },
-                },
-                dummy5: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy5',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['string'] },
+                group: {
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['number'] },
+                        },
+                        dummy5: {
+                            category: 'dummy',
+                            label: 'dummy5',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['string'] },
+                        },
+                    },
+                    context: {},
                 },
             });
 
@@ -459,33 +489,38 @@ describe('Syntax Element Specification', () => {
         test('check against specification invalid value assignment', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
-                dummy1: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy1',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: ['1', '2', '3'],
-                },
-                dummy2: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy2',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['boolean'] },
-                },
-                dummy3: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy3',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['boolean'] },
-                },
-                dummy4: {
-                    classification: { group: 'group', category: 'dummy' },
-                    label: 'dummy4',
-                    type: 'Data',
-                    prototype: DummyElementData,
-                    values: { types: ['number'] },
+                group: {
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['number'] },
+                        },
+                    },
+                    context: {},
                 },
             });
 

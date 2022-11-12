@@ -1,6 +1,15 @@
 import { ElementArgument, ElementData, ElementExpression } from './elementArgument';
 
+import { registerContext, ScopeStack } from '../../execution/scope';
+
+// -- types ----------------------------------------------------------------------------------------
+
+import type { IContext, ISymbolTable } from '../../@types/scope';
+
 // -------------------------------------------------------------------------------------------------
+
+registerContext('dummy', {});
+const scopeStack = new ScopeStack();
 
 class DummyElementArgument<T> extends ElementArgument<T> {}
 
@@ -183,26 +192,38 @@ describe('class ElementData', () => {
 });
 
 class DummyElementExpressionNumber extends ElementExpression<number> {
-    evaluate(params: { foo: string; bar: number }): void {
+    evaluate(
+        _: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { foo: string; bar: number }
+    ): void {
         this._value = params.foo.length * params.bar;
     }
 }
 
 class DummyElementExpressionString extends ElementExpression<string> {
-    evaluate(params: { op1: string; op2: string }): void {
+    evaluate(
+        _: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { op1: string; op2: string }
+    ): void {
         this._value = params.op1 + params.op2;
     }
 }
 
 class DummyElementExpressionBoolean extends ElementExpression<boolean> {
-    evaluate(params: { op1: boolean; op2: boolean }): void {
+    evaluate(
+        _: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { op1: boolean; op2: boolean }
+    ): void {
         const { op1, op2 } = params;
         this._value = (op1 && !op2) || (!op1 && op2);
     }
 }
 
 class DummyElementExpressionMixed extends ElementExpression<string | number> {
-    evaluate(params: { op1: string; op2: number }): void {
+    evaluate(
+        _: { context: IContext<Record<string, unknown>>; symbolTable: ISymbolTable },
+        params: { op1: string; op2: number }
+    ): void {
         const { op1, op2 } = params;
         this._value = op1.length > op2 ? op1 : op2;
     }
@@ -217,7 +238,10 @@ describe('class ElementExpression', () => {
             ['number'],
             0
         );
-        dummyElementExpressionNumber.evaluate({ foo: 'abc', bar: 5 });
+        dummyElementExpressionNumber.evaluate(
+            { context: scopeStack.getContext('dummy'), symbolTable: scopeStack.getSymbolTable() },
+            { foo: 'abc', bar: 5 }
+        );
         expect(dummyElementExpressionNumber.value).toBe(15);
     });
 
@@ -229,7 +253,10 @@ describe('class ElementExpression', () => {
             ['string'],
             ''
         );
-        dummyElementExpressionString.evaluate({ op1: 'foo', op2: 'bar' });
+        dummyElementExpressionString.evaluate(
+            { context: scopeStack.getContext('dummy'), symbolTable: scopeStack.getSymbolTable() },
+            { op1: 'foo', op2: 'bar' }
+        );
         expect(dummyElementExpressionString.value).toBe('foobar');
     });
 
@@ -241,7 +268,10 @@ describe('class ElementExpression', () => {
             ['boolean'],
             true
         );
-        dummyElementExpressionNumberBoolean.evaluate({ op1: true, op2: false });
+        dummyElementExpressionNumberBoolean.evaluate(
+            { context: scopeStack.getContext('dummy'), symbolTable: scopeStack.getSymbolTable() },
+            { op1: true, op2: false }
+        );
         expect(dummyElementExpressionNumberBoolean.value).toBe(true);
     });
 
@@ -253,7 +283,10 @@ describe('class ElementExpression', () => {
             ['string', 'number'],
             0
         );
-        dummyElementExpressionNumberMixed1.evaluate({ op1: 'foobar', op2: 5 });
+        dummyElementExpressionNumberMixed1.evaluate(
+            { context: scopeStack.getContext('dummy'), symbolTable: scopeStack.getSymbolTable() },
+            { op1: 'foobar', op2: 5 }
+        );
         expect(dummyElementExpressionNumberMixed1.value).toBe('foobar');
         const dummyElementExpressionNumberMixed2 = new DummyElementExpressionMixed(
             'dummy',
@@ -262,7 +295,10 @@ describe('class ElementExpression', () => {
             ['string', 'number'],
             0
         );
-        dummyElementExpressionNumberMixed2.evaluate({ op1: 'foo', op2: 5 });
+        dummyElementExpressionNumberMixed2.evaluate(
+            { context: scopeStack.getContext('dummy'), symbolTable: scopeStack.getSymbolTable() },
+            { op1: 'foo', op2: 5 }
+        );
         expect(dummyElementExpressionNumberMixed2.value).toBe(5);
     });
 });

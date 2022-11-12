@@ -1,3 +1,7 @@
+import { hasContext, registerContext } from '../../execution/scope';
+
+// -- types ----------------------------------------------------------------------------------------
+
 import type { TDataName } from '../../@types/data';
 import type {
     IElementSpecificationData,
@@ -5,7 +9,12 @@ import type {
     IElementSpecificationStatement,
     IElementSpecificationBlock,
     IElementSpecification,
+    IElementSpecificationEntryData,
+    IElementSpecificationEntryExpression,
+    IElementSpecificationEntryStatement,
+    IElementSpecificationEntryBlock,
     IElementSpecificationSnapshot,
+    IElementSpecificationEntries,
 } from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -36,15 +45,20 @@ let _elementSpecificationSnapshot: {
  * @returns `false` if element name already exists, else `true`
  */
 export function registerElementSpecificationEntry(
+    group: string,
     name: string,
-    specification: IElementSpecification
+    specification:
+        | IElementSpecificationEntryData
+        | IElementSpecificationEntryExpression
+        | IElementSpecificationEntryStatement
+        | IElementSpecificationEntryBlock
 ): boolean {
     if (name in _elementSpecification) return false;
 
-    const { classification, label, type, prototype } = specification;
+    const { category, label, type, prototype } = specification;
 
     const specificationTableEntry: IElementSpecification = {
-        classification,
+        classification: { group, category },
         label,
         type,
         // @ts-ignore
@@ -52,7 +66,7 @@ export function registerElementSpecificationEntry(
     };
 
     const specificationSnapshotTableEntry: IElementSpecificationSnapshot = {
-        classification,
+        classification: { group, category },
         label,
         type,
         prototypeName: prototype.name,
@@ -84,13 +98,27 @@ export function registerElementSpecificationEntry(
  *  corresponding specification entry data
  * @returns a list of boolean , `false` if element name already exists else `true`
  */
-export function registerElementSpecificationEntries(specification: {
-    [identifier: string]: IElementSpecification;
-}): boolean[] {
-    const registerStatus: boolean[] = [];
-    Object.entries(specification).forEach(([identifier, specification]) =>
-        registerStatus.push(registerElementSpecificationEntry(identifier, specification))
-    );
+export function registerElementSpecificationEntries(specification: IElementSpecificationEntries): {
+    [group: string]: { [identifier: string]: boolean };
+} {
+    const registerStatus: { [group: string]: { [identifier: string]: boolean } } = {};
+
+    Object.entries(specification).forEach(([group, { entries, context }]) => {
+        const status: { [identifier: string]: boolean } = {};
+        Object.entries(entries).forEach(
+            ([identifier, specification]) =>
+                (status[identifier] = registerElementSpecificationEntry(
+                    group,
+                    identifier,
+                    specification
+                ))
+        );
+        registerStatus[group] = status;
+
+        if (context) registerContext(group, context);
+        else if (!hasContext(group)) registerContext(group, {});
+    });
+
     return registerStatus;
 }
 
