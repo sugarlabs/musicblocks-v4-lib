@@ -136,3 +136,20 @@ export interface IElementSpecification {
 export interface IElementSpecificationSnapshot extends Omit<IElementSpecification, 'prototype'> {
     prototypeName: string;
 }
+
+/** Type definition for a table of element specification entries. */
+export type IElementSpecificationEntries = {
+    /** Element group name. */
+    [group: string]: {
+        /** Element specification entries by element name/identifier. */
+        entries: {
+            [identifier: string]:
+                | IElementSpecificationEntryData
+                | IElementSpecificationEntryExpression
+                | IElementSpecificationEntryStatement
+                | IElementSpecificationEntryBlock;
+        };
+        /** Element group context key-value dictionary. */
+        context?: Record<string, unknown>;
+    };
+};

@@ -201,31 +201,34 @@ describe('Syntax Element Specification', () => {
         test('register new element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
                 group: {
-                    dummy1: {
-                        category: 'dummy',
-                        label: 'dummy1',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: ['1', '2', '3'],
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Expression',
+                            prototype: DummyElementExpression,
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Statement',
+                            prototype: DummyElementStatement,
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Block',
+                            prototype: DummyElementBlock,
+                        },
                     },
-                    dummy2: {
-                        category: 'dummy',
-                        label: 'dummy2',
-                        type: 'Expression',
-                        prototype: DummyElementExpression,
-                    },
-                    dummy3: {
-                        category: 'dummy',
-                        label: 'dummy3',
-                        type: 'Statement',
-                        prototype: DummyElementStatement,
-                    },
-                    dummy4: {
-                        category: 'dummy',
-                        label: 'dummy4',
-                        type: 'Block',
-                        prototype: DummyElementBlock,
-                    },
+                    context: {},
                 },
             });
             expect(Object.keys(status).length).toBe(1);
@@ -292,30 +295,33 @@ describe('Syntax Element Specification', () => {
         test('register duplicate element specification entries and verify', () => {
             const status = registerElementSpecificationEntries({
                 group: {
-                    dummy1: {
-                        category: 'dummy',
-                        label: 'dummy1',
-                        type: 'Data',
-                        prototype: DummyElementData,
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Expression',
+                            prototype: DummyElementExpression,
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Statement',
+                            prototype: DummyElementStatement,
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Block',
+                            prototype: DummyElementBlock,
+                        },
                     },
-                    dummy2: {
-                        category: 'dummy',
-                        label: 'dummy2',
-                        type: 'Expression',
-                        prototype: DummyElementExpression,
-                    },
-                    dummy3: {
-                        category: 'dummy',
-                        label: 'dummy3',
-                        type: 'Statement',
-                        prototype: DummyElementStatement,
-                    },
-                    dummy4: {
-                        category: 'dummy',
-                        label: 'dummy4',
-                        type: 'Block',
-                        prototype: DummyElementBlock,
-                    },
+                    context: {},
                 },
             });
             expect(Object.keys(status).length).toBe(1);
@@ -412,13 +418,16 @@ describe('Syntax Element Specification', () => {
 
             registerElementSpecificationEntries({
                 group: {
-                    dummy: {
-                        category: 'dummy',
-                        label: 'dummy',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: ['1', '2', '3'],
+                    entries: {
+                        dummy: {
+                            category: 'dummy',
+                            label: 'dummy',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
                     },
+                    context: {},
                 },
             });
             expect(getSpecificationSnapshot()['dummy'].values).toEqual(['1', '2', '3']);
@@ -428,40 +437,43 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
                 group: {
-                    dummy1: {
-                        category: 'dummy',
-                        label: 'dummy1',
-                        type: 'Data',
-                        prototype: DummyElementData,
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['number'] },
+                        },
+                        dummy5: {
+                            category: 'dummy',
+                            label: 'dummy5',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['string'] },
+                        },
                     },
-                    dummy2: {
-                        category: 'dummy',
-                        label: 'dummy2',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: ['1', '2', '3'],
-                    },
-                    dummy3: {
-                        category: 'dummy',
-                        label: 'dummy3',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['boolean'] },
-                    },
-                    dummy4: {
-                        category: 'dummy',
-                        label: 'dummy4',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['number'] },
-                    },
-                    dummy5: {
-                        category: 'dummy',
-                        label: 'dummy5',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['string'] },
-                    },
+                    context: {},
                 },
             });
 
@@ -478,34 +490,37 @@ describe('Syntax Element Specification', () => {
             resetElementSpecificationTable();
             registerElementSpecificationEntries({
                 group: {
-                    dummy1: {
-                        category: 'dummy',
-                        label: 'dummy1',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: ['1', '2', '3'],
+                    entries: {
+                        dummy1: {
+                            category: 'dummy',
+                            label: 'dummy1',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: ['1', '2', '3'],
+                        },
+                        dummy2: {
+                            category: 'dummy',
+                            label: 'dummy2',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy3: {
+                            category: 'dummy',
+                            label: 'dummy3',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['boolean'] },
+                        },
+                        dummy4: {
+                            category: 'dummy',
+                            label: 'dummy4',
+                            type: 'Data',
+                            prototype: DummyElementData,
+                            values: { types: ['number'] },
+                        },
                     },
-                    dummy2: {
-                        category: 'dummy',
-                        label: 'dummy2',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['boolean'] },
-                    },
-                    dummy3: {
-                        category: 'dummy',
-                        label: 'dummy3',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['boolean'] },
-                    },
-                    dummy4: {
-                        category: 'dummy',
-                        label: 'dummy4',
-                        type: 'Data',
-                        prototype: DummyElementData,
-                        values: { types: ['number'] },
-                    },
+                    context: {},
                 },
             });
 

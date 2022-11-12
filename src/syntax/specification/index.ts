@@ -1,3 +1,7 @@
+import { hasContext, registerContext } from '../../execution/scope';
+
+// -- types ----------------------------------------------------------------------------------------
+
 import type { TDataName } from '../../@types/data';
 import type {
     IElementSpecificationData,
@@ -10,6 +14,7 @@ import type {
     IElementSpecificationEntryStatement,
     IElementSpecificationEntryBlock,
     IElementSpecificationSnapshot,
+    IElementSpecificationEntries,
 } from '../../@types/specification';
 
 // -- private variables ----------------------------------------------------------------------------
@@ -93,20 +98,14 @@ export function registerElementSpecificationEntry(
  *  corresponding specification entry data
  * @returns a list of boolean , `false` if element name already exists else `true`
  */
-export function registerElementSpecificationEntries(specification: {
-    [group: string]: {
-        [identifier: string]:
-            | IElementSpecificationEntryData
-            | IElementSpecificationEntryExpression
-            | IElementSpecificationEntryStatement
-            | IElementSpecificationEntryBlock;
-    };
-}): { [group: string]: { [identifier: string]: boolean } } {
+export function registerElementSpecificationEntries(specification: IElementSpecificationEntries): {
+    [group: string]: { [identifier: string]: boolean };
+} {
     const registerStatus: { [group: string]: { [identifier: string]: boolean } } = {};
 
-    Object.entries(specification).forEach(([group, specification]) => {
+    Object.entries(specification).forEach(([group, { entries, context }]) => {
         const status: { [identifier: string]: boolean } = {};
-        Object.entries(specification).forEach(
+        Object.entries(entries).forEach(
             ([identifier, specification]) =>
                 (status[identifier] = registerElementSpecificationEntry(
                     group,
@@ -115,6 +114,9 @@ export function registerElementSpecificationEntries(specification: {
                 ))
         );
         registerStatus[group] = status;
+
+        if (context) registerContext(group, context);
+        else if (!hasContext(group)) registerContext(group, {});
     });
 
     return registerStatus;
