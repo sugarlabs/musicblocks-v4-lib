@@ -57,6 +57,14 @@ export {
 
 export type { TPCOverride } from './@types/execution';
 
+// -- scope ----------------------------------------------------------------------------------------
+
+export type { IContext, ISymbolTable } from './@types/scope';
+
+export { registerContext, deregisterContext, hasContext } from './execution/scope';
+
+// -- interpreter ----------------------------------------------------------------------------------
+
 export {
     declareVariable,
     queryVariable,
