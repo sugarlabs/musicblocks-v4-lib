@@ -3,6 +3,7 @@ import {
     _getSymbolTableManager,
     registerContext,
     deregisterContext,
+    hasContext,
     ScopeStack,
     addGlobalSymbol,
     removeGlobalSymbol,
@@ -39,6 +40,7 @@ describe('Scope Module', () => {
         registerContext('painter', {
             color: 'red',
         });
+        expect(hasContext('painter')).toBe(true);
     });
 
     it('re-registers existing context key-maps by overwriting', () => {
@@ -46,10 +48,12 @@ describe('Scope Module', () => {
             color: 'red',
             width: 4,
         });
+        expect(hasContext('painter')).toBe(true);
     });
 
     it('deregisters context key-maps', () => {
         deregisterContext('painter');
+        expect(hasContext('painter')).toBe(false);
     });
 
     let scopeStack: IScopeStack;

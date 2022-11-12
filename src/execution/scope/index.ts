@@ -68,6 +68,14 @@ export function deregisterContext(name: string): boolean {
 }
 
 /**
+ * Returns whether a context is already registered.
+ * @param name context name
+ */
+export function hasContext(name: string): boolean {
+    return name in _contextManagerMap;
+}
+
+/**
  * Adds new global symbol.
  * @param name symbol name
  * @param entry symbol entry
