@@ -36,6 +36,18 @@ It can also generate statistics about the instances.
 - **Tree** represents the *syntax tree* (*abstract syntax tree* or *AST*) by maintaining interconnections
 between *syntax elements*.
 
+- **Block Types**: The Music Blocks v4 library provides a variety of block types that can be used to create music compositions. These include blocks for notes, chords, rests, loops, and other musical elements.
+
+- **Block Parameters**: Each block type has a set of parameters that can be adjusted to specify the pitch, duration, volume, and other characteristics of the musical element. These parameters can be adjusted by clicking on the block and using the graphical interface.
+
+- **Block Connections**: Blocks can be connected to each other to create sequences of musical elements. Connections can be made by dragging a block onto another block or by using the "connect" option in the graphical interface.
+
+- **Loops and Iterations**: The Music Blocks v4 library provides blocks for creating loops and iterations in musical sequences. These blocks can be used to repeat sections of a composition or to create complex rhythms and patterns.
+
+- **Customization and Extensions**: The Music Blocks v4 library is designed to be customizable and extensible, allowing users to create their own block types and add them to the library. This can be done using the provided API and documentation.
+
+- **Export and Integration**: The Music Blocks v4 library provides options for exporting compositions in standard music notation formats, such as MIDI and MusicXML. The library can also be integrated into other software projects using the provided API and documentation.
+
 ### Execution
 
 - **Symbol Table** maintains tables of dynamic variables and states which the *syntax elements* can
