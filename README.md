@@ -197,7 +197,7 @@ Output should look like
 
 ```bash
 v14.17.0
-6.14.13
+1.22.19
 Version 4.3.2
 v10.0.0
 ```
