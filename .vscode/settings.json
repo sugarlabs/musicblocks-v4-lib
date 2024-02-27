@@ -26,6 +26,7 @@
       "strings": "off",
       "other": "off"
     },
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }
