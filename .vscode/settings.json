@@ -27,6 +27,6 @@
       "other": "off"
     },
     "editor.formatOnSave": false,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
