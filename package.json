@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "rm -rf dist/* && tsc -p . && cp -R src/@types dist/@types",
-    "test": "jest --passWithNoTests --verbose src/syntax src/library src/execution src/library",
+    "test": "jest --passWithNoTests --verbose src/syntax src/library src/execution",
     "check": "tsc --noEmit",
     "lint": "eslint src/**/*.ts && textlint --rule terminology --rule no-empty-section --rule no-dead-link README.md",
     "prettify": "prettier --write src/@types src/syntax src/execution src/library"
